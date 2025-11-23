@@ -27,7 +27,7 @@ class _MydrawerState extends State<Mydrawer> {
   final List <String> rutas = const [
 
     '/asesoriasEnCurso',
-    '/solicitudesPendintes',
+    '/solicitudesPendientes',
     '/reportes',
     '/asesoresDiciplinares',
     '/asesoresPar',

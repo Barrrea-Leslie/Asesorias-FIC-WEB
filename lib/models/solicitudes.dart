@@ -27,6 +27,7 @@ class SolicitudesInofrmacion {
 
       Solicitudes(id: 1, nombre: 'Jose Angel Astorga Mejia', materia: 'Programacion', fecha: '25/SEP/2025', hoario: '18:00 - 19:00', modalidad: 'Virtual'),
       Solicitudes(id: 2, nombre: 'Jose Angel Astorga Mejia', materia: 'Programacion', fecha: '25/SEP/2025', hoario: '18:00 - 19:00', modalidad: 'Virtual'),
+      Solicitudes(id: 2, nombre: 'Jose Angel Astorga Mejia', materia: 'Programacion', fecha: '25/SEP/2025', hoario: '18:00 - 19:00', modalidad: 'Virtual'),
 
     ];
 

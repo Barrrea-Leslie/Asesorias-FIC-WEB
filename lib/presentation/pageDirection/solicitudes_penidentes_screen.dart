@@ -153,7 +153,7 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
         
-            Text("Solicitudes Pendientes", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),),
+            Text("Solicitudes Pendientes", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),),
 
             const SizedBox(width: 15),
 

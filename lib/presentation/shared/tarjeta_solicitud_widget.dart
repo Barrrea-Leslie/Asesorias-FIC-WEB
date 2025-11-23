@@ -130,7 +130,7 @@ class BotonRecahzar extends StatelessWidget {
       elevation: 3,
 
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(10)
+        borderRadius: BorderRadiusGeometry.circular(5)
       )
     ),
 
@@ -155,7 +155,7 @@ class BotonAceptar extends StatelessWidget {
       elevation: 3,
 
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(10)
+        borderRadius: BorderRadiusGeometry.circular(5)
       )
     ),
 

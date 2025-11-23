@@ -116,7 +116,7 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
         
-            Text("Reportes", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),),
+            Text("Reportes", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),),
 
             const SizedBox(width: 15),
 

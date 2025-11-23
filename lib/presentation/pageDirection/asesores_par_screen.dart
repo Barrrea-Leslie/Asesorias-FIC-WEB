@@ -152,7 +152,7 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
         
-            Text("Asesores Par", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),),
+            Text("Asesores Par", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),),
 
             const SizedBox(width: 15),
 
@@ -211,20 +211,20 @@ class FooterCrearAlumno extends StatelessWidget {
             onPressed: () {},
 
             style: ElevatedButton.styleFrom(
-
+              
               backgroundColor: Appcolores.verdeClaro,
               foregroundColor: Colors.white,
 
-              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               elevation: 5,
 
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadiusGeometry.circular(10)
+                borderRadius: BorderRadiusGeometry.circular(5)
               )
 
             ),
 
-            child: Text("Crear Aseosor"),
+            child: Text("Crear Asesoria", style: TextStyle(fontSize: 15),),
 
           ),
         ],

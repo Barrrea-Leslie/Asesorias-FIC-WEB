@@ -36,7 +36,7 @@ class ListaAsesorias extends StatelessWidget {
   final List<Asesorias> listaAsesorias;
 
   final double anchoTarjeta = 360.0;
-  final double alturaTarjeta = 270.0;
+  final double alturaTarjeta = 280.0;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class ListaAsesorias extends StatelessWidget {
                     color: Appcolores.azulUas,
                     
                   child: Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 20),
                     child: Column(
                       
                         
@@ -134,12 +134,13 @@ class BotonMaterial extends StatelessWidget {
     onPressed: () {},
     
     style: ElevatedButton.styleFrom(
+      minimumSize: Size(30, 35),
       backgroundColor: Appcolores.amarilloUas,
       foregroundColor: Colors.white,
       elevation: 3,
 
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(10)
+        borderRadius: BorderRadiusGeometry.circular(5)
       )
     ),
 
@@ -159,12 +160,13 @@ class BotonInfo extends StatelessWidget {
     onPressed: () {},
     
     style: ElevatedButton.styleFrom(
+      minimumSize: Size(30, 35),
       backgroundColor: Appcolores.azulClaro,
       foregroundColor: Colors.white,
       elevation: 3,
 
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(10)
+        borderRadius: BorderRadiusGeometry.circular(5)
       )
     ),
 
@@ -184,12 +186,13 @@ class BotonCompletada extends StatelessWidget {
     onPressed: () {},
     
     style: ElevatedButton.styleFrom(
+      minimumSize: Size(30, 35),
       backgroundColor: Appcolores.verdeClaro,
       foregroundColor: Colors.white,
       elevation: 3,
 
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(10)
+        borderRadius: BorderRadiusGeometry.circular(5)
       )
     ),
 

@@ -135,7 +135,7 @@ class _MydrawerState extends State<Mydrawer> {
             if (isSeleccionado) {
               return;
             }else{
-              Navigator.pushNamed(context, ruta);
+              Navigator.pushReplacementNamed(context, ruta);
               
               
             }

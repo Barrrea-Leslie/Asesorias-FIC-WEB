@@ -1,3 +1,4 @@
+import 'package:asesorias_fic/presentation/loginScreens/login_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesores_diciplinares_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesores_par_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesorias_en_curso_screen.dart';
@@ -11,6 +12,8 @@ class AppRoutes {
   static const initialRoute = '/asesoresPar';
 
   static Map <String, WidgetBuilder> routes = {
+
+    '/login': (context) => const LoginScreen(),
     
     '/asesoriasEnCurso': (context) => const AsesoriasEnCursoScreen(),
     '/solicitudesPendientes': (context) => const SolicitudesPenidentesScreen(),

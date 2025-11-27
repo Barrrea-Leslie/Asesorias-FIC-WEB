@@ -208,7 +208,28 @@ class FooterCrearAlumno extends StatelessWidget {
         children: [
           ElevatedButton(
     
-            onPressed: () {},
+            onPressed: () {
+              showDialog(context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Offroad"),
+                  content: Text('Modal centrado'),
+                  actions: [
+                    TextButton(
+                      onPressed: (){
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Cancelar')),
+
+                      TextButton(
+                      onPressed: (){
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Acceptar'))
+                  ],
+                );
+              });
+            },
 
             style: ElevatedButton.styleFrom(
               

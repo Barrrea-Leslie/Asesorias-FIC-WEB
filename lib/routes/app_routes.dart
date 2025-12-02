@@ -1,4 +1,5 @@
 import 'package:asesorias_fic/presentation/loginScreens/login_screen.dart';
+import 'package:asesorias_fic/presentation/modalesAdministrador/crear_asesor_disiplinar.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesores_diciplinares_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesores_par_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesorias_en_curso_screen.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/widgets.dart';
 
 class AppRoutes {
 
-  static const initialRoute = '/asesoresPar';
+  static const initialRoute = '/crearAsesorPar';
 
   static Map <String, WidgetBuilder> routes = {
 
@@ -22,6 +23,7 @@ class AppRoutes {
     '/asesoresPar': (context) => const AsesoresParScreen(),
     '/estudiantes': (context) => const EstudiantesScreen(),
     
+    '/crearAsesorPar' : (context) => const CrearAsesorDisiplinar()
 
 
   };

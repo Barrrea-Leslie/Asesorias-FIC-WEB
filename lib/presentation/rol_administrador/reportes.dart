@@ -1,10 +1,8 @@
-
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/shared/mydrawer.dart';
 import 'package:flutter/material.dart';
 
-class ReportesScreen extends StatelessWidget {
-  const ReportesScreen({super.key});
+class Reportes extends StatelessWidget {
+  const Reportes({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,28 +23,9 @@ class PantallaResponsiva extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-
-      appBar: AppBar(
-        leading: Builder(
-          builder: (context) => IconButton(
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-            icon: Icon(Icons.menu, size: 30.0),
-          ),
-        ),
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        title: Text('Reportes', style: TextStyle(fontWeight: FontWeight.bold)),
-      ),
-
-      drawer: Mydrawer(rutaActual: '/reportes'),
-
-      body: Center(
+    return Center(
         child: Text('Reportes'),
-      ),
-    );
+      );
   }
 }
 
@@ -64,9 +43,6 @@ class PantallaGrande extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
-
-            //menu
-            Mydrawer(rutaActual: '/reportes'),
 
             //contenido
             Expanded(
@@ -125,47 +101,6 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
         ),
       ),
 
-    );
-  }
-}
-
-class FooterCrearAlumno extends StatelessWidget {
-  const FooterCrearAlumno({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(30),
-      color: Colors.white,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          ElevatedButton(
-    
-            onPressed: () {},
-
-            style: ElevatedButton.styleFrom(
-
-              backgroundColor: Appcolores.verdeClaro,
-              foregroundColor: Colors.white,
-
-              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-              elevation: 5,
-
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadiusGeometry.circular(10)
-              )
-
-            ),
-
-            child: Text("Crear Aseosor"),
-
-          ),
-        ],
-      ),
     );
   }
 }

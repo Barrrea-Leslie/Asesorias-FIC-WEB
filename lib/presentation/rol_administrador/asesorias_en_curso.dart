@@ -1,10 +1,9 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/shared/mydrawer.dart';
-import 'package:asesorias_fic/presentation/shared/tarjeta_estudiante_widget.dart';
+import 'package:asesorias_fic/presentation/shared/tarjeta_asesorias_widget.dart';
 import 'package:flutter/material.dart';
 
-class EstudiantesScreen extends StatelessWidget {
-  const EstudiantesScreen({super.key});
+class AsesoriasEnCurso extends StatelessWidget {
+  const AsesoriasEnCurso({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,30 +19,14 @@ class EstudiantesScreen extends StatelessWidget {
   }
 }
 
+//widget pantalla pequeña
+
 class PantallaResponsiva extends StatelessWidget {
   const PantallaResponsiva({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-
-      appBar: AppBar(
-        leading: Builder(
-          builder: (context) => IconButton(
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-            icon: Icon(Icons.menu, size: 30.0),
-          ),
-        ),
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        title: Text('Estudiantes', style: TextStyle(fontWeight: FontWeight.bold)),
-      ),
-
-      drawer: Mydrawer(rutaActual: '/estudiantes'),
-
-      body: Center(
+    return Center(
         child: Column(
           children: [
             SizedBox(height: 60,),
@@ -53,7 +36,7 @@ class PantallaResponsiva extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      TarjetaEstudianteWidget()
+                      TarjetaAsesoriasWidget()
                     ],
                   ),
                 )),
@@ -61,12 +44,11 @@ class PantallaResponsiva extends StatelessWidget {
             FooterCrearAlumno(),
           ],
         ),
-      ),
-    );
+      );
   }
 }
 
-//widget para pantalla completa
+//widget pantalla completa en computadora
 
 class PantallaGrande extends StatelessWidget {
   const PantallaGrande({super.key});
@@ -76,26 +58,10 @@ class PantallaGrande extends StatelessWidget {
     return Scaffold(
       backgroundColor: Appcolores.azulUas,
 
-      /* appBar: AppBar(
-        
-        leading: Builder(builder: (context) => IconButton(
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-          icon: Icon(Icons.menu, size: 30.0,))),
-        backgroundColor: Appcolores.azulUas,
-        title: Text('Alumnos', style: TextStyle(fontWeight: FontWeight.bold)),
-    
-        ), */
-
-      //drawer: Mydrawer(rutaActual: DiregirEstudiantes()),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
-
-            //menu
-            Mydrawer(rutaActual: '/estudiantes'),
 
             //contenido
             Expanded(
@@ -116,7 +82,7 @@ class PantallaGrande extends StatelessWidget {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            TarjetaEstudianteWidget()
+                            TarjetaAsesoriasWidget()
                           ],
                         ),
                       )),
@@ -152,7 +118,7 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
         
-            Text("Estudiantes", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),),
+            Text("Asesorias en Curso", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),),
 
             const SizedBox(width: 15),
 
@@ -163,7 +129,7 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
                 
                 decoration: InputDecoration(
                   
-                  hintText: 'Buscar Estudiante',
+                  hintText: 'Buscar Asesoria',
                   hintStyle: TextStyle(fontSize: 12, color: Color(0xFFb4b4b4)),
                   prefixIcon: Icon(Icons.search, color: const Color(0xFFb4b4b4), size: 18,),
                   filled: true,
@@ -187,6 +153,7 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
     );
   }
 }
+
 
 class FooterCrearAlumno extends StatelessWidget {
   const FooterCrearAlumno({
@@ -224,7 +191,7 @@ class FooterCrearAlumno extends StatelessWidget {
 
             ),
 
-            child: Text("Crear Estudiante", style: TextStyle(fontSize: 15),),
+            child: Text("Crear Asesoria", style: TextStyle(fontSize: 15),),
 
           ),
         ],
@@ -232,3 +199,4 @@ class FooterCrearAlumno extends StatelessWidget {
     );
   }
 }
+

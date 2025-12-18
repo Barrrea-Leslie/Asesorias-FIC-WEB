@@ -34,7 +34,7 @@ class AsesorDiciplinarInformacion {
 
     return [
 
-      AsesoresDicplinares(id: 1, numeroCuenta: "19519958", nombre: "Luis Fernando Velazquez Araujo", licenciatura: "Informatica", grupo: "4-1", correoInstitucional: "lf.velazquez22@info.uas.edu.mx", numeroTelefono: "6673456211", promedio: "9.9"),
+      AsesoresDicplinares(id: 1, numeroCuenta: "19519958", nombre: "Leslie Mayram Barrera Rodriguez", licenciatura: "Informatica", grupo: "4-1", correoInstitucional: "lf.velazquez22@info.uas.edu.mx", numeroTelefono: "6673456211", promedio: "9.9"),
       AsesoresDicplinares(id: 2, numeroCuenta: "19623846", nombre: "Jenifer Guadalupe Tizoc Lopez", licenciatura: "Infromatica", grupo: "4-3", correoInstitucional: "jg.tizoc22@info.uas.edu.mx", numeroTelefono: "6673423456", promedio: "10"),
       
     ];

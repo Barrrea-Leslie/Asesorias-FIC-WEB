@@ -1,10 +1,9 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/shared/mydrawer.dart';
-import 'package:asesorias_fic/presentation/shared/tarjeta_estudiante_widget.dart';
+import 'package:asesorias_fic/presentation/shared/tarjeta_asesor_par_widget.dart';
 import 'package:flutter/material.dart';
 
-class EstudiantesScreen extends StatelessWidget {
-  const EstudiantesScreen({super.key});
+class AsesoresPar extends StatelessWidget {
+  const AsesoresPar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,21 +27,6 @@ class PantallaResponsiva extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
 
-      appBar: AppBar(
-        leading: Builder(
-          builder: (context) => IconButton(
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-            icon: Icon(Icons.menu, size: 30.0),
-          ),
-        ),
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        title: Text('Estudiantes', style: TextStyle(fontWeight: FontWeight.bold)),
-      ),
-
-      drawer: Mydrawer(rutaActual: '/estudiantes'),
-
       body: Center(
         child: Column(
           children: [
@@ -53,7 +37,7 @@ class PantallaResponsiva extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      TarjetaEstudianteWidget()
+                      TarjetaAsesorParWidget()
                     ],
                   ),
                 )),
@@ -76,26 +60,11 @@ class PantallaGrande extends StatelessWidget {
     return Scaffold(
       backgroundColor: Appcolores.azulUas,
 
-      /* appBar: AppBar(
-        
-        leading: Builder(builder: (context) => IconButton(
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-          icon: Icon(Icons.menu, size: 30.0,))),
-        backgroundColor: Appcolores.azulUas,
-        title: Text('Alumnos', style: TextStyle(fontWeight: FontWeight.bold)),
-    
-        ), */
-
-      //drawer: Mydrawer(rutaActual: DiregirEstudiantes()),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
 
-            //menu
-            Mydrawer(rutaActual: '/estudiantes'),
 
             //contenido
             Expanded(
@@ -116,7 +85,7 @@ class PantallaGrande extends StatelessWidget {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            TarjetaEstudianteWidget()
+                            TarjetaAsesorParWidget()
                           ],
                         ),
                       )),
@@ -152,7 +121,7 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
         
-            Text("Estudiantes", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),),
+            Text("Asesores Par", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),),
 
             const SizedBox(width: 15),
 
@@ -163,7 +132,7 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
                 
                 decoration: InputDecoration(
                   
-                  hintText: 'Buscar Estudiante',
+                  hintText: 'Buscar Aseosor',
                   hintStyle: TextStyle(fontSize: 12, color: Color(0xFFb4b4b4)),
                   prefixIcon: Icon(Icons.search, color: const Color(0xFFb4b4b4), size: 18,),
                   filled: true,
@@ -208,7 +177,28 @@ class FooterCrearAlumno extends StatelessWidget {
         children: [
           ElevatedButton(
     
-            onPressed: () {},
+            onPressed: () {
+              showDialog(context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Offroad"),
+                  content: Text('Modal centrado'),
+                  actions: [
+                    TextButton(
+                      onPressed: (){
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Cancelar')),
+
+                      TextButton(
+                      onPressed: (){
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Acceptar'))
+                  ],
+                );
+              });
+            },
 
             style: ElevatedButton.styleFrom(
               
@@ -224,7 +214,7 @@ class FooterCrearAlumno extends StatelessWidget {
 
             ),
 
-            child: Text("Crear Estudiante", style: TextStyle(fontSize: 15),),
+            child: Text("Crear Asesoria", style: TextStyle(fontSize: 15),),
 
           ),
         ],

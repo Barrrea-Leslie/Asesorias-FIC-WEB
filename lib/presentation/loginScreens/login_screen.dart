@@ -144,7 +144,7 @@ class BotonIngresar extends StatelessWidget {
 
           
 
-          Navigator.pushReplacementNamed(context, '/asesoriasEnCurso');
+          Navigator.pushReplacementNamed(context, '/paginaBase');
 
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content:

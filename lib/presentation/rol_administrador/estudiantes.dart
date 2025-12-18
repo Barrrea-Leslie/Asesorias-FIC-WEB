@@ -3,8 +3,8 @@ import 'package:asesorias_fic/presentation/shared/mydrawer.dart';
 import 'package:asesorias_fic/presentation/shared/tarjeta_estudiante_widget.dart';
 import 'package:flutter/material.dart';
 
-class EstudiantesScreen extends StatelessWidget {
-  const EstudiantesScreen({super.key});
+class Estudiantes extends StatelessWidget {
+  const Estudiantes({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,25 +25,7 @@ class PantallaResponsiva extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-
-      appBar: AppBar(
-        leading: Builder(
-          builder: (context) => IconButton(
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-            icon: Icon(Icons.menu, size: 30.0),
-          ),
-        ),
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        title: Text('Estudiantes', style: TextStyle(fontWeight: FontWeight.bold)),
-      ),
-
-      drawer: Mydrawer(rutaActual: '/estudiantes'),
-
-      body: Center(
+    return Center(
         child: Column(
           children: [
             SizedBox(height: 60,),
@@ -61,8 +43,7 @@ class PantallaResponsiva extends StatelessWidget {
             FooterCrearAlumno(),
           ],
         ),
-      ),
-    );
+      );
   }
 }
 
@@ -76,26 +57,10 @@ class PantallaGrande extends StatelessWidget {
     return Scaffold(
       backgroundColor: Appcolores.azulUas,
 
-      /* appBar: AppBar(
-        
-        leading: Builder(builder: (context) => IconButton(
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-          icon: Icon(Icons.menu, size: 30.0,))),
-        backgroundColor: Appcolores.azulUas,
-        title: Text('Alumnos', style: TextStyle(fontWeight: FontWeight.bold)),
-    
-        ), */
-
-      //drawer: Mydrawer(rutaActual: DiregirEstudiantes()),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
-
-            //menu
-            Mydrawer(rutaActual: '/estudiantes'),
 
             //contenido
             Expanded(

@@ -1,4 +1,5 @@
 import 'package:asesorias_fic/core/colores.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/modalesAdministrador/crear_asesor_disiplinar.dart';
 import 'package:asesorias_fic/presentation/shared/mydrawer.dart';
 import 'package:asesorias_fic/presentation/shared/tarjeta_asesor_par_widget.dart';
 import 'package:flutter/material.dart';
@@ -213,7 +214,7 @@ class FooterCrearAlumno extends StatelessWidget {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: Text("Offroad"),
-                  content: Text('Modal centrado'),
+                  content: CrearAsesorDisiplinar(),
                   actions: [
                     TextButton(
                       onPressed: (){

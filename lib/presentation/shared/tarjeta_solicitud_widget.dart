@@ -1,5 +1,6 @@
 import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/models/solicitudes.dart';
+import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.dart';
 import 'package:flutter/material.dart';
 
 class TarjetaSolicitudWidget extends StatelessWidget {
@@ -122,7 +123,13 @@ class BotonRecahzar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-    onPressed: () {},
+    onPressed: () {
+
+      showDialog(context: context, builder: (BuildContext context){
+        return AlertaRechazar();
+      });
+
+    },
     
     style: ElevatedButton.styleFrom(
       backgroundColor: Appcolores.rojo,
@@ -160,6 +167,56 @@ class BotonAceptar extends StatelessWidget {
     ),
 
     child: Text('Aceptar'),
+    );
+  }
+}
+
+class AlertaRechazar extends StatelessWidget {
+  const AlertaRechazar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Confirmacion"),
+      content: Text("Esta seguro de rechazar la solicitud?"),
+      contentPadding: EdgeInsets.all(30),
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      actionsAlignment: MainAxisAlignment.center,
+      actions: [
+        
+        TextButton(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor: const Color.fromARGB(255, 143, 143, 143),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+            textStyle: TextStyle(fontWeight: FontWeight.bold)
+          ),
+          onPressed: () {
+              Navigator.of(context).pop();
+            },
+          child: Text("Cancelar")),
+    
+        TextButton(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor: const Color.fromARGB(255, 74, 149, 86),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+            textStyle: TextStyle(fontWeight: FontWeight.bold)
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+
+            MensajeConfirmacion.mostrarMensaje(context, "Se rexhazo la solicitud correctamente");
+
+          },
+          child: Text("Aceptar")),
+        
+      ],
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:asesorias_fic/core/colores.dart';
+import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -146,14 +147,7 @@ class BotonIngresar extends StatelessWidget {
 
           Navigator.pushReplacementNamed(context, '/paginaBase');
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content:
-            Text('Acceso correcto! Redirigiendo...', style: TextStyle(color: Colors.white),),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),),
-          );
+          MensajeConfirmacion.mostrarMensaje(context, "Se inicio secion correctamente...");
         }
       },
       child: Text('Ingresar'),

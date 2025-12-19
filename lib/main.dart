@@ -1,3 +1,4 @@
+import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,12 @@ class MyApp extends StatelessWidget {
       title: 'Material App',
       initialRoute: AppRoutes.initialRoute,
       routes: AppRoutes.routes,
+      theme: ThemeData(
+        primaryColor: Appcolores.azulUas,
+        brightness: Brightness.light,
+        focusColor: Appcolores.azulUas
+      ),
+      themeMode: ThemeMode.system,
     );
   }
 }

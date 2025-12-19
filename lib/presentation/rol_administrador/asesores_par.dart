@@ -183,6 +183,7 @@ class FooterCrearAlumno extends StatelessWidget {
                 return AlertDialog(
                   title: Text("Offroad"),
                   content: Text('Modal centrado'),
+                  
                   actions: [
                     TextButton(
                       onPressed: (){

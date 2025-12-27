@@ -1,4 +1,5 @@
 import 'package:asesorias_fic/core/colores.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/modalesAdministrador/crear_asesor_disiplinar.dart';
 import 'package:asesorias_fic/presentation/shared/tarjeta_asesor_diciplinar_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -127,7 +128,7 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
                 
                 decoration: InputDecoration(
                   
-                  hintText: 'Buscar Aseosor',
+                  hintText: 'Buscar Asesor',
                   hintStyle: TextStyle(fontSize: 12, color: Color(0xFFb4b4b4)),
                   prefixIcon: Icon(Icons.search, color: const Color(0xFFb4b4b4), size: 18,),
                   filled: true,
@@ -173,7 +174,20 @@ class FooterCrearAlumno extends StatelessWidget {
           ElevatedButton(
     
             onPressed: () {
-              
+              showDialog(context: context, builder: (BuildContext context){
+                return AlertDialog(
+                  title: Text("Crear Asesor Diciplinar"),
+                  content: CrearAsesorDisiplinar(),
+                  actions: [
+                    TextButton(
+                      onPressed: () {},
+                      child: Text("Cancelar")),
+                      TextButton(
+                      onPressed: () {},
+                      child: Text("Aceptar")),
+                  ],
+                );
+              });
             },
 
             style: ElevatedButton.styleFrom(

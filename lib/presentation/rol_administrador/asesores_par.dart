@@ -30,13 +30,15 @@ class PantallaResponsiva extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            SizedBox(height: 60,),
+            
 
               Expanded(
                       
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+                      SeccionArribaPantallaGrande(),
+                      SizedBox(height: 60,),
                       TarjetaAsesorParWidget()
                     ],
                   ),
@@ -132,11 +134,12 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
                 
                 decoration: InputDecoration(
                   
-                  hintText: 'Buscar Aseosor',
+                  hintText: 'Buscar Asesor',
                   hintStyle: TextStyle(fontSize: 12, color: Color(0xFFb4b4b4)),
                   prefixIcon: Icon(Icons.search, color: const Color(0xFFb4b4b4), size: 18,),
                   filled: true,
                   fillColor: Color(0xFFf2f3f5),
+                  
 
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(

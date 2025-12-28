@@ -9,14 +9,6 @@ import 'package:flutter/material.dart';
 class TarjetaAsesoriasWidget extends StatelessWidget {
   const TarjetaAsesoriasWidget({super.key});
 
-  //Logica lextura
-
-  /* List <Asesorias> _leerAsesorias(){
-
-    return AsesoriasInformacion.asesorias; */
-
-  
-
 
   @override
   Widget build(BuildContext context) {

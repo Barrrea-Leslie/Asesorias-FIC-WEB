@@ -1,27 +1,29 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/data/models/asesores_dicplinares.dart' show AsesoresDicplinares, AsesorDiciplinarInformacion;
+import 'package:asesorias_fic/data/models/asesores_dicicplinares_model.dart';
+import 'package:asesorias_fic/data/services/asesores_diciplinares_service.dart';
 import 'package:flutter/material.dart';
 
 class TarjetaAsesorDiciplinarWidget extends StatelessWidget {
   const TarjetaAsesorDiciplinarWidget({super.key});
 
-  //Logica lextura
-
-  List <AsesoresDicplinares> _leerAsesoresDiciplinar(){
-
-    return AsesorDiciplinarInformacion.asesorDiciplinar;
-
-  }
-
 
   @override
   Widget build(BuildContext context) {
 
-    //llamar a la logica creada arriba para obtener los datos
 
-    final List <AsesoresDicplinares> listAsesoresDiciplinares = _leerAsesoresDiciplinar();
-
-    return ListaAsesoresDiciplinares(listAsesoresDiciplinares: listAsesoresDiciplinares);
+    return FutureBuilder<List<AsesorDisciplinar>>(
+      future: AsesoresDiciplinaresService().getAsesoresDiciplinares(), // usa el service
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error al cargar los asesores diciplinares'));
+        }
+        final listaAsesoresDiciplinares = snapshot.data!;
+        return ListaAsesoresDiciplinares(listAsesoresDiciplinares: listaAsesoresDiciplinares);
+      },
+    );
   }
 }
 
@@ -33,7 +35,7 @@ class ListaAsesoresDiciplinares extends StatelessWidget {
     required this.listAsesoresDiciplinares,
   });
 
-  final List<AsesoresDicplinares> listAsesoresDiciplinares;
+  final List<AsesorDisciplinar> listAsesoresDiciplinares;
 
   final double anchoTarjeta = 360.0;
   final double alturaTarjeta = 100.0;

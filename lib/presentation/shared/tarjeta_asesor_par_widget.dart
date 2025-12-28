@@ -1,27 +1,29 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/data/models/asesores_par.dart';
+import 'package:asesorias_fic/data/models/asesores_par_model.dart';
+import 'package:asesorias_fic/data/services/asesores_par_service.dart';
 import 'package:flutter/material.dart';
 
 class TarjetaAsesorParWidget extends StatelessWidget {
   const TarjetaAsesorParWidget({super.key});
 
-  //Logica lextura
-
-  List <AsesorPar> _leerAsesoresPar(){
-
-    return AsesorParInformacion.asesorPar;
-
-  }
 
 
   @override
   Widget build(BuildContext context) {
 
-    //llamar a la logica creada arriba para obtener los datos
-
-    final List <AsesorPar> listAsesoresPar = _leerAsesoresPar();
-
-    return ListaAsesoresPar(listAsesoresPar: listAsesoresPar);
+    return FutureBuilder<List<AsesorPar>>(
+      future: AsesoresParService().getAsesoresPar(), // usa el service
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error al cargar los asesores par'));
+        }
+        final listaAsesoresPar = snapshot.data!;
+        return ListaAsesoresPar(listAsesoresPar: listaAsesoresPar);
+      },
+    );
   }
 }
 

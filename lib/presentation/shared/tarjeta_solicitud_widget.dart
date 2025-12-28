@@ -1,28 +1,37 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/data/models/solicitudes.dart';
+import 'package:asesorias_fic/data/models/estudiantes_model.dart';
+import 'package:asesorias_fic/data/models/solicitudes_model.dart';
+import 'package:asesorias_fic/data/services/estudiantes_service.dart';
+import 'package:asesorias_fic/data/services/solicitudes_pendientes_service.dart';
 import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.dart';
 import 'package:flutter/material.dart';
 
 class TarjetaSolicitudWidget extends StatelessWidget {
   const TarjetaSolicitudWidget({super.key});
 
-  //Logica lextura
-
-  List <Solicitudes> _leerSolicitudes(){
-
-    return SolicitudesInofrmacion.solicitudes;
-
-  }
-
 
   @override
   Widget build(BuildContext context) {
 
-    //llamar a la logica creada arriba para obtener los datos
+    return FutureBuilder(
+      future: Future.wait([
+        SolicitudesPendientesService().getSolicitudes(),
+        EstudiantesService().getEstudiantes()
+      ]),
+       // usa el service
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error al cargar las solicitudes'));
+        }
+        final solicitudes = snapshot.data![0] as List<SolicitudesPendientes>;
+        final estudiantes = snapshot.data![1] as List<Estudiantes>;
 
-    final List <Solicitudes> listaSolicitudes = _leerSolicitudes();
-
-    return ListaSolicitudes(listaSolicitudes: listaSolicitudes);
+        return ListaSolicitudes(listaSolicitudes: solicitudes, listaEstudiantes: estudiantes);
+      },
+    );
   }
 }
 
@@ -32,15 +41,22 @@ class ListaSolicitudes extends StatelessWidget {
   const ListaSolicitudes({
     super.key,
     required this.listaSolicitudes,
+    required this.listaEstudiantes,
   });
 
-  final List<Solicitudes> listaSolicitudes;
+  final List<SolicitudesPendientes> listaSolicitudes;
+  final List<Estudiantes> listaEstudiantes;
 
   final double anchoTarjeta = 360.0;
   final double alturaTarjeta = 230.0;
 
   @override
   Widget build(BuildContext context) {
+
+    final Map<int, Estudiantes> estudiantesPorId = {
+      for (var e in listaEstudiantes) e.id: e
+    };
+
     return Padding(
       padding: const EdgeInsets.only(left: 40, right: 40, top: 00),
       child: LayoutBuilder(
@@ -53,7 +69,9 @@ class ListaSolicitudes extends StatelessWidget {
               runSpacing: 10,
       
               children: listaSolicitudes.map((solicitud) {
-      
+
+                final estudiante = estudiantesPorId[solicitud.idEstudiante];
+
                 return SizedBox(
                   width: anchoTarjeta,
                   height: alturaTarjeta,
@@ -72,10 +90,10 @@ class ListaSolicitudes extends StatelessWidget {
                           spacing: 5,
                           children: [
                     
-                            Text('Alumno: ${solicitud.nombre}', style: TextStyle(color: Colors.white),),
+                            Text('Alumno: ${estudiante?.nombre ?? "Estudiante no encontrado"}', style: TextStyle(color: Colors.white),),
                             Text('Materia: ${solicitud.materia}', style: TextStyle(color: Colors.white),),
-                            Text('Fecha: ${solicitud.fecha}', style: TextStyle(color: Colors.white),),
-                            Text('Horario: ${solicitud.hoario}', style: TextStyle(color: Colors.white),),
+                            Text('Fecha: ${solicitud.fechaInicio}', style: TextStyle(color: Colors.white),),
+                            Text('Horario: ${solicitud.horario}', style: TextStyle(color: Colors.white),),
                             Text('Modalidad: ${solicitud.modalidad}', style: TextStyle(color: Colors.white),),
                     
                           ],

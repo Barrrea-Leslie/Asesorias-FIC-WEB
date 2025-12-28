@@ -2,7 +2,7 @@
     {
         "id": 1,
         "nombre": "Jenifer Guadalupe Tizoc Lopez",
-        "numero_cuenta": "19512348",
+        "numeroCuenta": "19512348",
         "licenciatura": "Informatica",
         "grupo": "4-3",
         "correoInstitucional": "jg.tizoc22@info.uas.edu.mx",
@@ -38,7 +38,7 @@
     {
         "id": 3,
         "nombre": "Jose Angel Astorga Mejia",
-        "numero_cuenta": "19519958",
+        "numeroCuenta": "19519958",
         "licenciatura": "Informatica",
         "grupo": "4-3",
         "correoInstitucional": "ja.astorga22@info.uas.edu.mx",
@@ -56,7 +56,7 @@
     {
         "id": 4,
         "nombre": "Leslie Mayram Barrera Rdoriguez",
-        "numero_cuenta": "19519958",
+        "numeroCuenta": "19519958",
         "licenciatura": "Informatica",
         "grupo": "4-1",
         "correoInstitucional": "lm.barrera22@info.uas.edu.mx",
@@ -74,7 +74,7 @@
     {
         "id": 5,
         "nombre": "Crisoforo Ahuelican Ahuejote",
-        "numero_cuenta": "19519958",
+        "numeroCuenta": "19519958",
         "licenciatura": "Informatica",
         "grupo": "4-1",
         "correoInstitucional": "lf.velazquez22@info.uas.edu.mx",

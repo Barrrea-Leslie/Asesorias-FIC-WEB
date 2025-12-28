@@ -1,5 +1,5 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/models/solicitudes.dart';
+import 'package:asesorias_fic/data/models/solicitudes.dart';
 import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.dart';
 import 'package:flutter/material.dart';
 

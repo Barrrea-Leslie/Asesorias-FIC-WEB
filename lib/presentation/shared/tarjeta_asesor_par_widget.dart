@@ -1,5 +1,5 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/models/asesores_par.dart';
+import 'package:asesorias_fic/data/models/asesores_par.dart';
 import 'package:flutter/material.dart';
 
 class TarjetaAsesorParWidget extends StatelessWidget {

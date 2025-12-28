@@ -1,5 +1,5 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/models/asesores_dicplinares.dart' show AsesoresDicplinares, AsesorDiciplinarInformacion;
+import 'package:asesorias_fic/data/models/asesores_dicplinares.dart' show AsesoresDicplinares, AsesorDiciplinarInformacion;
 import 'package:flutter/material.dart';
 
 class TarjetaAsesorDiciplinarWidget extends StatelessWidget {

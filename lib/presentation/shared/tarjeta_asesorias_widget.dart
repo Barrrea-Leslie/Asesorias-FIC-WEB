@@ -1,5 +1,8 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/models/asesorias.dart';
+import 'package:asesorias_fic/data/models/asesorias_model.dart';
+import 'package:asesorias_fic/data/models/estudiantes_model.dart';
+import 'package:asesorias_fic/data/services/asesorias_service.dart';
+import 'package:asesorias_fic/data/services/estudiantes_service.dart';
 import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.dart';
 import 'package:flutter/material.dart';
 
@@ -8,11 +11,11 @@ class TarjetaAsesoriasWidget extends StatelessWidget {
 
   //Logica lextura
 
-  List <Asesorias> _leerAsesorias(){
+  /* List <Asesorias> _leerAsesorias(){
 
-    return AsesoriasInformacion.asesorias;
+    return AsesoriasInformacion.asesorias; */
 
-  }
+  
 
 
   @override
@@ -20,9 +23,26 @@ class TarjetaAsesoriasWidget extends StatelessWidget {
 
     //llamar a la logica creada arriba para obtener los datos
 
-    final List <Asesorias> listaAsesorias = _leerAsesorias();
-
-    return ListaAsesorias(listaAsesorias: listaAsesorias);
+/*     final List <Asesorias> listaAsesorias = _leerAsesorias();
+ */
+    return  FutureBuilder(
+      future: Future.wait([
+        AsesoriasService().getAsesorias(),
+        EstudiantesService().getEstudiantes()
+      ]),
+       // usa el service
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error al cargar las asesorías'));
+        }
+        final asesorias = snapshot.data![0] as List<Asesorias>;
+        final estudiantes = snapshot.data![1] as List<Estudiantes>;
+        return ListaAsesorias(listaAsesorias: asesorias, listaEstudiantes: estudiantes);
+      },
+    );
   }
 }
 
@@ -32,15 +52,22 @@ class ListaAsesorias extends StatelessWidget {
   const ListaAsesorias({
     super.key,
     required this.listaAsesorias,
+    required this.listaEstudiantes,
   });
 
   final List<Asesorias> listaAsesorias;
+  final List<Estudiantes> listaEstudiantes;
 
   final double anchoTarjeta = 360.0;
   final double alturaTarjeta = 280.0;
 
   @override
   Widget build(BuildContext context) {
+
+    final Map<int, Estudiantes> estudiantesPorId = {
+      for (var e in listaEstudiantes) e.id: e
+    };
+    
     return Padding(
       padding: const EdgeInsets.only(left: 40, right: 40, top: 00),
       child: LayoutBuilder(
@@ -53,6 +80,8 @@ class ListaAsesorias extends StatelessWidget {
               runSpacing: 10,
       
               children: listaAsesorias.map((asesorias) {
+
+                final estudiante = estudiantesPorId[asesorias.idEstudiante];
       
                 return SizedBox(
                   width: anchoTarjeta,
@@ -61,9 +90,9 @@ class ListaAsesorias extends StatelessWidget {
                     color: Appcolores.azulUas,
                     
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 20),
+                    padding: const EdgeInsets.only(top: 30, left: 30, right: 30, bottom: 20),
                     child: Column(
-                      
+                      crossAxisAlignment: CrossAxisAlignment.start,
                         
                       children: [
                     
@@ -72,12 +101,16 @@ class ListaAsesorias extends StatelessWidget {
                           spacing: 5,
                           children: [
                     
-                            Text('Alumno: ${asesorias.nombre}', style: TextStyle(color: Colors.white),),
-                            Text('Materia: ${asesorias.materia}', style: TextStyle(color: Colors.white),),
-                            Text('Fecha: ${asesorias.fecha}', style: TextStyle(color: Colors.white),),
-                            Text('Horario: ${asesorias.hoario}', style: TextStyle(color: Colors.white),),
-                            Text('Modalidad: ${asesorias.modalidad}', style: TextStyle(color: Colors.white),),
-                    
+/*                             /* Text('Alumno: ${asesorias.nombre}', style: TextStyle(color: Colors.white),),
+ */                            Text('Materia: ${asesorias.materia}', style: TextStyle(color: Colors.white),),
+/*                             Text('Fecha: ${asesorias.fecha}', style: TextStyle(color: Colors.white),),
+/*  */                            Text('Horario: ${asesorias.hoario}', style: TextStyle(color: Colors.white),),
+ */                            Text('Modalidad: ${asesorias.modalidad}', style: TextStyle(color: Colors.white),), */
+                                Text('Alumno: ${estudiante?.nombre ?? "Estudiante no encontrado"}', style: TextStyle(color: Colors.white),),
+                                Text('Materia: ${asesorias.materia}', style: TextStyle(color: Colors.white)),
+                                Text('Inicio: ${asesorias.fechaInicio}', style: TextStyle(color: Colors.white)),
+                                Text('Horario: ${asesorias.horario}', style: TextStyle(color: Colors.white)),
+                                Text('Modalidad: ${asesorias.modalidad}', style: TextStyle(color: Colors.white)),                    
                           ],
                                 
                         ),
@@ -88,7 +121,7 @@ class ListaAsesorias extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             spacing: 20,
                             children: [
-                              BotonInfo(),
+                              BotonInfo(asesoria: asesorias,),
                               BotonCompletada(),
                     
                             ],
@@ -153,12 +186,17 @@ class BotonMaterial extends StatelessWidget {
 class BotonInfo extends StatelessWidget {
   const BotonInfo({
     super.key,
+    required this.asesoria
   });
+
+  final Asesorias asesoria;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-    onPressed: () {},
+    onPressed: () {
+      Navigator.pushNamed(context, "/informacionAsesoriaEnCurso", arguments: asesoria);
+    },
     
     style: ElevatedButton.styleFrom(
       minimumSize: Size(30, 35),

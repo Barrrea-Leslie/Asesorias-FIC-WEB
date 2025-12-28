@@ -3,7 +3,8 @@
         "asesor",
         "Asesorias",
         "Confirmacion",
-        "Estudiante"
+        "Estudiante",
+        "Estudiantes"
     ],
     "workbench.colorCustomizations": {
         "activityBar.activeBackground": "#ab307e",

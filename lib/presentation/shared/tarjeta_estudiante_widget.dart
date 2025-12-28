@@ -1,28 +1,29 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/models/estudiante.dart';
+import 'package:asesorias_fic/data/models/estudiantes_model.dart';
+import 'package:asesorias_fic/data/services/estudiantes_service.dart';
 import 'package:flutter/material.dart';
 
 class TarjetaEstudianteWidget extends StatelessWidget {
   const TarjetaEstudianteWidget({super.key});
 
-  //Logica lextura
-
-  List <Estudiante> _leerEstudiantes(){
-
-    return EstudiantesInformacion.estudiantes;
-
-  }
-
 
   @override
   Widget build(BuildContext context) {
 
-    //llamar a la logica creada arriba para obtener los datos
-
-    final List <Estudiante> listaEstudiantes = _leerEstudiantes();
-
-    return ListaEstudiantesWeb(listaEstudiantes: listaEstudiantes);
-  }
+    return FutureBuilder<List<Estudiantes>>(
+      future: EstudiantesService().getEstudiantes(), // usa el service
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error al cargar los estudiantes'));
+        }
+        final listaEstudiantes = snapshot.data!;
+        return ListaEstudiantesWeb(listaEstudiantes: listaEstudiantes);
+      },
+    );
+    }
 }
 
 
@@ -33,7 +34,7 @@ class ListaEstudiantesWeb extends StatelessWidget {
     required this.listaEstudiantes,
   });
 
-  final List<Estudiante> listaEstudiantes;
+  final List<Estudiantes> listaEstudiantes;
 
   final double anchoTarjeta = 360.0;
   final double alturaTarjeta = 100.0;

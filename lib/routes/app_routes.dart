@@ -6,6 +6,8 @@ import 'package:asesorias_fic/presentation/pageDirection/base_paginas_screen.dar
 import 'package:asesorias_fic/presentation/pageDirection/estudiantes_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/reportes_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/solicitudes_penidentes_screen.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/informacion_asesorias_en_curso.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/modalesAdministrador/crear_asesor_disiplinar.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/pagina_base.dart';
 import 'package:flutter/widgets.dart';
 
@@ -25,6 +27,9 @@ class AppRoutes {
     '/asesoresDiciplinares': (context) => const AsesoresDiciplinaresScreen(),
     '/asesoresPar': (context) => const AsesoresParScreen(),
     '/estudiantes': (context) => const EstudiantesScreen(),
+    '/crearAsesorDisiplinar': (context) => const CrearAsesorDisiplinar(),
+
+    '/informacionAsesoriaEnCurso': (context) => const InformacionAsesoriasEnCurso(),
 
     '/basePaginas': (context) => const BasePaginasScreen(),
     

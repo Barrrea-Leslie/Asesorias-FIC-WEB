@@ -1,5 +1,5 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/shared/mydrawer.dart';
+import 'package:asesorias_fic/data/services/estudiantes_service.dart';
 import 'package:asesorias_fic/presentation/shared/tarjeta_estudiante_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -173,7 +173,10 @@ class FooterCrearAlumno extends StatelessWidget {
         children: [
           ElevatedButton(
     
-            onPressed: () {},
+            onPressed: () async {
+              final estudiantes = await EstudiantesService().getEstudiantes();
+  debugPrint(estudiantes.length.toString()); // debería imprimir 5
+            },
 
             style: ElevatedButton.styleFrom(
               

@@ -29,7 +29,7 @@ class AppRoutes {
     '/estudiantes': (context) => const EstudiantesScreen(),
     '/crearAsesorDisiplinar': (context) => const CrearAsesorDisiplinar(),
 
-    '/informacionAsesoriaEnCurso': (context) => const InformacionAsesoriasEnCurso(),
+    '/informacionAsesoriaEnCurso': (context) => const InformacionAsesoriaEnCurso(),
 
     '/basePaginas': (context) => const BasePaginasScreen(),
     

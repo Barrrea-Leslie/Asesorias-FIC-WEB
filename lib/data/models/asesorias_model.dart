@@ -8,6 +8,7 @@ class Asesorias {
   final String modalidad;
   final String razon;
   final int esAsesor;
+  final String observaciones;
 
   Asesorias({
     required this.id,
@@ -19,6 +20,7 @@ class Asesorias {
     required this.modalidad,
     required this.razon,
     required this.esAsesor,
+    required this.observaciones
   });
 
 
@@ -32,7 +34,8 @@ class Asesorias {
       horario: json['horario'],
       modalidad: json['modalidad'],
       razon: json['razon'],
-      esAsesor: json['esAsesor']);
+      esAsesor: json['esAsesor'],
+      observaciones: json['observaciones']);
   }
   
 

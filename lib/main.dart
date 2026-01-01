@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
           return PageRouteBuilder(
             transitionDuration: const Duration(milliseconds: 500),
             pageBuilder: (context, animation, secondaryAnimation) =>
-                const InformacionAsesoriasEnCurso(),
+                const InformacionAsesoriaEnCurso(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               final slide = Tween<Offset>(

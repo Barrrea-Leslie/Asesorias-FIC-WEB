@@ -99,155 +99,144 @@ class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso>
     // 3. Si todo está bien, ya podemos usarlo con seguridad
     final asesoria = args;
 
-    return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          centerTitle: true,
-          title: const Text('Información Asesoría', style: TextStyle(fontWeight: FontWeight.bold),)),
-        body: FutureBuilder<List<Estudiantes>>(
-          future: _estudiantesFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (snapshot.hasError || !snapshot.hasData) {
-              return const Center(child: Text("Error al cargar datos del estudiante"));
-            }
-      
-            final estudiante = snapshot.data!.firstWhere(
-              (e) => e.id == asesoria.idEstudiante,
-              orElse: () => snapshot.data!.first, // Evita error si no encuentra el ID
-            );
-      
-            _initializeDataOnce(asesoria, estudiante);
-      
-            return Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  
-                  SizedBox(
-                    width: 800,
-                    child: Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: SingleChildScrollView(
-                          
-                          child: Row(
-      
-                            children: [
-      
-                              //Columna Izquierda
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildCampoTexto('Nombre del Estudiante', _nombreController),
-                                    _buildCampoTexto('Licenciatura', _licenciaturaController),
-                                    _buildCampoDropdown('Grado y Grupo', _selectedGrupo,
-                                      ['1-1', '1-2', '2-1', '2-2', '3-1', '3-2', '4-1', '4-2'],
-                                      (val) => setState(() => _selectedGrupo = val)),
-                                    _buildCampoDropdown('Materia', _selectedMateria,
-                                      ['Programación', 'Base de Datos', 'Matemáticas Discretas', 'Sistemas Operativos', 'Inteligencia Artificial'], 
-                                      (val) => setState(() => _selectedMateria = val)),
-                                    const SizedBox(height: 10),
-                                    _buildCampoObservaciones(_observacionesController),
-                                  ],
-                                ),
-                              ),
-      
-                              const SizedBox(width: 50,),
-      
-                              //Columna Derecha
-                              Expanded(
-                                child: Column(
-      
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildCampoDropdown('Modalidad', _selectedModalidad, 
-                                      ['Presencial', 'Virtual', 'Híbrida'], 
-                                      (val) => setState(() => _selectedModalidad = val)),
-                                    _buildCampoDropdown('Horario', _selectedHorario, 
-                                      ['07:00 - 08:00', '13:00 - 14:00', '18:00 - 19:00', '19:00 - 20:00'], 
-                                      (val) => setState(() => _selectedHorario = val)),
-                                    
-                                    const Text('Periodo de Asesoría', style: TextStyle(fontWeight: FontWeight.bold)),
-                                    const SizedBox(height: 8),
-                                    Row(
-                                      children: [
-                                        _buildCampoFecha('Inicio', _fechaInicioController),
-                                        const SizedBox(width: 10),
-                                        _buildCampoFecha('Fin', _fechaFinalController),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 15),
-                                    _buildCampoDropdown('Razón de la Asesoría', _selectedRazon, 
-                                      ['Dudas en la materia', 'Materia reprobada', 'Reforzamiento', 'Preparación para examen'], 
-                                      (val) => setState(() => _selectedRazon = val)),
-                                    _buildCampoNumero('Sesiones Tomadas', _sesionesController),
-                                    const SizedBox(height: 20),
-                                    TextButton.icon(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.cloud_upload),
-                                      label: const Text('ADJUNTAR EVIDENCIA (FOTO/PDF)'),
-                                      style: TextButton.styleFrom(foregroundColor: Appcolores.azulUas),
-                                    ),
-      
-                                  ],
-      
-                                )),
-      
-      
-      
-                            ],
-      
-      
-                          ),
-      
-                          
-                        ),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Información Asesoría')),
+      body: FutureBuilder<List<Estudiantes>>(
+        future: _estudiantesFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError || !snapshot.hasData) {
+            return const Center(child: Text("Error al cargar datos del estudiante"));
+          }
+
+          final estudiante = snapshot.data!.firstWhere(
+            (e) => e.id == asesoria.idEstudiante,
+            orElse: () => snapshot.data!.first, // Evita error si no encuentra el ID
+          );
+
+          _initializeDataOnce(asesoria, estudiante);
+
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                /// PANEL IZQUIERDO: IMAGEN
+                Container(
+                  width: 150,
+                  height: 670,
+                  decoration: BoxDecoration(
+                    color: Appcolores.azulUas,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Image.asset('assets/images/cargarImagen.png', fit: BoxFit.contain),
+                  ),
+                ),
+
+                const SizedBox(width: 20),
+
+                /// PANEL DERECHO: FORMULARIO
+                SizedBox(
+                  width: 600,
+                  child: Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: SingleChildScrollView(
                         
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          
+                          children: [
+                            _buildCampoTexto('Estudiante', _nombreController),
+                            _buildCampoTexto('Licenciatura', _licenciaturaController),
+                      
+                            _buildCampoDropdown('Grupo', _selectedGrupo, 
+                              ['1-1', '1-2', '2-1', '2-2', '3-1', '3-2', '4-1', '4-2'], 
+                              (val) => setState(() => _selectedGrupo = val)),
+                      
+                            _buildCampoDropdown('Materia', _selectedMateria, 
+                              ['Programación', 'Base de Datos', 'Matemáticas Discretas', 'Sistemas Operativos', 'Inteligencia Artificial'], 
+                              (val) => setState(() => _selectedMateria = val)),
+                      
+                            _buildCampoDropdown('Modalidad', _selectedModalidad, 
+                              ['Presencial', 'Virtual', 'Híbrida'], 
+                              (val) => setState(() => _selectedModalidad = val)),
+                      
+                            _buildCampoDropdown('Horario', _selectedHorario, 
+                              ['07:00 - 08:00', '13:00 - 14:00', '18:00 - 19:00', '19:00 - 20:00'], 
+                              (val) => setState(() => _selectedHorario = val)),
+                      
+                            const SizedBox(height: 20),
+                      
+                            Row(
+                              children: [
+                                _buildCampoFecha('Fecha Inicio', _fechaInicioController),
+                                const SizedBox(width: 10),
+                                _buildCampoFecha('Fecha Final', _fechaFinalController),
+                              ],
+                            ),
+                      
+                            const SizedBox(height: 20),
+                      
+                            _buildCampoDropdown('Razón', _selectedRazon, 
+                              ['Dudas en la materia', 'Materia reprobada', 'Reforzamiento', 'Preparación para examen'], 
+                              (val) => setState(() => _selectedRazon = val)),
+                      
+                            const SizedBox(height: 20),
+                            _buildCampoNumero('Número de sesiones tomadas', _sesionesController),
+                      
+                            const SizedBox(height: 20),
+                            _buildCampoObservaciones(_observacionesController),
+                      
+                            const SizedBox(height: 20),
+                            TextButton.icon(
+                              onPressed: () {},
+                              icon: const Icon(Icons.cloud_upload),
+                              label: const Text('SUBIR EVIDENCIA'),
+                            ),
+                      
+                            const SizedBox(height: 30),
+                      
+                            /// BOTÓN APLICAR CAMBIOS
+                            Center(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Appcolores.azulUas,
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 15),
+                                ),
+                                onPressed: () {
+                                  // 1. Mostrar mensaje de éxito
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Cambios aplicados correctamente'),
+                                      backgroundColor: Colors.green,
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                      
+                                  // 2. Regresar a la pantalla anterior
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Aplicar Cambios'),
+                              ),
+                            ),
+                            const SizedBox(height: 40),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ],
-              ),
-            );
-          },
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: Container(
-          margin: const EdgeInsets.all(10),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Appcolores.azulUas,
-              foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                elevation: 5,
-      
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadiusGeometry.circular(5)
-                )
-              
-              ),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Cambios aplicados correctamente'),
-                  backgroundColor: Colors.green,
-                  duration: Duration(seconds: 2),
                 ),
-              );
-              Navigator.pop(context);
-            },
-            child: const Text('Aplicar Cambios', style: TextStyle(fontSize: 15),),
-          ),
-        ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

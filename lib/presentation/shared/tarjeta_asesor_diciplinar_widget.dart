@@ -4,30 +4,35 @@ import 'package:asesorias_fic/data/services/asesores_diciplinares_service.dart';
 import 'package:flutter/material.dart';
 
 class TarjetaAsesorDiciplinarWidget extends StatelessWidget {
-  const TarjetaAsesorDiciplinarWidget({super.key});
+  final String query;
 
+  const TarjetaAsesorDiciplinarWidget({super.key, this.query = ''});
 
   @override
   Widget build(BuildContext context) {
-
-
     return FutureBuilder<List<AsesorDisciplinar>>(
-      future: AsesoresDiciplinaresService().getAsesoresDiciplinares(), // usa el service
+      future: AsesoresDiciplinaresService().getAsesoresDiciplinares(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasError) {
-          return Center(child: Text('Error al cargar los asesores diciplinares'));
+          return const Center(child: Text('Error al cargar los asesores disciplinares'));
         }
-        final listaAsesoresDiciplinares = snapshot.data!;
-        return ListaAsesoresDiciplinares(listAsesoresDiciplinares: listaAsesoresDiciplinares);
+
+        final allAsesores = snapshot.data!;
+        
+        final filteredAsesores = allAsesores.where((asesor) {
+          final nombre = asesor.nombre.toLowerCase();
+          final search = query.toLowerCase();
+          return nombre.contains(search);
+        }).toList();
+
+        return ListaAsesoresDiciplinares(listAsesoresDiciplinares: filteredAsesores);
       },
     );
   }
 }
-
-
 
 class ListaAsesoresDiciplinares extends StatelessWidget {
   const ListaAsesoresDiciplinares({
@@ -36,54 +41,53 @@ class ListaAsesoresDiciplinares extends StatelessWidget {
   });
 
   final List<AsesorDisciplinar> listAsesoresDiciplinares;
-
   final double anchoTarjeta = 360.0;
   final double alturaTarjeta = 100.0;
 
   @override
   Widget build(BuildContext context) {
+    if (listAsesoresDiciplinares.isEmpty) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Text(
+            "No se encontraron asesores con ese nombre.",
+            style: TextStyle(color: Colors.grey),
+          ),
+        ),
+      );
+    }
+
     return Padding(
-      padding: const EdgeInsets.only(left: 40, right: 40, top: 00),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          
-        
-          return Wrap(
-      
-              spacing: 20,
-              runSpacing: 10,
-      
-              children: listAsesoresDiciplinares.map((asesorDiciplinar) {
-      
-                return SizedBox(
-                  width: anchoTarjeta,
-                  height: alturaTarjeta,
-                  child: Card(
-                    color: Appcolores.azulUas,
-              
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    spacing: 20,
-                    children: [
-            
-                      Image.asset('assets/images/foto_icon.png', width: 60,),
-            
-                      Text(asesorDiciplinar.nombre, style: TextStyle(color: Colors.white),),
-            
-                    ],
-            
-                  ),
-                  ),
-                );
-      
-              }).toList(),
-      
-            );
-      
-        
-        
-        },
-      
+      padding: const EdgeInsets.only(left: 40, right: 40),
+      child: Wrap(
+        spacing: 20,
+        runSpacing: 10,
+        children: listAsesoresDiciplinares.map((asesorDiciplinar) {
+          return SizedBox(
+            width: anchoTarjeta,
+            height: alturaTarjeta,
+            child: Card(
+              color: Appcolores.azulUas,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 25),
+                child: Row(
+                  children: [
+                    Image.asset('assets/images/foto_icon.png', width: 60),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: Text(
+                        asesorDiciplinar.nombre,
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

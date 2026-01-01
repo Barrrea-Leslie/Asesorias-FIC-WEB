@@ -7,7 +7,7 @@ class EditarAsesorDisiplinar extends StatefulWidget {
   final AsesoresDicplinares asesor; //este recibe loos datos de la anterior pantalla que es: que es: crear_asesor_disiplinar.dart
 
   const EditarAsesorDisiplinar({
-    super.key, 
+    super.key,
     required this.asesor});
 
   @override

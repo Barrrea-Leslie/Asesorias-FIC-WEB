@@ -51,37 +51,14 @@ class PantallaResponsiva extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            const SizedBox(height: 20),
             
-            // Buscador para pantalla pequeña
-            SizedBox(
-              width: 360,
-              child: TextField(
-                onChanged: onChanged,
-                decoration: InputDecoration(
-                  hintText: 'Buscar Asesoria...',
-                  hintStyle: const TextStyle(fontSize: 13, color: Color(0xFFb4b4b4)),
-                  prefixIcon: const Icon(Icons.search, color: Color(0xFFb4b4b4), size: 18),
-                  filled: true,
-                  fillColor: const Color(0xFFf2f3f5),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Appcolores.azulUas),
-                    borderRadius: BorderRadius.circular(10)
-                  )
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 20),
 
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    SeccionArribaPantallaGrande(onChanged: onChanged),
+                    SizedBox(height: 60,),
                     TarjetaAsesoriasWidget(query: query)
                   ],
                 ),

@@ -3,17 +3,30 @@ import 'package:asesorias_fic/presentation/rol_administrador/asesorDiciplinar/cr
 import 'package:asesorias_fic/presentation/shared/tarjeta_asesor_diciplinar_widget.dart';
 import 'package:flutter/material.dart';
 
-class AsesoresDiciplinares extends StatelessWidget {
+class AsesoresDiciplinares extends StatefulWidget {
   const AsesoresDiciplinares({super.key});
+
+  @override
+  State<AsesoresDiciplinares> createState() => _AsesoresDiciplinaresState();
+}
+
+class _AsesoresDiciplinaresState extends State<AsesoresDiciplinares> {
+  String query = '';
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth < 1000) {
-          return PantallaResponsiva();
+          return PantallaResponsiva(
+            query: query,
+            onChanged: (value) => setState(() => query = value),
+          );
         } else {
-          return PantallaGrande();
+          return PantallaGrande(
+            query: query,
+            onChanged: (value) => setState(() => query = value),
+          );
         }
       },
     );
@@ -21,74 +34,78 @@ class AsesoresDiciplinares extends StatelessWidget {
 }
 
 class PantallaResponsiva extends StatelessWidget {
-  const PantallaResponsiva({super.key});
+  final String query;
+  final ValueChanged<String> onChanged;
+
+  const PantallaResponsiva({
+    super.key,
+    required this.query,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Scaffold(
+      body: Center(
         child: Column(
           children: [
-            SizedBox(height: 60,),
-
-              Expanded(
-                      
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      TarjetaAsesorDiciplinarWidget()
-                    ],
-                  ),
-                )),
-        
-            FooterCrearAlumno(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SeccionArribaPantallaGrande(onChanged: onChanged),
+                    const SizedBox(height: 60),
+                    TarjetaAsesorDiciplinarWidget(query: query)
+                  ],
+                ),
+              ),
+            ),
+            const FooterCrearAlumno(),
           ],
         ),
-      );
+      ),
+    );
   }
 }
 
-//widget para pantalla completa
-
 class PantallaGrande extends StatelessWidget {
-  const PantallaGrande({super.key});
+  final String query;
+  final ValueChanged<String> onChanged;
+
+  const PantallaGrande({
+    super.key, 
+    required this.query, 
+    required this.onChanged
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Appcolores.azulUas,
-
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
-
-            //contenido
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
-
                 child: Column(
                   children: [
-                    SeccionArribaPantallaGrande(),
-                    
-                    SizedBox(height: 60,),
-
+                    SeccionArribaPantallaGrande(onChanged: onChanged),
+                    const SizedBox(height: 60),
                     Expanded(
-                      
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            TarjetaAsesorDiciplinarWidget()
+                            TarjetaAsesorDiciplinarWidget(query: query)
                           ],
                         ),
-                      )),
-                      
-                      
-
-                    FooterCrearAlumno(),
+                      ),
+                    ),
+                    const FooterCrearAlumno(),
                   ],
                 ),
               ),
@@ -101,109 +118,99 @@ class PantallaGrande extends StatelessWidget {
 }
 
 class SeccionArribaPantallaGrande extends StatelessWidget {
+  final ValueChanged<String> onChanged;
+
   const SeccionArribaPantallaGrande({
     super.key,
+    required this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      
       child: Padding(
         padding: const EdgeInsets.only(left: 60.0, top: 20, right: 60.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-        
-            Text("Asesores Diciplinares", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),),
-
+            const Text(
+              "Asesores Disciplinares",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+            ),
             const SizedBox(width: 15),
-
-
             SizedBox(
               width: 220,
               child: TextField(
-                
+                onChanged: onChanged,
                 decoration: InputDecoration(
-                  
                   hintText: 'Buscar Asesor',
-                  hintStyle: TextStyle(fontSize: 12, color: Color(0xFFb4b4b4)),
-                  prefixIcon: Icon(Icons.search, color: const Color(0xFFb4b4b4), size: 18,),
+                  hintStyle: const TextStyle(fontSize: 13, color: Color(0xFFb4b4b4)),
+                  prefixIcon: const Icon(Icons.search, color: Color(0xFFb4b4b4), size: 18),
                   filled: true,
-                  fillColor: Color(0xFFf2f3f5),
-
+                  fillColor: const Color(0xFFf2f3f5),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                    borderRadius: BorderRadius.circular(10)
-                  )
-
+                    borderSide: const BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Appcolores.azulUas),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
             ),
-        
           ],
         ),
       ),
-
     );
   }
 }
 
 class FooterCrearAlumno extends StatelessWidget {
-  const FooterCrearAlumno({
-    super.key,
-  });
+  const FooterCrearAlumno({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(30),
+      padding: const EdgeInsets.all(30),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           ElevatedButton(
-    
             onPressed: () {
-              showDialog(context: context, builder: (BuildContext context){
-                return AlertDialog(
-                  insetPadding: EdgeInsets.zero,
-                  backgroundColor: Colors.white,
-                  content: Container(
-                    width: 900,
-                    height: 600,
-                    color: Colors.white,
-                    child: CrearAsesorDisiplinar()),
-                  
-                );
-              });
+              showDialog(
+                context: context, 
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    insetPadding: EdgeInsets.zero,
+                    backgroundColor: Colors.white,
+                    content: Container(
+                      width: 900,
+                      height: 600,
+                      color: Colors.white,
+                      child: const CrearAsesorDisiplinar(),
+                    ),
+                  );
+                },
+              );
             },
-
             style: ElevatedButton.styleFrom(
-              
               backgroundColor: Appcolores.verdeClaro,
               foregroundColor: Colors.white,
-
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               elevation: 5,
-
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadiusGeometry.circular(5)
-              )
-
+                borderRadius: BorderRadius.circular(5),
+              ),
             ),
-
-            child: Text("Crear Asesor", style: TextStyle(fontSize: 15),),
-
+            child: const Text("Crear Asesor", style: TextStyle(fontSize: 15)),
           ),
         ],
       ),

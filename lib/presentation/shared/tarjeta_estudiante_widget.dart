@@ -4,29 +4,36 @@ import 'package:asesorias_fic/data/services/estudiantes_service.dart';
 import 'package:flutter/material.dart';
 
 class TarjetaEstudianteWidget extends StatelessWidget {
-  const TarjetaEstudianteWidget({super.key});
+  final String query; 
 
+  const TarjetaEstudianteWidget({super.key, this.query = ''});
 
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder<List<Estudiantes>>(
-      future: EstudiantesService().getEstudiantes(), // usa el service
+      future: EstudiantesService().getEstudiantes(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasError) {
-          return Center(child: Text('Error al cargar los estudiantes'));
+          return const Center(child: Text('Error al cargar los estudiantes'));
         }
-        final listaEstudiantes = snapshot.data!;
-        return ListaEstudiantesWeb(listaEstudiantes: listaEstudiantes);
+
+        final allEstudiantes = snapshot.data!;
+        
+        // Lógica de filtrado
+        final filteredEstudiantes = allEstudiantes.where((estudiante) {
+          final nombre = estudiante.nombre.toLowerCase();
+          final search = query.toLowerCase();
+          return nombre.contains(search);
+        }).toList();
+
+        return ListaEstudiantesWeb(listaEstudiantes: filteredEstudiantes);
       },
     );
-    }
+  }
 }
-
-
 
 class ListaEstudiantesWeb extends StatelessWidget {
   const ListaEstudiantesWeb({
@@ -35,54 +42,60 @@ class ListaEstudiantesWeb extends StatelessWidget {
   });
 
   final List<Estudiantes> listaEstudiantes;
-
   final double anchoTarjeta = 360.0;
   final double alturaTarjeta = 100.0;
 
   @override
   Widget build(BuildContext context) {
+    // Si no hay resultados, mostrar un mensaje
+    if (listaEstudiantes.isEmpty) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Text("No se encontraron estudiantes.", style: TextStyle(color: Colors.grey)),
+        ),
+      );
+    }
+
     return Padding(
-      padding: const EdgeInsets.only(left: 40, right: 40, top: 00),
+      padding: const EdgeInsets.only(left: 40, right: 40),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          
-        
           return Wrap(
-      
-              spacing: 20,
-              runSpacing: 10,
-      
-              children: listaEstudiantes.map((estudiante) {
-      
-                return SizedBox(
+            spacing: 20,
+            runSpacing: 10,
+            children: listaEstudiantes.map((estudiante) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/informacionEstudiantes', arguments: estudiante);
+                },
+                child: SizedBox(
                   width: anchoTarjeta,
                   height: alturaTarjeta,
                   child: Card(
                     color: Appcolores.azulUas,
-              
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    spacing: 20,
-                    children: [
-            
-                      Image.asset('assets/images/foto_icon.png', width: 60,),
-            
-                      Text(estudiante.nombre, style: TextStyle(color: Colors.white),),
-            
-                    ],
-            
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 25),
+                      child: Row(
+                        children: [
+                          Image.asset('assets/images/foto_icon.png', width: 60),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: Text(
+                              estudiante.nombre,
+                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  ),
-                );
-      
-              }).toList(),
-      
-            );
-      
-        
-        
+                ),
+              );
+            }).toList(),
+          );
         },
-      
       ),
     );
   }

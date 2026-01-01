@@ -1,5 +1,5 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/rol_administrador/informacion_asesorias_en_curso.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/asesoriasEnCurso/informacion_asesorias_en_curso.dart';
 import 'package:asesorias_fic/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 
@@ -50,8 +50,7 @@ class MyApp extends StatelessWidget {
 
       theme: ThemeData(
         primaryColor: Appcolores.azulUas,
-        brightness: Brightness.light,
-        focusColor: Appcolores.azulUas
+        focusColor: const Color.fromARGB(64, 8, 51, 143)
       ),
       themeMode: ThemeMode.system,
     );

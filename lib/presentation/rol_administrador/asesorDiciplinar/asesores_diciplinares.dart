@@ -1,5 +1,5 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/rol_administrador/modalesAdministrador/crear_asesor_disiplinar.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/asesorDiciplinar/crear_asesor_disiplinar.dart';
 import 'package:asesorias_fic/presentation/shared/tarjeta_asesor_diciplinar_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -176,16 +176,14 @@ class FooterCrearAlumno extends StatelessWidget {
             onPressed: () {
               showDialog(context: context, builder: (BuildContext context){
                 return AlertDialog(
-                  title: Text("Crear Asesor Diciplinar"),
-                  content: CrearAsesorDisiplinar(),
-                  actions: [
-                    TextButton(
-                      onPressed: () {},
-                      child: Text("Cancelar")),
-                      TextButton(
-                      onPressed: () {},
-                      child: Text("Aceptar")),
-                  ],
+                  insetPadding: EdgeInsets.zero,
+                  backgroundColor: Colors.white,
+                  content: Container(
+                    width: 900,
+                    height: 600,
+                    color: Colors.white,
+                    child: CrearAsesorDisiplinar()),
+                  
                 );
               });
             },
@@ -204,7 +202,7 @@ class FooterCrearAlumno extends StatelessWidget {
 
             ),
 
-            child: Text("Crear Asesoria", style: TextStyle(fontSize: 15),),
+            child: Text("Crear Asesor", style: TextStyle(fontSize: 15),),
 
           ),
         ],

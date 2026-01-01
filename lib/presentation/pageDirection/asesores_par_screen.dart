@@ -1,5 +1,5 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/rol_administrador/modalesAdministrador/crear_asesor_disiplinar.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/asesorDiciplinar/crear_asesor_disiplinar.dart';
 import 'package:asesorias_fic/presentation/shared/mydrawer.dart';
 import 'package:asesorias_fic/presentation/shared/tarjeta_asesor_par_widget.dart';
 import 'package:flutter/material.dart';

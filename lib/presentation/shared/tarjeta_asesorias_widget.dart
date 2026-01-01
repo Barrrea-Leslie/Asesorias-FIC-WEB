@@ -7,32 +7,44 @@ import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.d
 import 'package:flutter/material.dart';
 
 class TarjetaAsesoriasWidget extends StatelessWidget {
-  const TarjetaAsesoriasWidget({super.key});
+  const TarjetaAsesoriasWidget({super.key, this.query = ''});
 
+  final String query;
 
   @override
   Widget build(BuildContext context) {
-
-    //llamar a la logica creada arriba para obtener los datos
-
-/*     final List <Asesorias> listaAsesorias = _leerAsesorias();
- */
-    return  FutureBuilder(
+    return FutureBuilder(
       future: Future.wait([
         AsesoriasService().getAsesorias(),
         EstudiantesService().getEstudiantes()
       ]),
-       // usa el service
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasError) {
-          return Center(child: Text('Error al cargar las asesorías'));
+          return const Center(child: Text('Error al cargar las asesorías'));
         }
-        final asesorias = snapshot.data![0] as List<Asesorias>;
+
+        final asesoriasRaw = snapshot.data![0] as List<Asesorias>;
         final estudiantes = snapshot.data![1] as List<Estudiantes>;
-        return ListaAsesorias(listaAsesorias: asesorias, listaEstudiantes: estudiantes);
+
+        // Mapa para buscar estudiantes por ID rápidamente
+        final Map<int, Estudiantes> estudiantesMap = {for (var e in estudiantes) e.id: e};
+
+        // Lógica de Filtrado
+        final asesoriasFiltradas = asesoriasRaw.where((ase) {
+          final nombreEstudiante = estudiantesMap[ase.idEstudiante]?.nombre.toLowerCase() ?? '';
+          final materia = ase.materia.toLowerCase();
+          final search = query.toLowerCase();
+          
+          return materia.contains(search) || nombreEstudiante.contains(search);
+        }).toList();
+
+        return ListaAsesorias(
+          listaAsesorias: asesoriasFiltradas, 
+          listaEstudiantes: estudiantes
+        );
       },
     );
   }
@@ -157,7 +169,9 @@ class BotonMaterial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-    onPressed: () {},
+    onPressed: () {
+      Navigator.pushNamed(context, '/materialAdicional');
+    },
     
     style: ElevatedButton.styleFrom(
       minimumSize: Size(30, 35),

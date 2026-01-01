@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MensajeConfirmacion {
+  MensajeConfirmacion(me);
+
 
   static void mostrarMensaje(BuildContext context, String mensaje){
 

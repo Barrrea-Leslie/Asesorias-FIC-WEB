@@ -1,5 +1,7 @@
+import 'package:asesorias_fic/presentation/rol_administrador/modalesAdministrador/editar_asesor_disiplinar.dart';
 import 'package:flutter/material.dart';
 import 'package:asesorias_fic/core/colores.dart';
+import 'package:asesorias_fic/models/asesores_dicplinares.dart';
 
 class CrearAsesorDisiplinar extends StatefulWidget {
   const CrearAsesorDisiplinar({super.key});
@@ -12,10 +14,11 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController nombreController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passController = TextEditingController();
+  final TextEditingController correoInstiticionalController = TextEditingController();
+  final TextEditingController numTelefonoController = TextEditingController();
   final TextEditingController materiasController = TextEditingController();
-    final TextEditingController horariosController = TextEditingController();
+  final TextEditingController horariosController = TextEditingController();
+  //late AsesoresDiciplinares asesorActualizado;
 
   List<String> materias = [];
   List<String> horarios = [];
@@ -25,6 +28,7 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Crear Asesor Disiplinar'),
+        centerTitle: true,
         leading: const BackButton(),
       ),
       body: SingleChildScrollView(
@@ -59,7 +63,7 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
               ),
               SizedBox(height: 6),
               TextFormField(
-                controller: emailController,
+                controller: correoInstiticionalController,
                 decoration: InputDecoration(border: OutlineInputBorder()),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -81,7 +85,7 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
               ),
               SizedBox(height: 6),
               TextFormField(
-                controller: passController,
+                controller: numTelefonoController,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(border: OutlineInputBorder()),
                 validator: (value) => value == null || value.length < 10
@@ -92,32 +96,33 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
               const SizedBox(height: 30),
 
               //Materias
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Materias que asesora',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
 
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Materias que asesora',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Appcolores.verdeClaro,
-                foregroundColor: Colors.white,
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Appcolores.verdeClaro,
+                      foregroundColor: Colors.white,
+                    ),
+                    onPressed: () {
+                      if (materiasController.text.isNotEmpty) {
+                        setState(() {
+                          materias.add(materiasController.text);
+                        });
+                      }
+                    },
+                    child: const Text('+ Añadir'),
+                  ),
+                ],
               ),
-              onPressed: () {
-              if(materiasController.text.isNotEmpty) {
-                setState(() {
-                  materias.add(materiasController.text);
-                });
-              }
-            },
-            child: const Text('+ Añadir'),
-            ),
-            ],
-            ),
 
-            //campo para ingresar datos de material que asesora
-            SizedBox(height: 8),
+              //campo para ingresar datos de material que asesora
+              SizedBox(height: 8),
 
               TextFormField(
                 controller: materiasController,
@@ -126,56 +131,60 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
                   border: OutlineInputBorder(),
                 ),
               ),
-            const SizedBox(height: 8),
-            Column(
-              children: materias.map((materia) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(materia),
-                    TextButton(onPressed: (){
-                      setState(() {
-                        materias.remove(materia);
-                      });
-                    },
-                    child: const Text('Eliminar',
-                    style: TextStyle(color: Appcolores.rojo),
-                    ),
-                    ),
-                  ],
-                );
-              }).toList(),
+              const SizedBox(height: 8),
+              Column(
+                children: materias.map((materia) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(materia),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            materias.remove(materia);
+                          });
+                        },
+                        child: const Text(
+                          'Eliminar',
+                          style: TextStyle(color: Appcolores.rojo),
+                        ),
+                      ),
+                    ],
+                  );
+                }).toList(),
               ),
 
               const SizedBox(height: 30),
 
               //HORARIOS
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Horarios que asesora',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Horarios que asesora',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
 
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Appcolores.verdeClaro,
-                foregroundColor: Colors.white,
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Appcolores.verdeClaro,
+                      foregroundColor: Colors.white,
+                    ),
+                    onPressed: () {
+                      if (horariosController.text.isNotEmpty) {
+                        setState(() {
+                          horarios.add(horariosController.text);
+                          horariosController.clear();
+                        });
+                      }
+                    },
+                    child: const Text('+ Añadir'),
+                  ),
+                ],
               ),
-              onPressed: () {
-              if(horariosController.text.isNotEmpty) {
-                setState(() {
-                  horarios.add(horariosController.text);
-                  horariosController.clear();
-                });
-              }
-            }, 
-            child: const Text('+ Añadir'),
-            ),
-            ],
-            ),
 
-            //campo para ingresar datos de material que asesora
-            SizedBox(height: 8),
+              //campo para ingresar datos de material que asesora
+              SizedBox(height: 8),
               TextFormField(
                 controller: horariosController,
                 decoration: InputDecoration(
@@ -183,51 +192,82 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
                   border: OutlineInputBorder(),
                 ),
               ),
-            const SizedBox(height: 8),
-            Column(
-              children: horarios.map((horario) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(horario),
-                    TextButton(onPressed: (){
-                      setState(() {
-                        horarios.remove(horario);
-                      });
-                    },
-                    child: const Text('Eliminar',
-                    style: TextStyle(color: Appcolores.rojo),
-                    ),
-                    ),
-                  ],
-                );
-              }).toList(),
+              const SizedBox(height: 8),
+              Column(
+                children: horarios.map((horario) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(horario),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            horarios.remove(horario);
+                          });
+                        },
+                        child: const Text(
+                          'Eliminar',
+                          style: TextStyle(color: Appcolores.rojo),
+                        ),
+                      ),
+                    ],
+                  );
+                }).toList(),
               ),
 
-              const SizedBox(height:30),
-        
-        //Guardar
+              const SizedBox(height: 30),
+
+              //Guardar
               SizedBox(height: 30),
 
+              //boton para guardar datos y conecta a la pantalla para editar los datos
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                backgroundColor: Appcolores.azulUas,
-                foregroundColor: Colors.white,
-              ),
-                child: Text("Guardar"),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          "usuario registrado: ${nombreController.text}",
-                        ),
-                      ),
-                    );
-                  }
-                },
-              ),
+                    backgroundColor: Appcolores.azulUas,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: Text("Guardar"),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      final asesorEditado = AsesoresDicplinares(
+                        id: 0,
+                        numeroCuenta: "00000",
+                        nombre: nombreController.text,
+                        licenciatura: "Informatica",
+                        grupo: "Sin grupo",
+                        correoInstitucional: correoInstiticionalController.text,
+                        numeroTelefono: numTelefonoController.text,
+                        promedio: "0",
+                      );
+
+                      final AsesoresDicplinares? asesorActualizado =
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  EditarAsesorDisiplinar(asesor: asesorEditado),
+                            ),
+                          );
+
+                      if (asesorActualizado != null) {
+                        setState(() {
+                          nombreController.text = asesorActualizado.nombre;
+                          correoInstiticionalController.text = asesorActualizado.correoInstitucional;
+                          numTelefonoController.text = asesorActualizado.numeroTelefono;
+                        });
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              "Asesor registrado: ${asesorActualizado.nombre}",
+                            ),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                ),
               ),
             ],
           ),

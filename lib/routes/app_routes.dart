@@ -14,7 +14,7 @@ import 'package:flutter/widgets.dart';
 class AppRoutes {
 
 
-  static const initialRoute = '/paginaBase';
+  static const initialRoute = '/crearAsesorDisiplinar';
 
 
   static Map <String, WidgetBuilder> routes = {

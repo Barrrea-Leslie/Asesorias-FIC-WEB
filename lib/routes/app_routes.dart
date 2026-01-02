@@ -14,12 +14,13 @@ import 'package:asesorias_fic/presentation/rol_administrador/asesoriasEnCurso/ma
 import 'package:asesorias_fic/presentation/rol_administrador/estudiantes/informacion_estudiantes.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/pagina_base_administrador.dart';
 import 'package:asesorias_fic/presentation/rol_estudiante/pagina_base_estudiante.dart';
+import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/filtros_asesoria.dart';
 import 'package:flutter/widgets.dart';
 
 class AppRoutes {
 
 
-  static const initialRoute = '/paginaBaseEstudiantes';
+  static const initialRoute = '/filtrosAsesoria';
 
 
   static Map <String, WidgetBuilder> routes = {
@@ -45,6 +46,8 @@ class AppRoutes {
     '/estudiantes': (context) => const EstudiantesScreen(),
     '/crearAsesorDisiplinar': (context) => const CrearAsesorDisiplinar(),
     '/informacionEstudiantes': (context) => const InformacionEstudiantes(),
+
+    '/filtrosAsesoria': (context) => const FiltrosAsesoria(),
 
     
     '/paginaBaseAdministrador': (context) => const HomePage(),

@@ -145,7 +145,7 @@ class BotonIngresar extends StatelessWidget {
 
           
 
-          Navigator.pushReplacementNamed(context, '/paginaBase');
+          Navigator.pushReplacementNamed(context, '/paginaBaseAdministrador');
 
           MensajeConfirmacion.mostrarMensaje(context, "Se inicio secion correctamente...");
         }

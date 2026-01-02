@@ -12,19 +12,22 @@ import 'package:asesorias_fic/presentation/rol_administrador/asesorPar/informaci
 import 'package:asesorias_fic/presentation/rol_administrador/asesoriasEnCurso/informacion_asesorias_en_curso.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesoriasEnCurso/material_adicional.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/estudiantes/informacion_estudiantes.dart';
-import 'package:asesorias_fic/presentation/rol_administrador/pagina_base.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/pagina_base_administrador.dart';
+import 'package:asesorias_fic/presentation/rol_estudiante/pagina_base_estudiante.dart';
 import 'package:flutter/widgets.dart';
 
 class AppRoutes {
 
 
-  static const initialRoute = '/paginaBase';
+  static const initialRoute = '/paginaBaseEstudiantes';
 
 
   static Map <String, WidgetBuilder> routes = {
 
     '/login': (context) => const LoginScreen(),
     
+    //Direcciones del rol de administrador
+
     '/asesoriasEnCurso': (context) => const AsesoriasEnCursoScreen(),
     '/informacionAsesoriaEnCurso': (context) => const InformacionAsesoriaEnCurso(),
     '/materialAdicional': (context) => const MaterialAdicional(),
@@ -44,11 +47,9 @@ class AppRoutes {
     '/informacionEstudiantes': (context) => const InformacionEstudiantes(),
 
     
-    '/basePaginas': (context) => const BasePaginasScreen(),
-    
-    '/paginaBase': (context) => const HomePage(),
+    '/paginaBaseAdministrador': (context) => const HomePage(),
 
-    
+    '/paginaBaseEstudiantes': (context) => const PaginaBaseEstudiante(),
 
 
   };

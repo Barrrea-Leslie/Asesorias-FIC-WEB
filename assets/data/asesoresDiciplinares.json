@@ -2,51 +2,71 @@
     {
         "id": 1,
         "nombre": "Luis Fernando Velazquez Araujo",
-        "numeroCuenta": "19519958",
-        "licenciatura": "Informatica",
-        "grupo": "4-1",
         "correoInstitucional": "lf.velazquez22@info.uas.edu.mx",
         "numeroTelefono": "6672136911",
-        "promedio": 10
+        "materiasAsesora": [
+            "Programacion",
+            "Base de datos"
+        ],
+        "horariosAsesora": [
+            "18:00 - 19:00",
+            "11:00 - 12:00"
+        ]
     },
     {
         "id": 2,
         "nombre": "Jenifer Guadalupe Tizoc Lopez",
-        "numeroCuenta": "19512348",
-        "licenciatura": "Informatica",
-        "grupo": "4-3",
         "correoInstitucional": "jg.tizoc22@info.uas.edu.mx",
         "numeroTelefono": "6672136911",
-        "promedio": 9.8
+        "materiasAsesora": [
+            "Programacion",
+            "Base de datos"
+        ],
+        "horariosAsesora": [
+            "18:00 - 19:00",
+            "11:00 - 12:00"
+        ]
     },
     {
         "id": 3,
         "nombre": "Jose Angel Astorga Mejia",
-        "numeroCuenta": "19519958",
-        "licenciatura": "Informatica",
-        "grupo": "4-3",
         "correoInstitucional": "ja.astorga22@info.uas.edu.mx",
         "numeroTelefono": "6672136911",
-        "promedio": 8.9
+        "materiasAsesora": [
+            "Programacion",
+            "Base de datos"
+        ],
+        "horariosAsesora": [
+            "18:00 - 19:00",
+            "11:00 - 12:00"
+        ]
     },
     {
         "id": 4,
         "nombre": "Leslie Mayram Barrera Rdoriguez",
-        "numeroCuenta": "19519958",
-        "licenciatura": "Informatica",
-        "grupo": "4-1",
         "correoInstitucional": "lm.barrera22@info.uas.edu.mx",
         "numeroTelefono": "6672136911",
-        "promedio": 9.8
+        "materiasAsesora": [
+            "Programacion",
+            "Base de datos"
+        ],
+        "horariosAsesora": [
+            "18:00 - 19:00",
+            "11:00 - 12:00"
+        ]
     },
     {
         "id": 5,
         "nombre": "Crisoforo Ahuelican Ahuejote",
-        "numeroCuenta": "19519958",
-        "licenciatura": "Informatica",
-        "grupo": "4-1",
         "correoInstitucional": "lf.velazquez22@info.uas.edu.mx",
         "numeroTelefono": "6672136911",
-        "promedio": 10
+        "materiasAsesora": [
+            "Programacion",
+            "Base de datos"
+        ],
+        "horariosAsesora": [
+            "18:00 - 19:00",
+            "11:00 - 12:00"
+        ]
     }
 ]

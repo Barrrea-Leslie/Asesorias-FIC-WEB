@@ -1,5 +1,5 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/data/services/estudiantes_service.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/estudiantes/crear_estudiantes.dart';
 import 'package:asesorias_fic/presentation/shared/tarjeta_estudiante_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -182,8 +182,21 @@ class FooterCrearAlumno extends StatelessWidget {
         children: [
           ElevatedButton(
             onPressed: () async {
-              final estudiantes = await EstudiantesService().getEstudiantes();
-              debugPrint(estudiantes.length.toString());
+              showDialog(
+                context: context, 
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    insetPadding: EdgeInsets.zero,
+                    backgroundColor: Colors.white,
+                    content: Container(
+                      width: 900,
+                      height: 600,
+                      color: Colors.white,
+                      child: const CrearEstudiantes(),
+                    ),
+                  );
+                }
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Appcolores.verdeClaro,

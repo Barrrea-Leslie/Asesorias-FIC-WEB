@@ -23,6 +23,7 @@ class AsesorPar {
     required this.horariosAsesora,
   });
 
+  // Convierte el JSON a Objeto Dart
   factory AsesorPar.fromJson(Map<String, dynamic> json) {
     return AsesorPar(
       id: json['id'],
@@ -35,6 +36,49 @@ class AsesorPar {
       promedio: (json['promedio'] as num).toDouble(),
       materiasAsesora: List<String>.from(json['materiasAsesora']),
       horariosAsesora: List<String>.from(json['horariosAsesora']),
+    );
+  }
+
+  // Convierte el Objeto Dart a JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'nombre': nombre,
+      'numeroCuenta': numeroCuenta,
+      'licenciatura': licenciatura,
+      'grupo': grupo,
+      'correoInstitucional': correoInstitucional,
+      'numeroTelefono': numeroTelefono,
+      'promedio': promedio,
+      'materiasAsesora': materiasAsesora,
+      'horariosAsesora': horariosAsesora,
+    };
+  }
+
+  // Permite crear una copia modificando solo algunos campos
+  AsesorPar copyWith({
+    int? id,
+    String? nombre,
+    String? numeroCuenta,
+    String? licenciatura,
+    String? grupo,
+    String? correoInstitucional,
+    String? numeroTelefono,
+    double? promedio,
+    List<String>? materiasAsesora,
+    List<String>? horariosAsesora,
+  }) {
+    return AsesorPar(
+      id: id ?? this.id,
+      nombre: nombre ?? this.nombre,
+      numeroCuenta: numeroCuenta ?? this.numeroCuenta,
+      licenciatura: licenciatura ?? this.licenciatura,
+      grupo: grupo ?? this.grupo,
+      correoInstitucional: correoInstitucional ?? this.correoInstitucional,
+      numeroTelefono: numeroTelefono ?? this.numeroTelefono,
+      promedio: promedio ?? this.promedio,
+      materiasAsesora: materiasAsesora ?? this.materiasAsesora,
+      horariosAsesora: horariosAsesora ?? this.horariosAsesora,
     );
   }
 }

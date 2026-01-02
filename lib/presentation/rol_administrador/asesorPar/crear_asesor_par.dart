@@ -1,31 +1,26 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/data/models/asesores_dicicplinares_model.dart';
-import 'package:asesorias_fic/data/repositories/asesores_diciplinares_repository.dart';
+import 'package:asesorias_fic/data/models/asesores_par_model.dart';
+import 'package:asesorias_fic/data/repositories/asesores_par_repository.dart';
 import 'package:flutter/material.dart';
 
-class CrearAsesorDisiplinar extends StatefulWidget {
-  const CrearAsesorDisiplinar({super.key});
+class CrearAsesoresPar extends StatefulWidget {
+  const CrearAsesoresPar({super.key});
 
   @override
-  State<CrearAsesorDisiplinar> createState() => _CrearAsesorDisiplinarState();
+  State<CrearAsesoresPar> createState() => _CrearAsesoresParState();
 }
 
-class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
+class _CrearAsesoresParState extends State<CrearAsesoresPar> {
   final _formKey = GlobalKey<FormState>();
-  
-  // Instancia del repositorio (Tu DAO)
-  final AsesoresDiciplinaresRepository _repository = AsesoresDiciplinaresRepository();
+  final AsesoresParRepository _repository = AsesoresParRepository();
 
-  // Controladores básicos
   final TextEditingController nombreController = TextEditingController();
   final TextEditingController correoController = TextEditingController();
   final TextEditingController telefonoController = TextEditingController();
 
-  // Listas dinámicas para la UI
   List<String> materiasSeleccionadas = [];
   List<String> horariosSeleccionados = [];
 
-  // Datos simulados para el buscador de materias
   final List<String> catalogoMaterias = [
     'Programacion I', 'Programacion II', 'Principios de programacion', 
     'Programacion Web', 'Bases de Datos', 'Estructura de Datos'
@@ -36,7 +31,7 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Crear Asesor Disciplinar', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Crear Asesor Par', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.white,
@@ -62,7 +57,6 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
 
               const SizedBox(height: 30),
 
-              // SECCIÓN MATERIAS (Con Modal de búsqueda)
               _buildHeaderSeccion(
                 titulo: "Materias que asesora",
                 onAdd: () => _abrirModalMaterias(),
@@ -71,7 +65,6 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
 
               const SizedBox(height: 30),
 
-              // SECCIÓN HORARIOS (Con Selector de tiempo)
               _buildHeaderSeccion(
                 titulo: "Horarios de asesoría",
                 onAdd: () => _seleccionarHorario(),
@@ -92,7 +85,7 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
                     onPressed: _guardarAsesor,
-                    child: const Text("GUARDAR ASESOR", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    child: const Text("GUARDAR ASESOR PAR", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                   ),
                 ),
               ),
@@ -103,29 +96,28 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
     );
   }
 
-
   void _guardarAsesor() async {
     if (_formKey.currentState!.validate()) {
-      final nuevoAsesor = AsesorDisciplinar(
-        id: DateTime.now().millisecondsSinceEpoch, // ID temporal
+      // Nota: Aquí el ID y otros campos son temporales/simulados para el modelo
+      final nuevoAsesor = AsesorPar(
+        id: DateTime.now().millisecondsSinceEpoch,
         nombre: nombreController.text,
+        numeroCuenta: "00000000", 
+        licenciatura: "Informatica",
+        grupo: "Sin grupo",
         correoInstitucional: correoController.text,
         numeroTelefono: telefonoController.text,
+        promedio: 0.0,
         materiasAsesora: materiasSeleccionadas,
         horariosAsesora: horariosSeleccionados,
       );
 
-      bool exito = await _repository.registrarAsesor(nuevoAsesor);
-
-      if (exito && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Asesor registrado con éxito"), backgroundColor: Colors.green),
-        );
-        Navigator.pop(context);
-      }
+      // Asegúrate de tener registrarAsesor en tu AsesoresParRepository
+      // bool exito = await _repository.registrarAsesor(nuevoAsesor);
+      
+      Navigator.pop(context, nuevoAsesor);
     }
   }
-
 
   Widget _buildLabel(String texto) => Padding(
     padding: const EdgeInsets.only(bottom: 5),
@@ -175,8 +167,6 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
     );
   }
 
-  // --- MODALES (Lo que pediste) ---
-
   void _abrirModalMaterias() {
     showDialog(
       context: context,
@@ -186,9 +176,7 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
           final sugerencias = catalogoMaterias
               .where((m) => m.toLowerCase().contains(filtro.toLowerCase()))
               .toList();
-
           return AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             title: const Text("Buscar Materia"),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -205,7 +193,6 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
                     itemCount: sugerencias.length,
                     itemBuilder: (ctx, i) => ListTile(
                       title: Text(sugerencias[i]),
-                      trailing: const Icon(Icons.add_circle, color: Colors.green),
                       onTap: () {
                         setState(() => materiasSeleccionadas.add(sugerencias[i]));
                         Navigator.pop(context);

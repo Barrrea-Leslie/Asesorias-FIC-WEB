@@ -1,4 +1,5 @@
 import 'package:asesorias_fic/core/colores.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/asesorPar/crear_asesor_par.dart';
 import 'package:asesorias_fic/presentation/shared/tarjeta_asesor_par_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -183,17 +184,19 @@ class FooterCrearAlumno extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               showDialog(
-                context: context,
+                context: context, 
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: const Text("Crear Asesor"),
-                    content: const Text('Formulario para nuevo asesor par'),
-                    actions: [
-                      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar')),
-                      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Aceptar')),
-                    ],
+                    insetPadding: EdgeInsets.zero,
+                    backgroundColor: Colors.white,
+                    content: Container(
+                      width: 900,
+                      height: 600,
+                      color: Colors.white,
+                      child: const CrearAsesoresPar(),
+                    ),
                   );
-                }
+                },
               );
             },
             style: ElevatedButton.styleFrom(

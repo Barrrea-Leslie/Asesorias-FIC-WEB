@@ -1,42 +1,67 @@
 import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/data/models/asesores_dicicplinares_model.dart';
-import 'package:asesorias_fic/data/repositories/asesores_diciplinares_repository.dart';
+import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.dart';
 import 'package:flutter/material.dart';
 
-class CrearAsesorDisiplinar extends StatefulWidget {
-  const CrearAsesorDisiplinar({super.key});
+class EditarAsesorDisciplinar extends StatefulWidget {
+  const EditarAsesorDisciplinar({super.key});
 
   @override
-  State<CrearAsesorDisiplinar> createState() => _CrearAsesorDisiplinarState();
+  State<EditarAsesorDisciplinar> createState() => _EditarAsesorDisciplinarState();
 }
 
-class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
-  final _formKey = GlobalKey<FormState>();
+class _EditarAsesorDisciplinarState extends State<EditarAsesorDisciplinar> {
+  final _editarformKey = GlobalKey<FormState>();
   
-  // Instancia del repositorio (Tu DAO)
-  final AsesoresDiciplinaresRepository _repository = AsesoresDiciplinaresRepository();
+  late TextEditingController nombreController;
+  late TextEditingController correoController;
+  late TextEditingController telefonoController;
 
-  // Controladores básicos
-  final TextEditingController nombreController = TextEditingController();
-  final TextEditingController correoController = TextEditingController();
-  final TextEditingController telefonoController = TextEditingController();
-
-  // Listas dinámicas para la UI
   List<String> materiasSeleccionadas = [];
   List<String> horariosSeleccionados = [];
 
-  // Datos simulados para el buscador de materias
+  bool _isInitialized = false;
+  late AsesorDisciplinar asesorOriginal;
+
   final List<String> catalogoMaterias = [
     'Programacion I', 'Programacion II', 'Principios de programacion', 
     'Programacion Web', 'Bases de Datos', 'Estructura de Datos'
   ];
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      final args = ModalRoute.of(context)!.settings.arguments;
+      if (args is AsesorDisciplinar) {
+        asesorOriginal = args;
+        
+        nombreController = TextEditingController(text: asesorOriginal.nombre);
+        correoController = TextEditingController(text: asesorOriginal.correoInstitucional);
+        telefonoController = TextEditingController(text: asesorOriginal.numeroTelefono);
+
+        // Cargamos las listas actuales
+        materiasSeleccionadas = List.from(asesorOriginal.materiasAsesora);
+        horariosSeleccionados = List.from(asesorOriginal.horariosAsesora);
+      }
+      _isInitialized = true;
+    }
+  }
+
+  @override
+  void dispose() {
+    nombreController.dispose();
+    correoController.dispose();
+    telefonoController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Crear Asesor Disciplinar', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Editar Asesor Disciplinar', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.white,
@@ -44,88 +69,84 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildLabel("Nombre completo"),
-              _buildTextField(nombreController, "Ej. Juan Pérez"),
-              
-              const SizedBox(height: 20),
-              _buildLabel("Correo institucional"),
-              _buildTextField(correoController, "correo@uas.edu.mx", isEmail: true),
-
-              const SizedBox(height: 20),
-              _buildLabel("Teléfono"),
-              _buildTextField(telefonoController, "6671234567", isPhone: true),
-
-              const SizedBox(height: 30),
-
-              // SECCIÓN MATERIAS (Con Modal de búsqueda)
-              _buildHeaderSeccion(
-                titulo: "Materias que asesora",
-                onAdd: () => _abrirModalMaterias(),
-              ),
-              _buildListaItems(materiasSeleccionadas),
-
-              const SizedBox(height: 30),
-
-              // SECCIÓN HORARIOS (Con Selector de tiempo)
-              _buildHeaderSeccion(
-                titulo: "Horarios de asesoría",
-                onAdd: () => _seleccionarHorario(),
-              ),
-              _buildListaItems(horariosSeleccionados),
-
-              const SizedBox(height: 50),
-
-              Center(
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
+        child: Center(
+          child: SizedBox(
+            width: 700,
+            child: Form(
+              key: _editarformKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildLabel("Nombre completo"),
+                  _buildTextField(nombreController, "Ej. Juan Pérez"),
+                  
+                  const SizedBox(height: 20),
+                  _buildLabel("Correo institucional"),
+                  _buildTextField(correoController, "correo@uas.edu.mx", isEmail: true),
+            
+                  const SizedBox(height: 20),
+                  _buildLabel("Teléfono"),
+                  _buildTextField(telefonoController, "6671234567", isPhone: true),
+            
+                  const SizedBox(height: 30),
+            
+                  _buildHeaderSeccion(
+                    titulo: "Materias que asesora",
+                    onAdd: () => _abrirModalMaterias(),
+                  ),
+                  _buildListaItems(materiasSeleccionadas),
+            
+                  const SizedBox(height: 30),
+            
+                  _buildHeaderSeccion(
+                    titulo: "Horarios de asesoría",
+                    onAdd: () => _seleccionarHorario(),
+                  ),
+                  _buildListaItems(horariosSeleccionados),
+            
+                  const SizedBox(height: 50),
+            
+                  Center(
+                    child: SizedBox(
+                      
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
                         backgroundColor: Appcolores.azulUas,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 18),
                         elevation: 5,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
-                    onPressed: _guardarAsesor,
-                    child: const Text("GUARDAR ASESOR", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        onPressed: _guardarCambios,
+                        child: const Text("APLICAR CAMBIOS", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 
-
-  void _guardarAsesor() async {
-    if (_formKey.currentState!.validate()) {
-      final nuevoAsesor = AsesorDisciplinar(
-        id: DateTime.now().millisecondsSinceEpoch, // ID temporal
+  void _guardarCambios() {
+    if (_editarformKey.currentState!.validate()) {
+      final actualizado = asesorOriginal.copyWith(
         nombre: nombreController.text,
         correoInstitucional: correoController.text,
         numeroTelefono: telefonoController.text,
         materiasAsesora: materiasSeleccionadas,
         horariosAsesora: horariosSeleccionados,
       );
-
-      bool exito = await _repository.registrarAsesor(nuevoAsesor);
-
-      if (exito && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Asesor registrado con éxito"), backgroundColor: Colors.green),
-        );
-        Navigator.pop(context);
-      }
+      
+      Navigator.pop(context, actualizado);
+      MensajeConfirmacion.mostrarMensaje(context, "Se aplicaron los cambios correctamente.");
     }
   }
 
+  // --- MÉTODOS DE UI (IGUALES A CREAR) ---
 
   Widget _buildLabel(String texto) => Padding(
     padding: const EdgeInsets.only(bottom: 5),
@@ -175,7 +196,7 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
     );
   }
 
-  // --- MODALES (Lo que pediste) ---
+  // --- MODALES ---
 
   void _abrirModalMaterias() {
     showDialog(

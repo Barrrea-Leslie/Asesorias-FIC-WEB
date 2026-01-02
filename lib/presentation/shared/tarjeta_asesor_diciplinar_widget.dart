@@ -64,25 +64,30 @@ class ListaAsesoresDiciplinares extends StatelessWidget {
         spacing: 20,
         runSpacing: 10,
         children: listAsesoresDiciplinares.map((asesorDiciplinar) {
-          return SizedBox(
-            width: anchoTarjeta,
-            height: alturaTarjeta,
-            child: Card(
-              color: Appcolores.azulUas,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 25),
-                child: Row(
-                  children: [
-                    Image.asset('assets/images/foto_icon.png', width: 60),
-                    const SizedBox(width: 20),
-                    Expanded(
-                      child: Text(
-                        asesorDiciplinar.nombre,
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                        overflow: TextOverflow.ellipsis,
+          return GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context,'/informacionAsesorDisciplinar', arguments: asesorDiciplinar,);
+            },
+            child: SizedBox(
+              width: anchoTarjeta,
+              height: alturaTarjeta,
+              child: Card(
+                color: Appcolores.azulUas,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 25),
+                  child: Row(
+                    children: [
+                      Image.asset('assets/images/foto_icon.png', width: 60),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: Text(
+                          asesorDiciplinar.nombre,
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

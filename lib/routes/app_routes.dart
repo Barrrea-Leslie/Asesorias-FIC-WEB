@@ -22,7 +22,7 @@ import 'package:flutter/widgets.dart';
 class AppRoutes {
 
 
-  static const initialRoute = '/filtroAsesor';
+  static const initialRoute = '/filtrosAsesoria';
 
 
   static Map <String, WidgetBuilder> routes = {

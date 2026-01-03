@@ -12,8 +12,9 @@ class FiltrosAsesoria extends StatefulWidget {
 }
 
 class _FiltrosAsesoriaState extends State<FiltrosAsesoria> {
-  final AsesoresDiciplinaresRepository _repository = AsesoresDiciplinaresRepository();
-  
+  final AsesoresDiciplinaresRepository _repository =
+      AsesoresDiciplinaresRepository();
+
   List<AsesorDisciplinar> todos = [];
   List<AsesorDisciplinar> resultado = [];
 
@@ -30,41 +31,65 @@ class _FiltrosAsesoriaState extends State<FiltrosAsesoria> {
     'Viernes',
   ];
 
-final List<String> catalogoMaterias = [
-    'Programacion I', 'Programacion II', 'Principios de programacion',
-    'Programacion Web', 'Bases de Datos', 'Estructura de Datos'
+  final List<String> catalogoMaterias = [
+    'Programacion I',
+    'Programacion II',
+    'Principios de programacion',
+    'Programacion Web',
+    'Bases de Datos',
+    'Estructura de Datos',
   ];
   List<String> horariosAsesora = [];
   List<String> modalidades = ['Parcial', 'Virtual', 'Presencial'];
 
+  //esto extrae los datos desde la BD o donde esten guardados
+  Future<void> _cargarDatos() async {
+    final data = await _repository.fetchAsesoresDiciplinares();
+
+    setState(() {
+      todos = data;
+      resultado = data;
+
+      horariosAsesora = data  //<-- estos son los datos que de extrajo de horario que asesora
+      .expand((asesor) => asesor.horariosAsesora)
+      .toSet()
+      .toList();
+    });
+  }
 
 
-//esto carga los datos desde la BD
- Future<void> _filtraDatos() async {
-  final data = await _repository.fetchAsesoresDiciplinares();
-
-  setState(() {
-    todos = data;
-    resultado = data;
-  });
-}
-
-
+  @override
+  void initState() {
+    super.initState();
+    _cargarDatos(); //esto carga los datos
+  }
 
   ///////   WIDGET PARA LA BUSQUEDA Y FILTRAR LOS DATOS
-/*    void _filtrarDatos(){
-  final filtradoDatos = todos.where((AsesorDisciplinar)) (
-    dia: diaSemana,
-    materia: materiaSelecionada,
-    modalidades: modalidadSelecionado,
-  );
-  setState(() {
-    resultado = filtradoDatos;
-  });
-} */
+  void _filtrarDatos() {
+    setState(() {
+      resultado = todos.where((asesor) {
 
-//*********        WIDGET DROPDOWN      *************** */
-    Widget _widgetCampoDropdown({
+    //filtrar datos de  la semana
+        //final validarDiaSemana = diaSelecionado == null || asesor.diaSemana.contains(diaSelecionado);
+        
+        //filtrar datos de  de materia y validarlo
+        final validarMateria = materiaSelecionada == null || asesor.materiasAsesora.contains(materiaSelecionada);
+        
+        //filtrar datos de  de horario 
+        final validarHorario = horarioSelecionado == null || asesor.horariosAsesora.contains(horarioSelecionado);
+        
+        //filtrar modalidad
+        //final validarModalidad = modalidadSelecionado == null || asesor.modalidades.contains(modalidadSelecionado);
+        
+
+        
+        return validarMateria && validarHorario;
+      }).toList();
+    });
+  }
+
+  //*********        WIDGET DROPDOWN      *************** */
+  Widget _widgetCampoDropdown({
     required String label,
     required String? value,
     required List<String> items,
@@ -81,12 +106,7 @@ final List<String> catalogoMaterias = [
           DropdownButtonFormField<String>(
             value: value,
             items: items
-                .map(
-                  (e) => DropdownMenuItem(
-                    value: e,
-                    child: Text(e),
-                  ),
-                )
+                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                 .toList(),
             onChanged: onChanged,
             decoration: InputDecoration(
@@ -101,7 +121,6 @@ final List<String> catalogoMaterias = [
       ),
     );
   }
- 
 
   @override
   Widget build(BuildContext context) {
@@ -122,14 +141,16 @@ final List<String> catalogoMaterias = [
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               /// dropdown dia de la semana
               _widgetCampoDropdown(
                 label: 'Dia de la semana',
                 value: diaSelecionado,
                 items: diaSemana,
-                onChanged: (value)=> setState(() => diaSelecionado = value),
-                ),
+                onChanged: (value) {
+                  setState(() => diaSelecionado = value);
+                  _filtrarDatos(); // Ejecuta el filtro
+                },
+              ),
 
               const SizedBox(height: 30),
 
@@ -138,8 +159,11 @@ final List<String> catalogoMaterias = [
                 label: 'Materia',
                 value: materiaSelecionada,
                 items: catalogoMaterias,
-                onChanged: (value)=> setState(() => materiaSelecionada = value),
-                ),
+                onChanged: (value) {
+                  setState(() => materiaSelecionada = value);
+                  _filtrarDatos();
+                },
+              ),
 
               const SizedBox(height: 30),
 
@@ -148,8 +172,11 @@ final List<String> catalogoMaterias = [
                 label: 'Horario',
                 value: horarioSelecionado,
                 items: horariosAsesora,
-                onChanged: (value)=> setState(() => horarioSelecionado = value),
-                ),
+                onChanged: (value) {
+                  setState(() => horarioSelecionado = value);
+                  _filtrarDatos();
+                },
+              ),
 
               const SizedBox(height: 30),
 
@@ -158,38 +185,33 @@ final List<String> catalogoMaterias = [
                 label: 'Modalidad',
                 value: modalidadSelecionado,
                 items: modalidades,
-                onChanged: (value)=> setState(() => modalidadSelecionado = value),
-                ),
-              // ElevatedButton(onPressed: _filtrarDatos, child: const Text('Buscar')),
+                onChanged: (value) {
+                  setState(() => modalidadSelecionado = value);
+                  _filtrarDatos();
+                },
+              ),
 
+              // ElevatedButton(onPressed: _filtrarDatos, child: const Text('Buscar')),
               const SizedBox(height: 30),
 
-
-
-      // DATOS FILTRADOS
+              // DATOS FILTRADOS
               Expanded(
                 child: resultado.isEmpty
-                  ? const Center(child: Text('No hay resultados'))
-                  : ListView.builder(
-                    shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: resultado.length,
-                      itemBuilder: (context, index) {
-                        final asesor = resultado[index];
-                        return Card(
-                          child: ListTile(
-                            title: Text(asesor.materiasAsesora.join(',')),
-                          ),
-                        );
-                      },
-                    ),),
- 
-         
-          
-          
-          
-          
-    
+                    ? const Center(child: Text('No hay resultados'))
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: resultado.length,
+                        itemBuilder: (context, index) {
+                          final asesor = resultado[index];
+                          return Card(
+                            child: ListTile(
+                              title: Text(asesor.materiasAsesora.join(',')),
+                            ),
+                          );
+                        },
+                      ),
+              ),
             ],
           ),
         ),

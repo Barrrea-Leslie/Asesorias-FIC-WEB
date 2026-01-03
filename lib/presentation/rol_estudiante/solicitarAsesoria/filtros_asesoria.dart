@@ -50,7 +50,7 @@ class _FiltrosAsesoriaState extends State<FiltrosAsesoria> {
       todos = data;
       resultado = data;
 
-      horariosAsesora = data  //<-- estos son los datos que de extrajo de horario que asesora
+      horariosAsesora = data  //<-- estos son los datos que de extrajo de horarios que asesoran
       .expand((asesor) => asesor.horariosAsesora)
       .toSet()
       .toList();
@@ -75,7 +75,7 @@ class _FiltrosAsesoriaState extends State<FiltrosAsesoria> {
         //filtrar datos de  de materia y validarlo
         final validarMateria = materiaSelecionada == null || asesor.materiasAsesora.contains(materiaSelecionada);
         
-        //filtrar datos de  de horario 
+        //filtrar datos de  de horario
         final validarHorario = horarioSelecionado == null || asesor.horariosAsesora.contains(horarioSelecionado);
         
         //filtrar modalidad

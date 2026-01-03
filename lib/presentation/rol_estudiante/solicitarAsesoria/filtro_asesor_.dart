@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:asesorias_fic/data/models/asesores_dicicplinares_model.dart';
+import 'package:asesorias_fic/data/models/asesores_par_model.dart';
+import 'package:asesorias_fic/data/repositories/asesores_par_repository.dart';
 
 class FiltroAsesor extends StatefulWidget {
   const FiltroAsesor({super.key});
@@ -39,31 +40,44 @@ Widget _widgetCampoDropdown({
     ),
   );
 }
+
 // ************** WIDGET PARA EL CAMPO DE TEXTO ****************
- Widget _buildLabel(String texto) => Padding(
-    padding: const EdgeInsets.only(bottom: 8),
-    child: Text(texto, style: const TextStyle(fontWeight: FontWeight.bold)),
+Widget _buildLabel(String texto) => Padding(
+  padding: const EdgeInsets.only(bottom: 8),
+  child: Text(texto, style: const TextStyle(fontWeight: FontWeight.bold)),
+);
+
+Widget _buildTextField(
+  TextEditingController controller,
+  String hint, {
+  bool isEmail = false,
+  bool isPhone = false,
+  bool isNumber = false,
+}) {
+  return TextFormField(
+    controller: controller,
+    keyboardType: isEmail
+        ? TextInputType.emailAddress
+        : (isPhone || isNumber ? TextInputType.number : TextInputType.text),
+    decoration: InputDecoration(
+      hintText: hint,
+      filled: true,
+      fillColor: Colors.grey[50],
+      border: const OutlineInputBorder(),
+    ),
+    validator: (val) => val == null || val.isEmpty ? "Campo obligatorio" : null,
   );
-
-  Widget _buildTextField(TextEditingController controller, String hint, {bool isEmail = false, bool isPhone = false, bool isNumber = false}) {
-    return TextFormField(
-      controller: controller,
-      keyboardType: isEmail ? TextInputType.emailAddress : (isPhone || isNumber ? TextInputType.number : TextInputType.text),
-      decoration: InputDecoration(
-        hintText: hint,
-        filled: true,
-        fillColor: Colors.grey[50],
-        border: const OutlineInputBorder(),
-      ),
-      validator: (val) => val == null || val.isEmpty ? "Campo obligatorio" : null,
-    );
-  }
-
-
+}
 
 class _FiltroAsesorState extends State<FiltroAsesor> {
-  List<AsesorDisciplinar> todos = [];
-  List<AsesorDisciplinar> resultado = [];
+  //instancia el repositorio
+  final AsesoresParRepository _repository = AsesoresParRepository();
+  List<AsesorPar> todos = [];
+  List<AsesorPar> resultado = [];
+
+  String? materiaSelecionada;
+  String? gruposSelecionado;
+  String? modalidadSelecionado;
 
   final List<String> catalogoMaterias = [
     'Programacion I',
@@ -88,9 +102,44 @@ class _FiltroAsesorState extends State<FiltroAsesor> {
 
   List<String> modalidades = ['Parcial', 'Virtual', 'Presencial'];
 
-  String? materiaSelecionada;
-  String? gruposSelecionado;
-  String? modalidadSelecionado;
+  @override
+  void initState() {
+    super.initState();
+    _cargarDatos(); //esto carga los datos
+  }
+
+  //Metodo para extraer los datos desde la BD o repositorio donde esten guardados
+  Future<void> _cargarDatos() async {
+    final data = await _repository.fetchAsesoresPar();
+
+    setState(() {
+      todos = data;
+      resultado = data;
+    });
+  }
+
+  void _filtrarDatos() {
+    setState(() {
+      resultado = todos.where((asesor) {
+        //filtrar datos de  la semana
+        //final validarDiaSemana = diaSelecionado == null || asesor.diaSemana.contains(diaSelecionado);
+
+        //filtrar datos de  de materia y validarlo
+        final validarMateria =
+            materiaSelecionada == null ||
+            asesor.materiasAsesora.contains(materiaSelecionada);
+
+        //filtrar datos de  de grupo
+        final validarGrupo =
+            gruposSelecionado == null || asesor.grupo == gruposSelecionado;
+
+        //filtrar modalidad
+        //final validarModalidad = modalidadSelecionado == null || asesor.modalidad == modalidadSelecionado;
+
+        return validarMateria && validarGrupo;
+      }).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,18 +160,18 @@ class _FiltroAsesorState extends State<FiltroAsesor> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-               _buildLabel("Nombre Completo"),
-                const SizedBox(height: 20),
-
+              _buildLabel("Nombre Completo"),
+              const SizedBox(height: 20),
 
               /// dropdown materia
               _widgetCampoDropdown(
                 label: 'Materia',
                 value: materiaSelecionada,
                 items: catalogoMaterias,
-                onChanged: (value) =>
-                    setState(() => materiaSelecionada = value),
+                onChanged: (value) {
+                  setState(() => materiaSelecionada = value);
+                  _filtrarDatos();
+                },
               ),
 
               const SizedBox(height: 30),
@@ -132,7 +181,10 @@ class _FiltroAsesorState extends State<FiltroAsesor> {
                 label: 'Grado Escolar',
                 value: gruposSelecionado,
                 items: grupos,
-                onChanged: (value) => setState(() => gruposSelecionado = value),
+                onChanged: (value) {
+                  setState(() => gruposSelecionado = value);
+                  _filtrarDatos();
+                },
               ),
 
               const SizedBox(height: 30),
@@ -142,8 +194,10 @@ class _FiltroAsesorState extends State<FiltroAsesor> {
                 label: 'Modalidad',
                 value: modalidadSelecionado,
                 items: modalidades,
-                onChanged: (value) =>
-                    setState(() => modalidadSelecionado = value),
+                onChanged: (value) {
+                  setState(() => modalidadSelecionado = value);
+                  _filtrarDatos();
+                },
               ),
 
               const SizedBox(height: 30),
@@ -153,14 +207,23 @@ class _FiltroAsesorState extends State<FiltroAsesor> {
                 child: resultado.isEmpty
                     ? const Center(child: Text('No hay resultados'))
                     : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: resultado.length,
                         itemBuilder: (context, index) {
                           final asesor = resultado[index];
                           return Card(
+                            elevation: 2,
+                            margin: const EdgeInsets.symmetric(vertical: 8),
                             child: ListTile(
-                              title: Text(asesor.materiasAsesora.join(',')),
+                              leading: const CircleAvatar(
+                                child: Icon(Icons.person),
+                              ),
+                              title: Text(
+                                asesor.nombre,
+                              ), // Muestra el nombre para saber quién es
+                              subtitle: Text(
+                                "Materias: ${asesor.materiasAsesora.join(', ')}",
+                              ),
+                              trailing: Text(asesor.grupo ?? ""),
                             ),
                           );
                         },

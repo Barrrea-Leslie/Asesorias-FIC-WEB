@@ -80,9 +80,7 @@ class _FiltrosAsesoriaState extends State<FiltrosAsesoria> {
         
         //filtrar modalidad
         //final validarModalidad = modalidadSelecionado == null || asesor.modalidades.contains(modalidadSelecionado);
-        
-
-        
+         
         return validarMateria && validarHorario;
       }).toList();
     });

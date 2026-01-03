@@ -8,6 +8,7 @@ import 'package:asesorias_fic/presentation/pageDirection/reportes_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/solicitudes_penidentes_screen.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesorDiciplinar/crear_asesor_disiplinar.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesorDiciplinar/informacion_asesor_disciplinar.dart.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/asesorPar/crear_asesor_par.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesorPar/informacion_asesor_par.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesoriasEnCurso/informacion_asesorias_en_curso.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesoriasEnCurso/material_adicional.dart';
@@ -42,6 +43,7 @@ class AppRoutes {
 
     '/asesoresPar': (context) => const AsesoresParScreen(),
     '/informacionAsesorPar': (context) => const InformacionAsesoresPar(),
+    '/crearAsesorPar': (context) => const CrearAsesoresPar(),
 
     '/estudiantes': (context) => const EstudiantesScreen(),
     '/crearAsesorDisiplinar': (context) => const CrearAsesorDisiplinar(),

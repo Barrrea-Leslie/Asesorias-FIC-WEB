@@ -114,7 +114,7 @@ class ListaAsesorias extends StatelessWidget {
                                 Text('Materia: ${asesorias.materia}', style: TextStyle(color: Colors.white)),
                                 Text('Inicio: ${asesorias.fechaInicio}', style: TextStyle(color: Colors.white)),
                                 Text('Horario: ${asesorias.horario}', style: TextStyle(color: Colors.white)),
-                                Text('Modalidad: ${asesorias.modalidad}', style: TextStyle(color: Colors.white)),                    
+                                Text('Modalidad: ${asesorias.modalidad}', style: TextStyle(color: Colors.white)),
                           ],
                                 
                         ),

@@ -2,7 +2,6 @@ import 'package:asesorias_fic/presentation/loginScreens/login_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesores_diciplinares_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesores_par_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesorias_en_curso_screen.dart';
-import 'package:asesorias_fic/presentation/pageDirection/base_paginas_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/estudiantes_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/reportes_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/solicitudes_penidentes_screen.dart';
@@ -14,6 +13,7 @@ import 'package:asesorias_fic/presentation/rol_administrador/asesoriasEnCurso/ma
 import 'package:asesorias_fic/presentation/rol_administrador/estudiantes/informacion_estudiantes.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/pagina_base_administrador.dart';
 import 'package:asesorias_fic/presentation/rol_estudiante/pagina_base_estudiante.dart';
+import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/informacion_asesores.dart';
 import 'package:flutter/widgets.dart';
 
 class AppRoutes {
@@ -48,6 +48,10 @@ class AppRoutes {
 
     
     '/paginaBaseAdministrador': (context) => const HomePage(),
+
+    //Direcciones del rol de estudiante
+
+    '/informacionAsesores': (context) => const InformacionAsesores(),
 
     '/paginaBaseEstudiantes': (context) => const PaginaBaseEstudiante(),
 

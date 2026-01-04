@@ -147,7 +147,7 @@ class _PaginaBaseEstudianteState extends State<PaginaBaseEstudiante> {
 
             const Spacer(),
 
-            _menuItem(Icons.logout, 'Cerrar sesión', 6),
+            _menuItem(Icons.logout, 'Cerrar sesión', 4),
             ],
         ),
         );

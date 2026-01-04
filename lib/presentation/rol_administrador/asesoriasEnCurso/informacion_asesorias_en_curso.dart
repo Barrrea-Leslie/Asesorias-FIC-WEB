@@ -321,7 +321,7 @@ class _InformacionAsesoriaEnCursoState
                 context: context,
                 initialDate: DateTime.now(),
                 firstDate: DateTime(2023),
-                lastDate: DateTime(2026),
+                lastDate: DateTime(2027),
               );
               if (picked != null) {
                 setState(() => controller.text = "${picked.day}/${picked.month}/${picked.year}");

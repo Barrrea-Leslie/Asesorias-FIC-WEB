@@ -215,7 +215,7 @@ class _CrearAsesoriaPageState extends State<CrearAsesoriaPage> {
             context: context,
             initialDate: DateTime.now(),
             firstDate: DateTime.now(),
-            lastDate: DateTime(2026),
+            lastDate: DateTime(2027),
           );
           if (picked != null) {
             setState(() => controller.text = "${picked.day}/${picked.month}/${picked.year}");

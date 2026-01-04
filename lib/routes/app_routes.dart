@@ -7,19 +7,22 @@ import 'package:asesorias_fic/presentation/pageDirection/reportes_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/solicitudes_penidentes_screen.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesorDiciplinar/crear_asesor_disiplinar.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesorDiciplinar/informacion_asesor_disciplinar.dart.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/asesorPar/crear_asesor_par.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesorPar/informacion_asesor_par.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesoriasEnCurso/informacion_asesorias_en_curso.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesoriasEnCurso/material_adicional.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/estudiantes/informacion_estudiantes.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/pagina_base_administrador.dart';
 import 'package:asesorias_fic/presentation/rol_estudiante/pagina_base_estudiante.dart';
+import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/filtro_asesor_.dart';
+import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/filtros_asesoria.dart';
 import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/informacion_asesores.dart';
 import 'package:flutter/widgets.dart';
 
 class AppRoutes {
 
 
-  static const initialRoute = '/paginaBaseEstudiantes';
+  static const initialRoute = '/filtroAsesor';
 
 
   static Map <String, WidgetBuilder> routes = {
@@ -41,10 +44,14 @@ class AppRoutes {
 
     '/asesoresPar': (context) => const AsesoresParScreen(),
     '/informacionAsesorPar': (context) => const InformacionAsesoresPar(),
+    '/crearAsesorPar': (context) => const CrearAsesoresPar(),
 
     '/estudiantes': (context) => const EstudiantesScreen(),
     '/crearAsesorDisiplinar': (context) => const CrearAsesorDisiplinar(),
     '/informacionEstudiantes': (context) => const InformacionEstudiantes(),
+
+    '/filtrosAsesoria': (context) => const FiltrosAsesoria(),
+    '/filtroAsesor': (context) => const FiltroAsesor(),
 
     
     '/paginaBaseAdministrador': (context) => const HomePage(),

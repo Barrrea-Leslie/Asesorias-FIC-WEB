@@ -2,6 +2,7 @@ import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/data/services/asesores_diciplinares_service.dart';
 import 'package:asesorias_fic/data/services/asesores_par_service.dart';
 import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/crear_solicitud.dart';
+import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/filtros_asesoria.dart';
 import 'package:asesorias_fic/presentation/rol_estudiante/widgets/tarjeta_solicitar_asesoria.dart';
 import 'package:flutter/material.dart';
 
@@ -14,8 +15,22 @@ class SolicitarAsesoria extends StatefulWidget {
 
 class _SolicitarAsesoriaState extends State<SolicitarAsesoria> {
   String query = '';
+  Map<String, String?> filtrosActivos = {};
   List<dynamic> todosLosAsesores = [];
   bool cargando = true;
+
+  void _abrirFiltros() async {
+    final resultado = await showDialog<Map<String, String?>>(
+      context: context,
+      builder: (context) => const FiltrosAsesoria(),
+    );
+
+    if (resultado != null) {
+      setState(() {
+        filtrosActivos = resultado;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -23,7 +38,6 @@ class _SolicitarAsesoriaState extends State<SolicitarAsesoria> {
     _fetchAsesores();
   }
 
-  // Cargamos los datos una sola vez para toda la pantalla
   Future<void> _fetchAsesores() async {
     try {
       final resultados = await Future.wait([
@@ -36,7 +50,6 @@ class _SolicitarAsesoriaState extends State<SolicitarAsesoria> {
       });
     } catch (e) {
       setState(() => cargando = false);
-      print("Error cargando asesores: $e");
     }
   }
 
@@ -50,12 +63,16 @@ class _SolicitarAsesoriaState extends State<SolicitarAsesoria> {
       if (constraints.maxWidth < 1000) {
         return PantallaResponsiva(
           query: query,
+          filtros: filtrosActivos,
+          onTapFiltro: _abrirFiltros,
           todosLosAsesores: todosLosAsesores,
           onChanged: (value) => setState(() => query = value),
         );
       } else {
         return PantallaGrande(
           query: query,
+          filtros: filtrosActivos,
+          onTapFiltro: _abrirFiltros,
           todosLosAsesores: todosLosAsesores,
           onChanged: (value) => setState(() => query = value),
         );
@@ -64,15 +81,18 @@ class _SolicitarAsesoriaState extends State<SolicitarAsesoria> {
   }
 }
 
-// --- VISTA PARA PANTALLAS GRANDES ---
 class PantallaGrande extends StatelessWidget {
   final String query;
+  final Map<String, String?> filtros;
+  final VoidCallback onTapFiltro;
   final List<dynamic> todosLosAsesores;
   final ValueChanged<String> onChanged;
 
   const PantallaGrande({
     super.key,
     required this.query,
+    required this.filtros,
+    required this.onTapFiltro,
     required this.todosLosAsesores,
     required this.onChanged,
   });
@@ -92,9 +112,21 @@ class PantallaGrande extends StatelessWidget {
             children: [
               SeccionArriba(onChanged: onChanged),
               const SizedBox(height: 20),
+              GestureDetector(
+                onTap: onTapFiltro,
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 80.0, bottom: 20),
+                  child: Row(
+                    children: [
+                      Text("Filtro", style: TextStyle(fontWeight: FontWeight.bold)),
+                      Icon(Icons.filter_alt)
+                    ],
+                  ),
+                ),
+              ),
               Expanded(
                 child: SingleChildScrollView(
-                  child: TarjetaSolicitarAsesoria(query: query),
+                  child: TarjetaSolicitarAsesoria(query: query, filtros: filtros),
                 ),
               ),
               Footer(todosLosAsesores: todosLosAsesores),
@@ -106,15 +138,18 @@ class PantallaGrande extends StatelessWidget {
   }
 }
 
-// --- VISTA PARA PANTALLAS MÓVILES ---
 class PantallaResponsiva extends StatelessWidget {
   final String query;
+  final Map<String, String?> filtros;
+  final VoidCallback onTapFiltro;
   final List<dynamic> todosLosAsesores;
   final ValueChanged<String> onChanged;
 
   const PantallaResponsiva({
     super.key,
     required this.query,
+    required this.filtros,
+    required this.onTapFiltro,
     required this.todosLosAsesores,
     required this.onChanged,
   });
@@ -138,7 +173,7 @@ class PantallaResponsiva extends StatelessWidget {
                   child: Column(
                     children: [
                       const SizedBox(height: 20),
-                      TarjetaSolicitarAsesoria(query: query),
+                      TarjetaSolicitarAsesoria(query: query, filtros: filtros),
                     ],
                   ),
                 ),
@@ -152,6 +187,8 @@ class PantallaResponsiva extends StatelessWidget {
   }
 }
 
+
+
 class SeccionArriba extends StatelessWidget {
   final ValueChanged<String> onChanged;
   const SeccionArriba({super.key, required this.onChanged});
@@ -163,22 +200,27 @@ class SeccionArriba extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text("Solicitar Asesorias", 
+          const Text("Solicitar Asesorias",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23)),
           SizedBox(
             width: 220,
             child: TextField(
               onChanged: onChanged,
               decoration: InputDecoration(
-                hintText: 'Buscar Asesor',
-                prefixIcon: const Icon(Icons.search, size: 18),
-                filled: true,
-                fillColor: const Color(0xFFf2f3f5),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none
+                  hintText: 'Buscar Asesoria',
+                  hintStyle: const TextStyle(fontSize: 13, color: Color(0xFFb4b4b4)),
+                  prefixIcon: const Icon(Icons.search, color: Color(0xFFb4b4b4), size: 18),
+                  filled: true,
+                  fillColor: const Color(0xFFf2f3f5),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.circular(10)
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Appcolores.azulUas),
+                    borderRadius: BorderRadius.circular(10)
+                  )
                 ),
-              ),
             ),
           ),
         ],

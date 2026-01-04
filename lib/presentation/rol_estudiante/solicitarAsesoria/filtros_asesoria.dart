@@ -1,8 +1,5 @@
-import 'package:asesorias_fic/data/models/asesores_dicicplinares_model.dart';
+import 'package:asesorias_fic/core/colores.dart';
 import 'package:flutter/material.dart';
-import 'package:asesorias_fic/data/repositories/asesores_diciplinares_repository.dart';
-
-//import 'package:asesorias_fic/core/colores.dart';
 
 class FiltrosAsesoria extends StatefulWidget {
   const FiltrosAsesoria({super.key});
@@ -12,208 +9,119 @@ class FiltrosAsesoria extends StatefulWidget {
 }
 
 class _FiltrosAsesoriaState extends State<FiltrosAsesoria> {
-  final AsesoresDiciplinaresRepository _repository =
-      AsesoresDiciplinaresRepository();
+  String? diaSeleccionado;
+  String? materiaSeleccionada;
+  String? horarioSeleccionado;
+  String? modalidadSeleccionada;
 
-  List<AsesorDisciplinar> todos = [];
-  List<AsesorDisciplinar> resultado = [];
-
-  String? diaSelecionado;
-  String? materiaSelecionada;
-  String? horarioSelecionado;
-  String? modalidadSelecionado;
-
-  final List<String> diaSemana = [
-    'Lunes',
-    'Martes',
-    'Miercoles',
-    'Jueves',
-    'Viernes',
-  ];
-
-  final List<String> catalogoMaterias = [
-    'Programacion I',
-    'Programacion II',
-    'Principios de programacion',
-    'Programacion Web',
-    'Bases de Datos',
-    'Estructura de Datos',
-  ];
-  List<String> horariosAsesora = [];
-  List<String> modalidades = ['Parcial', 'Virtual', 'Presencial'];
-
-  //esto extrae los datos desde la BD o donde esten guardados
-  Future<void> _cargarDatos() async {
-    final data = await _repository.fetchAsesoresDiciplinares();
-
-    setState(() {
-      todos = data;
-      resultado = data;
-
-      horariosAsesora = data  //<-- estos son los datos que de extrajo de horarios que asesoran
-      .expand((asesor) => asesor.horariosAsesora)
-      .toSet()
-      .toList();
-    });
-  }
-
-
-  @override
-  void initState() {
-    super.initState();
-    _cargarDatos(); //esto carga los datos
-  }
-
-  ///////   WIDGET PARA LA BUSQUEDA Y FILTRAR LOS DATOS
-  void _filtrarDatos() {
-    setState(() {
-      resultado = todos.where((asesor) {
-
-    //filtrar datos de  la semana
-        //final validarDiaSemana = diaSelecionado == null || asesor.diaSemana.contains(diaSelecionado);
-        
-        //filtrar datos de  de materia y validarlo
-        final validarMateria = materiaSelecionada == null || asesor.materiasAsesora.contains(materiaSelecionada);
-        
-        //filtrar datos de  de horario
-        final validarHorario = horarioSelecionado == null || asesor.horariosAsesora.contains(horarioSelecionado);
-        
-        //filtrar modalidad
-        //final validarModalidad = modalidadSelecionado == null || asesor.modalidades.contains(modalidadSelecionado);
-         
-        return validarMateria && validarHorario;
-      }).toList();
-    });
-  }
-
-  //*********        WIDGET DROPDOWN      *************** */
-  Widget _widgetCampoDropdown({
-    required String label,
-    required String? value,
-    required List<String> items,
-    required ValueChanged<String?> onChanged,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 18),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
-          const SizedBox(height: 6),
-
-          DropdownButtonFormField<String>(
-            value: value,
-            items: items
-                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                .toList(),
-            onChanged: onChanged,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: const Color(0xFFF7EDF4),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  final List<String> dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'];
+  final List<String> materias = ['Programacion I', 'Programacion II', 'Bases de Datos', 'Web'];
+  final List<String> horarios = ['7:00 - 8:00', '13:00 - 14:00', '18:00 - 19:00'];
+  final List<String> modalidades = ['Parcial', 'Virtual', 'Presencial'];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Filtros',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+    return AlertDialog(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      title: const Center(
+        child: Text("Filtros", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
+      content: SizedBox(
+        width: 350,
+        child: SingleChildScrollView(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// dropdown dia de la semana
-              _widgetCampoDropdown(
-                label: 'Dia de la semana',
-                value: diaSelecionado,
-                items: diaSemana,
-                onChanged: (value) {
-                  setState(() => diaSelecionado = value);
-                  _filtrarDatos(); // Ejecuta el filtro
-                },
-              ),
-
+              _widgetCampoDropdown("Dia de la Semana", diaSeleccionado, dias, (v) => setState(() => diaSeleccionado = v)),
+              const SizedBox(height: 15),
+              _widgetCampoDropdown("Materia", materiaSeleccionada, materias, (v) => setState(() => materiaSeleccionada = v)),
+              const SizedBox(height: 15),
+              _widgetCampoDropdown("Horario", horarioSeleccionado, horarios, (v) => setState(() => horarioSeleccionado = v)),
+              const SizedBox(height: 15),
+              _widgetCampoDropdown("Modalidad", modalidadSeleccionada, modalidades, (v) => setState(() => modalidadSeleccionada = v)),
               const SizedBox(height: 30),
-
-              /// dropdown materia
-              _widgetCampoDropdown(
-                label: 'Materia',
-                value: materiaSelecionada,
-                items: catalogoMaterias,
-                onChanged: (value) {
-                  setState(() => materiaSelecionada = value);
-                  _filtrarDatos();
-                },
-              ),
-
-              const SizedBox(height: 30),
-
-              /// dropdown Horario
-              _widgetCampoDropdown(
-                label: 'Horario',
-                value: horarioSelecionado,
-                items: horariosAsesora,
-                onChanged: (value) {
-                  setState(() => horarioSelecionado = value);
-                  _filtrarDatos();
-                },
-              ),
-
-              const SizedBox(height: 30),
-
-              /// dropdown Modalidad
-              _widgetCampoDropdown(
-                label: 'Modalidad',
-                value: modalidadSelecionado,
-                items: modalidades,
-                onChanged: (value) {
-                  setState(() => modalidadSelecionado = value);
-                  _filtrarDatos();
-                },
-              ),
-
-              // ElevatedButton(onPressed: _filtrarDatos, child: const Text('Buscar')),
-              const SizedBox(height: 30),
-
-              // DATOS FILTRADOS
-              Expanded(
-                child: resultado.isEmpty
-                    ? const Center(child: Text('No hay resultados'))
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: resultado.length,
-                        itemBuilder: (context, index) {
-                          final asesor = resultado[index];
-                          return Card(
-                            child: ListTile(
-                              title: Text(asesor.materiasAsesora.join(',')),
-                            ),
-                          );
-                        },
+              
+              // CONTENEDOR DE BOTONES
+              Column(
+                children: [
+                  Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Appcolores.azulUas,
+                        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       ),
+                      onPressed: () {
+                        Navigator.pop(context, {
+                          'dia': diaSeleccionado,
+                          'materia': materiaSeleccionada,
+                          'horario': horarioSeleccionado,
+                          'modalidad': modalidadSeleccionada,
+                        });
+                      },
+                      child: const Text("Aplicar Filtros", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  // OPCIÓN PARA MOSTRAR TODO
+                  Center(
+                    child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          diaSeleccionado = null;
+                          materiaSeleccionada = null;
+                          horarioSeleccionado = null;
+                          modalidadSeleccionada = null;
+                        });
+                        // Cerramos devolviendo todo null para que la lista se limpie
+                        Navigator.pop(context, {
+                          'dia': null,
+                          'materia': null,
+                          'horario': null,
+                          'modalidad': null,
+                        });
+                      },
+                      child: const Text(
+                        "Mostrar todo / Limpiar filtros",
+                        style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _widgetCampoDropdown(
+    String label,
+    String? value,
+    List<String> items,
+    ValueChanged<String?> onChanged
+    ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+        const SizedBox(height: 8),
+        DropdownButtonFormField<String>(
+          value: value,
+          hint: const Text("Seleccionar", style: TextStyle(fontSize: 14, color: Colors.grey)),
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: const Color(0xFFE9E9E9),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+          ),
+          items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          onChanged: onChanged,
+        ),
+      ],
     );
   }
 }

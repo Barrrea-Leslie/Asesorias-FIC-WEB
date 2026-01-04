@@ -10,7 +10,8 @@
         "promedio": 9.8,
         "materiasAsesora": [
             "Programacion",
-            "Base de datos"
+            "Base de Datos",
+            "Web"
         ],
         "horariosAsesora": [
             "18:00 - 19:00",
@@ -27,8 +28,7 @@
         "numeroTelefono": "6672136911",
         "promedio": 10,
         "materiasAsesora": [
-            "Programacion",
-            "Base de datos"
+            "Programacion"
         ],
         "horariosAsesora": [
             "18:00 - 19:00",
@@ -45,8 +45,7 @@
         "numeroTelefono": "6672136911",
         "promedio": 8.9,
         "materiasAsesora": [
-            "Programacion",
-            "Base de datos"
+            "Base de Datos"
         ],
         "horariosAsesora": [
             "18:00 - 19:00",
@@ -63,8 +62,7 @@
         "numeroTelefono": "6672136911",
         "promedio": 9.8,
         "materiasAsesora": [
-            "Programacion",
-            "Base de datos"
+            "Web"
         ],
         "horariosAsesora": [
             "18:00 - 19:00",
@@ -82,7 +80,7 @@
         "promedio": 10,
         "materiasAsesora": [
             "Programacion",
-            "Base de datos"
+            "Base de Datos"
         ],
         "horariosAsesora": [
             "18:00 - 19:00",

@@ -20,7 +20,7 @@ class _PaginaBaseEstudianteState extends State<PaginaBaseEstudiante> {
     final List<Widget> _pages = [
         SolicitarAsesoria(),
         AsesoriasEnCursoEstudiante(),
-        SolicitudesEnRevision(),
+        SolicitudesEnRevisionScreen(),
         HistorialDeAsesorias(),
     ];
 
@@ -29,7 +29,7 @@ class _PaginaBaseEstudianteState extends State<PaginaBaseEstudiante> {
         return Scaffold(
         body: Row(
             children: [
-            SideMenu( 
+            SideMenu(
                 selectedIndex: _selectedIndex,
                 onItemSelected: (index) {
                 if (index == 4) {

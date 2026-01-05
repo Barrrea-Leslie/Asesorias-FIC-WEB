@@ -1,0 +1,29 @@
+[
+
+    {
+        "materia": "Programacion",
+        "asesor": "Alfredo Rojo Hernandez",
+        "fecha": "Lunes 27/09/26",
+        "horario": "18:00 - 19:00",
+        "estado": "EN REVISION",
+        "cambios": ""
+    },
+    {
+        "materia": "Base de Datos",
+        "asesor": "Alfredo Rojo Hernandez",
+        "fecha": "Lunes 27/09/26",
+        "horario": "18:00 - 19:00",
+        "estado": "RECHAZADA",
+        "cambios": ""
+    },
+    {
+        "materia": "Programacion",
+        "asesor": "Alfredo Rojo Hernandez",
+        "fecha": "Lunes 27/09/26",
+        "horario": "18:00 - 19:00",
+        "estado": "CAMBIO SUGERIDO",
+        "cambios": "Nueva fecha: 29/09/26"
+    }
+
+
+]

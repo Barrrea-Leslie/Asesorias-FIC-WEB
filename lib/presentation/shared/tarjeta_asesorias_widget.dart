@@ -3,6 +3,7 @@ import 'package:asesorias_fic/data/models/asesorias_model.dart';
 import 'package:asesorias_fic/data/models/estudiantes_model.dart';
 import 'package:asesorias_fic/data/services/asesorias_service.dart';
 import 'package:asesorias_fic/data/services/estudiantes_service.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/asesoriasEnCurso/material_adicional.dart';
 import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.dart';
 import 'package:flutter/material.dart';
 
@@ -137,7 +138,7 @@ class ListaAsesorias extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            BotonMaterial()
+                            BotonMaterial(nombreAsesor: asesorias.materia,)
                           ],
                         )
                     
@@ -162,15 +163,20 @@ class ListaAsesorias extends StatelessWidget {
 }
 
 class BotonMaterial extends StatelessWidget {
+  final String nombreAsesor;
   const BotonMaterial({
     super.key,
+    required this.nombreAsesor
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
     onPressed: () {
-      Navigator.pushNamed(context, '/materialAdicional');
+      showDialog(
+          context: context,
+          builder: (context) => MaterialAdicionalAsesorias(nombreAsesor: nombreAsesor),
+        );
     },
     
     style: ElevatedButton.styleFrom(

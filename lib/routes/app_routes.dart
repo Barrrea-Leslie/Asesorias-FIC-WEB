@@ -32,7 +32,7 @@ class AppRoutes {
 
     '/asesoriasEnCurso': (context) => const AsesoriasEnCursoScreen(),
     '/informacionAsesoriaEnCurso': (context) => const InformacionAsesoriaEnCurso(),
-    '/materialAdicional': (context) => const MaterialAdicional(),
+    
 
     '/solicitudesPendientes': (context) => const SolicitudesPenidentesScreen(),
 

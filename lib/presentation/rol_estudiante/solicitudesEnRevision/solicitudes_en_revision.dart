@@ -155,7 +155,7 @@ class WidgetFiltro extends StatelessWidget {
                   child: DropdownButton<String>(
                     value: filtro,
                     icon: const Icon(Icons.arrow_drop_down, color: Colors.grey),
-                    items: <String>['TODO', 'EN REVISION', 'RECHAZADA', 'CAMBIO SUGERIDO']
+                    items: <String>['TODO', 'EN REVISION', 'RECHAZADA']
                         .map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,

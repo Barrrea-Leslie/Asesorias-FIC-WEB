@@ -5,7 +5,7 @@ class SolicitudesEnRevision{
   final String fecha;
   final String horario;
   final String estado;
-  final String cambios;
+  final String notas;
 
   SolicitudesEnRevision({
     required this.materia,
@@ -13,7 +13,7 @@ class SolicitudesEnRevision{
     required this.fecha,
     required this.horario,
     required this.estado,
-    required this.cambios
+    required this.notas
   });
 
   factory SolicitudesEnRevision.fromJson(Map<String, dynamic> json){
@@ -23,7 +23,7 @@ class SolicitudesEnRevision{
       fecha: json['fecha'],
       horario: json['horario'],
       estado: json['estado'],
-      cambios: json['cambios']
+      notas: json['notas']
     );
   }
 

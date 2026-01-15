@@ -2,11 +2,11 @@
 
     {
         "materia": "Programacion",
-        "asesor": "Alfredo Rojo Hernandez",
+        "asesor": "Daou Pittaya",
         "fecha": "Lunes 27/09/26",
         "horario": "18:00 - 19:00",
         "estado": "EN REVISION",
-        "cambios": ""
+        "notas": ""
     },
     {
         "materia": "Base de Datos",
@@ -14,15 +14,23 @@
         "fecha": "Lunes 27/09/26",
         "horario": "18:00 - 19:00",
         "estado": "RECHAZADA",
-        "cambios": ""
+        "notas": "Tengo horarios llenos"
     },
     {
         "materia": "Programacion",
-        "asesor": "Alfredo Rojo Hernandez",
+        "asesor": "Luis Fernando",
         "fecha": "Lunes 27/09/26",
         "horario": "18:00 - 19:00",
-        "estado": "CAMBIO SUGERIDO",
-        "cambios": "Nueva fecha: 29/09/26"
+        "estado": "RECHAZADA",
+        "notas": "Esa fecha ya no esta disponible"
+    },
+    {
+        "materia": "Programacion",
+        "asesor": "Offroad Kantapon",
+        "fecha": "Lunes 27/09/26",
+        "horario": "18:00 - 19:00",
+        "estado": "EN REVISION",
+        "notas": ""
     }
 
 

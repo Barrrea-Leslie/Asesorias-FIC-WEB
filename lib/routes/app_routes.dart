@@ -21,7 +21,7 @@ import 'package:flutter/widgets.dart';
 class AppRoutes {
 
 
-  static const initialRoute = '/paginaBaseEstudiantes';
+  static const initialRoute = '/paginaBaseAdministrador';
 
 
   static Map <String, WidgetBuilder> routes = {
@@ -59,7 +59,7 @@ class AppRoutes {
 
     '/informacionAsesores': (context) => const InformacionAsesores(),
 
-    '/paginaBaseEstudiantes': (context) => const PaginaBaseEstudiante(),
+    //'/paginaBaseEstudiantes': (context) => const PaginaBaseEstudiante(),
 
 
   };

@@ -1,4 +1,4 @@
-import 'package:asesorias_fic/core/colores.dart';
+/* import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/data/services/asesores_diciplinares_service.dart';
 import 'package:asesorias_fic/data/services/asesores_par_service.dart';
 import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/crear_solicitud.dart';
@@ -261,4 +261,4 @@ class Footer extends StatelessWidget {
       ),
     );
   }
-}
+} */

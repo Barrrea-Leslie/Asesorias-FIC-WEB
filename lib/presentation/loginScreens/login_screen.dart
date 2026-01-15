@@ -148,6 +148,8 @@ class BotonIngresar extends StatelessWidget {
           Navigator.pushReplacementNamed(context, '/paginaBaseAdministrador');
 
           MensajeConfirmacion.mostrarMensaje(context, "Se inicio secion correctamente...");
+        }else if (_formKey.currentState!.validate() && inputCuenta == '12347' && inputNip == '1236') {
+          Navigator.pushReplacementNamed(context, '/paginaBaseEstudiantes');
         }
       },
       child: Text('Ingresar'),

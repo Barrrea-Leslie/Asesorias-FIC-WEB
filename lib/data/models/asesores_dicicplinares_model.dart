@@ -1,4 +1,52 @@
+
 class AsesorDisciplinar {
+  final int idPersona;
+  final String nombre;
+  final String apellidoPaterno;
+  final String apellidoMaterno;
+  final String numeroCuenta;
+  final String correo;
+  final String numCel;
+  final List<String> materiasAsesora;
+  final List<String> horariosAsesora;
+
+  AsesorDisciplinar({
+    required this.idPersona,
+    required this.nombre,
+    required this.apellidoPaterno,
+    required this.apellidoMaterno,
+    required this.numeroCuenta,
+    required this.correo,
+    required this.numCel,
+    required this.materiasAsesora,
+    required this.horariosAsesora,
+  });
+
+  factory AsesorDisciplinar.fromJson(Map<String, dynamic> json) {
+    final materias = (json['materiasasesor'] as List? ?? [])
+        .map((m) => m['materia'].toString())
+        .toList();
+
+    final horarios = (json['horariosasesor'] as List? ?? [])
+        .map((h) => h['horario'].toString())
+        .toList();
+
+    return AsesorDisciplinar(
+      idPersona: json['id_persona'] ?? 0,
+      nombre: json['nombre'] ?? '',
+      apellidoPaterno: json['apellido_paterno'] ?? '',
+      apellidoMaterno: json['apellido_materno'] ?? '',
+      numeroCuenta: json['numero_cuenta']?.toString() ?? '',
+      correo: json['correo'] ?? '',
+      numCel: json['num_cel'] ?? '',
+      materiasAsesora: materias,
+      horariosAsesora: horarios,
+    );
+  }
+}
+
+
+/* class AsesorDisciplinar {
   final int id;
   final String nombre;
   final String correoInstitucional;
@@ -54,4 +102,4 @@ class AsesorDisciplinar {
       horariosAsesora: horariosAsesora ?? this.horariosAsesora,
     );
   }
-}
+} */

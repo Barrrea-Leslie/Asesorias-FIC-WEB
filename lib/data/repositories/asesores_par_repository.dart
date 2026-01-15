@@ -14,7 +14,7 @@ class AsesoresParRepository {
     // Aquí llamarías a tu servicio (ej. _service.postAsesor)
     // Por ahora simulamos éxito:
     print("Guardando en base de datos: ${asesor.nombre}");
-    return true; 
+    return true;
   }
 
   // Actualizar un asesor existente

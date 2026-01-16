@@ -174,7 +174,7 @@ class _BotonAccionHistorial extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         elevation: 3,
       ),
-      child: Text(texto, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+      child: Text(texto),
     );
   }
 }

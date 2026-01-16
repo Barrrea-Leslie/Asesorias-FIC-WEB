@@ -70,7 +70,7 @@ class _CrearAsesoresParState extends State<CrearAsesoresPar> {
       _estudianteSeleccionado = est;
       nombreController.text = est.nombre;
       cuentaController.text = est.numeroCuenta;
-      contraController.text = est.contrasena ?? "";
+      contraController.text = est.contrasena;
       correoController.text = est.correoInstitucional;
       telefonoController.text = est.numeroTelefono;
       promedioController.text = est.promedio.toString();

@@ -9,6 +9,7 @@ import 'package:asesorias_fic/presentation/rol_administrador/asesorDiciplinar/cr
 import 'package:asesorias_fic/presentation/rol_administrador/asesorPar/crear_asesor_par.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesorPar/informacion_asesor_par.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/pagina_base_administrador.dart';
+import 'package:asesorias_fic/presentation/rol_asesor/pagina_base_asesor.dart';
 import 'package:asesorias_fic/presentation/rol_estudiante/pagina_base_estudiante.dart';
 import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/filtros_asesoria.dart';
 import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/informacion_asesores.dart';
@@ -17,7 +18,7 @@ import 'package:flutter/widgets.dart';
 class AppRoutes {
 
 
-  static const initialRoute = '/paginaBaseEstudiantes';
+  static const initialRoute = '/paginaBaseAsesores';
 
 
   static Map <String, WidgetBuilder> routes = {
@@ -55,6 +56,10 @@ class AppRoutes {
     '/informacionAsesores': (context) => const InformacionAsesores(),
 
     '/paginaBaseEstudiantes': (context) => const PaginaBaseEstudiante(),
+
+    //Direcciones del rol de asesores
+
+    '/paginaBaseAsesores': (context) => const PaginaBaseAsesor(),
 
 
   };

@@ -1,6 +1,7 @@
 import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/data/models/solicitudes_en_revision.dart';
 import 'package:asesorias_fic/data/services/solicitudes_en_revision_service.dart';
+import 'package:asesorias_fic/presentation/rol_estudiante/solicitudesEnRevision/editar_solicitud.dart';
 import 'package:flutter/material.dart';
 
 class TarjetaSolicitudesEnRevision extends StatelessWidget {
@@ -159,7 +160,7 @@ class ListaSolicitudesEnRevision extends StatelessWidget {
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return _AlertaEditarSolicitud(solicitud: solicitud);
+                                      return EditarSolicitud(solicitud: solicitud);
                                     });
                                 }
 
@@ -193,7 +194,7 @@ class _AlertaEditarSolicitud extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      content: Text("Offroad Kantapon"),
+      content: EditarSolicitud(solicitud: solicitud),
     );
   }
 }

@@ -1,8 +1,9 @@
 import 'package:asesorias_fic/core/colores.dart';
+import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.dart';
 import 'package:flutter/material.dart';
 
 class EditarSolicitud extends StatefulWidget {
-  final dynamic solicitud; // Recibe la solicitud completa
+  final dynamic solicitud;
 
   const EditarSolicitud({super.key, required this.solicitud});
 
@@ -11,195 +12,176 @@ class EditarSolicitud extends StatefulWidget {
 }
 
 class _EditarSolicitudState extends State<EditarSolicitud> {
-  // Variables de selección modificables
-  String? _horarioSeleccionado;
+  late TextEditingController _fechaController;
+  String? _selectedHorario;
 
-  // Controladores
-  final TextEditingController _fechaController = TextEditingController();
-  late TextEditingController _asesorController;
-  late TextEditingController _materiaController;
-  late TextEditingController _estadoController;
-  late TextEditingController _notasController;
+  final List<String> _opcionesHorario = [
+    '07:00 - 08:00',
+    '10:00 - 11:00 AM',
+    '11:00 - 12:00 AM',
+    '13:00 - 14:00',
+    '18:00 - 19:00',
+  ];
 
   @override
   void initState() {
     super.initState();
-    // Inicializamos los campos con la información de la solicitud
-    _asesorController = TextEditingController(text: widget.solicitud.asesor);
-    _materiaController = TextEditingController(text: widget.solicitud.materia);
-    _estadoController = TextEditingController(text: widget.solicitud.estado);
-    _fechaController.text = widget.solicitud.fecha;
-    _horarioSeleccionado = widget.solicitud.horario;
-    _notasController = TextEditingController(text: widget.solicitud.notas ?? "");
+    _fechaController = TextEditingController(text: widget.solicitud.fecha);
+    
+    if (_opcionesHorario.contains(widget.solicitud.horario)) {
+      _selectedHorario = widget.solicitud.horario;
+    } else {
+      _opcionesHorario.add(widget.solicitud.horario);
+      _selectedHorario = widget.solicitud.horario;
+    }
   }
 
   @override
   void dispose() {
     _fechaController.dispose();
-    _asesorController.dispose();
-    _materiaController.dispose();
-    _estadoController.dispose();
-    _notasController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Lógica de visibilidad
-    bool mostrarNotas = widget.solicitud.estado.toUpperCase() == "RECHAZADA";
-    bool puedeCancelarSolicitud = widget.solicitud.estado.toUpperCase() == "REVISIÓN";
-
-    return AlertDialog(
+    return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      backgroundColor: Colors.white,
-      title: const Center(
-        child: Text("Editar Solicitud",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-      ),
-      content: SizedBox(
-        width: 450,
+      child: Container(
+        // Ancho responsivo
+        width: MediaQuery.of(context).size.width * 0.8, 
+        constraints: const BoxConstraints(maxWidth: 600, maxHeight: 700),
+        padding: const EdgeInsets.all(20),
+        // --- AQUÍ EL SCROLL ---
         child: SingleChildScrollView(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.min, // Hace que el modal solo use el espacio necesario
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildLabel("Asesor"),
-              _buildCampoEstatico(_asesorController, Icons.person),
+              const Center(
+                child: Text(
+                  'Modificar Solicitud',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                ),
+              ),
+              const Divider(height: 30),
+              
+              _buildCampoLectura("Materia", widget.solicitud.materia),
+              _buildCampoLectura("Asesor", widget.solicitud.asesor),
+              const SizedBox(height: 10),
 
-              _buildLabel("Materia"),
-              _buildCampoEstatico(_materiaController, Icons.book),
-
-              _buildLabel("Fecha"),
-              _buildCampoFecha('Elegir fecha', _fechaController),
-              const SizedBox(height: 15),
-
-              _buildCampoDropdown(
-                'Horario', 
-                _horarioSeleccionado,
-                ['07:00 AM', '08:00 AM', '09:00 AM', '10:00 AM', '01:00 PM', '02:00 PM'], // Aquí iría la lista de horarios disponibles
-                (val) => setState(() => _horarioSeleccionado = val)
+              const Text("Fecha de Asesoría", style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _fechaController,
+                readOnly: true,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.calendar_today, size: 18),
+                  border: OutlineInputBorder(),
+                ),
+                onTap: () async {
+                  DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(2027),
+                  );
+                  if (picked != null) {
+                    setState(() {
+                      _fechaController.text = "${picked.day}/${picked.month}/${picked.year}";
+                    });
+                  }
+                },
               ),
 
-              _buildLabel("Estado"),
-              _buildCampoEstatico(_estadoController, Icons.info_outline),
+              const SizedBox(height: 20),
 
-              if (mostrarNotas) ...[
-                _buildLabel("Notas del asesor"),
-                _buildCampoEstatico(_notasController, Icons.note, maxLines: 2),
-              ],
+              const Text("Horario", style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              DropdownButtonFormField<String>(
+                value: _selectedHorario,
+                isExpanded: true,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.access_time, size: 18),
+                  border: OutlineInputBorder()
+                ),
+                items: _opcionesHorario.map((e) => DropdownMenuItem(
+                  value: e, 
+                  child: Text(e)
+                )).toList(),
+                onChanged: (val) => setState(() => _selectedHorario = val),
+              ),
+
+              const SizedBox(height: 30),
+
+              // Botón de Cancelación
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    MensajeConfirmacion.mostrarMensaje(context, "Solicitud cancelada");
+                  },
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Colors.red,
+                    side: const BorderSide(color: Colors.red),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                  ),
+                  child: const Text('CANCELAR SOLICITUD', style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Acciones finales
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text("Cerrar", style: TextStyle(color: Colors.grey)),
+                  ),
+                  const SizedBox(width: 15),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      MensajeConfirmacion.mostrarMensaje(context, "Cambios guardados");
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Appcolores.azulUas,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+                    ),
+                    child: const Text("Guardar Cambios"),
+                  ),
+                ],
+              )
             ],
           ),
         ),
       ),
-      actionsPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      actions: [
-        // Botón Cancelar (Cerrar modal)
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text("Cancelar", style: TextStyle(color: Colors.grey)),
-        ),
-        
-        // Botón condicional: Solo en estado REVISIÓN
-        if (puedeCancelarSolicitud)
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.redAccent,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+    );
+  }
+
+  Widget _buildCampoLectura(String label, String valor) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+          const SizedBox(height: 4),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              border: Border.all(color: Colors.grey[300]!),
+              borderRadius: BorderRadius.circular(5)
             ),
-            onPressed: _eliminarSolicitud,
-            child: const Text("Cancelar Solicitud", style: TextStyle(color: Colors.white, fontSize: 12)),
+            child: Text(valor, style: const TextStyle(color: Colors.black54)),
           ),
-
-        // Botón Confirmar Cambios
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Appcolores.azulUas,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          ),
-          onPressed: _confirmarCambios,
-          child: const Text("Confirmar Cambios", style: TextStyle(color: Colors.white)),
-        ),
-      ],
-    );
-  }
-
-  // --- COMPONENTES UI ---
-
-  Widget _buildLabel(String texto) => Padding(
-        padding: const EdgeInsets.only(bottom: 8, top: 10),
-        child: Text(texto, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-      );
-
-  Widget _buildCampoEstatico(TextEditingController controller, IconData icon, {int maxLines = 1}) {
-    return TextFormField(
-      controller: controller,
-      readOnly: true,
-      maxLines: maxLines,
-      decoration: InputDecoration(
-        border: const OutlineInputBorder(),
-        fillColor: Colors.grey[100], 
-        filled: true,
-        prefixIcon: Icon(icon, size: 18),
+        ],
       ),
-      style: const TextStyle(color: Colors.black54, fontSize: 14),
     );
-  }
-
-  Widget _buildCampoDropdown(String label, String? currentVal, List<String> opciones, Function(String?) onChanged) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildLabel(label),
-        DropdownButtonFormField<String>(
-          value: currentVal,
-          isExpanded: true,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            fillColor: Colors.white,
-            filled: true,
-          ),
-          items: opciones.map((e) => DropdownMenuItem(value: e, child: Text(e, style: const TextStyle(fontSize: 14)))).toList(),
-          onChanged: onChanged,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildCampoFecha(String hint, TextEditingController controller) {
-    return TextFormField(
-      controller: controller,
-      readOnly: true,
-      decoration: InputDecoration(
-        prefixIcon: const Icon(Icons.calendar_today, size: 18),
-        border: const OutlineInputBorder(),
-        hintText: hint,
-        fillColor: Colors.white,
-        filled: true,
-      ),
-      onTap: () async {
-        DateTime? picked = await showDatePicker(
-          context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime.now().subtract(const Duration(days: 30)),
-          lastDate: DateTime(2027),
-        );
-        if (picked != null) {
-          setState(() => controller.text = "${picked.day}/${picked.month}/${picked.year}");
-        }
-      },
-    );
-  }
-
-  // --- LÓGICA DE BOTONES ---
-
-  void _confirmarCambios() {
-    // Lógica para actualizar fecha y horario
-    Navigator.pop(context);
-  }
-
-  void _eliminarSolicitud() {
-    // Lógica para cancelar/eliminar la solicitud definitivamente
-    Navigator.pop(context);
   }
 }

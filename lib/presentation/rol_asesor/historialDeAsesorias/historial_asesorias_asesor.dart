@@ -1,9 +1,9 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/shared/tarjeta_solicitud_widget.dart';
+import 'package:asesorias_fic/presentation/rol_asesor/widgets/tarjeta_historial_asesorias_asesor.dart';
 import 'package:flutter/material.dart';
 
-class SolicitudesPendientes extends StatelessWidget {
-  const SolicitudesPendientes({super.key});
+class HistorialAsesoriasAsesor extends StatelessWidget {
+  const HistorialAsesoriasAsesor({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,6 @@ class PantallaResponsiva extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
-
             //contenido
             Expanded(
               child: Container(
@@ -43,22 +42,14 @@ class PantallaResponsiva extends StatelessWidget {
                 child: Column(
                   children: [
                     SeccionArribaPantallaGrande(),
-                    
-                    SizedBox(height: 60,),
+
+                    SizedBox(height: 60),
 
                     Expanded(
-                      
                       child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            TarjetaSolicitudWidget()
-                          ],
-                        ),
-                      )),
-                      
-                      
-
-                    FooterCrearAlumno(),
+                        child: Column(children: [TarjetaHistorialAsesoriasAsesor()]),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -69,7 +60,6 @@ class PantallaResponsiva extends StatelessWidget {
     );
   }
 }
-
 
 class PantallaGrande extends StatelessWidget {
   const PantallaGrande({super.key});
@@ -83,7 +73,6 @@ class PantallaGrande extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
-
             //contenido
             Expanded(
               child: Container(
@@ -95,22 +84,16 @@ class PantallaGrande extends StatelessWidget {
                 child: Column(
                   children: [
                     SeccionArribaPantallaGrande(),
-                    
-                    SizedBox(height: 60,),
+
+                    SizedBox(height: 60),
 
                     Expanded(
-                      
                       child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            TarjetaSolicitudWidget()
-                          ],
-                        ),
-                      )),
-                      
-                      
+                        child: Column(children: [TarjetaHistorialAsesoriasAsesor()]),
+                      ),
+                    ),
 
-                    FooterCrearAlumno(),
+                  
                   ],
                 ),
               ),
@@ -123,49 +106,27 @@ class PantallaGrande extends StatelessWidget {
 }
 
 class SeccionArribaPantallaGrande extends StatelessWidget {
-  const SeccionArribaPantallaGrande({
-    super.key,
-  });
+  const SeccionArribaPantallaGrande({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      
+
       child: Padding(
         padding: const EdgeInsets.only(left: 60.0, top: 20, right: 60.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-        
-            Text("Solicitudes Pendientes", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),),
+            Text(
+              "Historial de Asesorias",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+            ),
 
             const SizedBox(width: 15),
-
-        
           ],
         ),
-      ),
-
-    );
-  }
-}
-
-class FooterCrearAlumno extends StatelessWidget {
-  const FooterCrearAlumno({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(30),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        
       ),
     );
   }

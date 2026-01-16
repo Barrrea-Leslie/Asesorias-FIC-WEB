@@ -43,8 +43,7 @@ class PantallaGrande extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 25),
                   child: SingleChildScrollView(
-                    child: Text("Tarjetas proximamente")
-                     //TarjetaAsesoriasEstudiante()
+                    child: TarjetaAsesoriasEstudiante()
                     ),
                 )
                 )
@@ -80,8 +79,7 @@ class PantallaResponsiva extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 25),
                   child: SingleChildScrollView(
-                    child: Text("Tarjetas proximamente")
-                    //TarjetaAsesoriasEstudiante()
+                    child: TarjetaAsesoriasEstudiante()
                     ),
                 )
                 ),

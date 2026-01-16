@@ -1,4 +1,4 @@
-/* import 'package:asesorias_fic/core/colores.dart';
+import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/presentation/rol_estudiante/asesoriasEnCurso/asesorias_en_curso_estudiante.dart';
 import 'package:asesorias_fic/presentation/rol_estudiante/historialDeAsesorias/historial_de_asesorias.dart';
 import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/solicitar_asesoria.dart';
@@ -181,4 +181,4 @@ class _PaginaBaseEstudianteState extends State<PaginaBaseEstudiante> {
         ),
         );
     }
-} */
+}

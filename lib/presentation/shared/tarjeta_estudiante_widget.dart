@@ -1,6 +1,7 @@
 import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/data/models/estudiantes_model.dart';
 import 'package:asesorias_fic/data/services/estudiantes_service.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/estudiantes/informacion_estudiantes.dart';
 import 'package:flutter/material.dart';
 
 class TarjetaEstudianteWidget extends StatelessWidget {
@@ -45,6 +46,29 @@ class ListaEstudiantesWeb extends StatelessWidget {
   final double anchoTarjeta = 360.0;
   final double alturaTarjeta = 100.0;
 
+  void _abrirModalEdicion(BuildContext context, Estudiantes estudiante) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Dialog( // Cambiado a Dialog simple para controlar mejor el tamaño
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Container(
+            width: 900,
+            height: 590, // Ajustado para que quepa todo el formulario
+            clipBehavior: Clip.antiAlias, // Para que el contenido respete los bordes redondeados
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
+            ),
+            child: InformacionEstudiantes(estudiante: estudiante),
+          ),
+        );
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // Si no hay resultados, mostrar un mensaje
@@ -66,9 +90,7 @@ class ListaEstudiantesWeb extends StatelessWidget {
             runSpacing: 10,
             children: listaEstudiantes.map((estudiante) {
               return GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/informacionEstudiantes', arguments: estudiante);
-                },
+                onTap: () => _abrirModalEdicion(context, estudiante),
                 child: SizedBox(
                   width: anchoTarjeta,
                   height: alturaTarjeta,

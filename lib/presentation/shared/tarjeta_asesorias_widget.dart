@@ -7,6 +7,8 @@ import 'package:asesorias_fic/presentation/rol_administrador/asesoriasEnCurso/ma
 import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.dart';
 import 'package:flutter/material.dart';
 
+import '../rol_administrador/asesoriasEnCurso/informacion_asesorias_en_curso.dart';
+
 class TarjetaAsesoriasWidget extends StatelessWidget {
   const TarjetaAsesoriasWidget({super.key, this.query = ''});
 
@@ -30,10 +32,8 @@ class TarjetaAsesoriasWidget extends StatelessWidget {
         final asesoriasRaw = snapshot.data![0] as List<Asesorias>;
         final estudiantes = snapshot.data![1] as List<Estudiantes>;
 
-        // Mapa para buscar estudiantes por ID rápidamente
         final Map<int, Estudiantes> estudiantesMap = {for (var e in estudiantes) e.id: e};
 
-        // Lógica de Filtrado
         final asesoriasFiltradas = asesoriasRaw.where((ase) {
           final nombreEstudiante = estudiantesMap[ase.idEstudiante]?.nombre.toLowerCase() ?? '';
           final materia = ase.materia.toLowerCase();
@@ -51,8 +51,6 @@ class TarjetaAsesoriasWidget extends StatelessWidget {
   }
 }
 
-
-
 class ListaAsesorias extends StatelessWidget {
   const ListaAsesorias({
     super.key,
@@ -68,129 +66,68 @@ class ListaAsesorias extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final Map<int, Estudiantes> estudiantesPorId = {
       for (var e in listaEstudiantes) e.id: e
     };
     
     return Padding(
-      padding: const EdgeInsets.only(left: 40, right: 40, top: 00),
+      padding: const EdgeInsets.only(left: 40, right: 40, top: 0),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          
-        
           return Wrap(
-      
-              spacing: 20,
-              runSpacing: 10,
-      
-              children: listaAsesorias.map((asesorias) {
-
-                final estudiante = estudiantesPorId[asesorias.idEstudiante];
-      
-                return SizedBox(
-                  width: anchoTarjeta,
-                  height: alturaTarjeta,
-                  child: Card(
-                    color: Appcolores.azulUas,
-                    
+            spacing: 20,
+            runSpacing: 10,
+            children: listaAsesorias.map((asesorias) {
+              final estudiante = estudiantesPorId[asesorias.idEstudiante];
+              return SizedBox(
+                width: anchoTarjeta,
+                height: alturaTarjeta,
+                child: Card(
+                  color: Appcolores.azulUas,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 30, left: 30, right: 30, bottom: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                        
                       children: [
-                    
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 5,
                           children: [
-                    
-/*                             /* Text('Alumno: ${asesorias.nombre}', style: TextStyle(color: Colors.white),),
- */                            Text('Materia: ${asesorias.materia}', style: TextStyle(color: Colors.white),),
-/*                             Text('Fecha: ${asesorias.fecha}', style: TextStyle(color: Colors.white),),
-/*  */                            Text('Horario: ${asesorias.hoario}', style: TextStyle(color: Colors.white),),
- */                            Text('Modalidad: ${asesorias.modalidad}', style: TextStyle(color: Colors.white),), */
-                                Text('Alumno: ${estudiante?.nombre ?? "Estudiante no encontrado"}', style: TextStyle(color: Colors.white),),
-                                Text('Materia: ${asesorias.materia}', style: TextStyle(color: Colors.white)),
-                                Text('Inicio: ${asesorias.fechaInicio}', style: TextStyle(color: Colors.white)),
-                                Text('Horario: ${asesorias.horario}', style: TextStyle(color: Colors.white)),
-                                Text('Modalidad: ${asesorias.modalidad}', style: TextStyle(color: Colors.white)),
+                            Text('Alumno: ${estudiante?.nombre ?? "Estudiante no encontrado"}', style: const TextStyle(color: Colors.white)),
+                            const SizedBox(height: 5),
+                            Text('Materia: ${asesorias.materia}', style: const TextStyle(color: Colors.white)),
+                            const SizedBox(height: 5),
+                            Text('Inicio: ${asesorias.fechaInicio}', style: const TextStyle(color: Colors.white)),
+                            const SizedBox(height: 5),
+                            Text('Horario: ${asesorias.horario}', style: const TextStyle(color: Colors.white)),
+                            const SizedBox(height: 5),
+                            Text('Modalidad: ${asesorias.modalidad}', style: const TextStyle(color: Colors.white)),
                           ],
-                                
                         ),
-                    
-                        const SizedBox(height: 20,),
-                    
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            spacing: 20,
-                            children: [
-                              BotonInfo(asesoria: asesorias,),
-                              BotonCompletada(),
-                    
-                            ],
-                    
-                        ),
-
-                        const SizedBox(height: 13,),
-
+                        const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            BotonMaterial(nombreAsesor: asesorias.materia,)
+                            BotonInfo(asesoria: asesorias),
+                            const SizedBox(width: 20),
+                            const BotonCompletada(),
+                          ],
+                        ),
+                        const SizedBox(height: 13),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            BotonMaterial(nombreAsesor: asesorias.materia)
                           ],
                         )
-                    
                       ],
-                    
                     ),
-                  )
                   ),
-                );
-      
-              }).toList(),
-      
-            );
-      
-        
-        
+                ),
+              );
+            }).toList(),
+          );
         },
-      
       ),
-    );
-  }
-}
-
-class BotonMaterial extends StatelessWidget {
-  final String nombreAsesor;
-  const BotonMaterial({
-    super.key,
-    required this.nombreAsesor
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-    onPressed: () {
-      showDialog(
-          context: context,
-          builder: (context) => MaterialAdicionalAsesorias(nombreAsesor: nombreAsesor),
-        );
-    },
-    
-    style: ElevatedButton.styleFrom(
-      minimumSize: Size(30, 35),
-      backgroundColor: Appcolores.amarilloUas,
-      foregroundColor: Colors.white,
-      elevation: 3,
-
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(5)
-      )
-    ),
-
-    child: Text('Material adicional'),
     );
   }
 }
@@ -206,101 +143,108 @@ class BotonInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-    onPressed: () {
-      Navigator.pushNamed(context, "/informacionAsesoriaEnCurso", arguments: asesoria);
-    },
-    
-    style: ElevatedButton.styleFrom(
-      minimumSize: Size(30, 35),
-      backgroundColor: Appcolores.azulClaro,
-      foregroundColor: Colors.white,
-      elevation: 3,
+      onPressed: () {
+        // CAMBIO: Ahora abre un Dialog en lugar de navegar
+        showDialog(
+          context: context,
+          builder: (context) => InformacionAsesoriaEnCurso(asesoria: asesoria),
+        );
+      },
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(30, 35),
+        backgroundColor: Appcolores.azulClaro,
+        foregroundColor: Colors.white,
+        elevation: 3,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
+      ),
+      child: const Text('Informacion'),
+    );
+  }
+}
 
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(5)
-      )
-    ),
+// ... BotonMaterial, BotonCompletada y AlertaCompletar se mantienen igual ...
+class BotonMaterial extends StatelessWidget {
+  final String nombreAsesor;
+  const BotonMaterial({super.key, required this.nombreAsesor});
 
-    child: Text('Informacion'),
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (context) => MaterialAdicionalAsesorias(nombreAsesor: nombreAsesor),
+        );
+      },
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(30, 35),
+        backgroundColor: Appcolores.amarilloUas,
+        foregroundColor: Colors.white,
+        elevation: 3,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
+      ),
+      child: const Text('Material adicional'),
     );
   }
 }
 
 class BotonCompletada extends StatelessWidget {
-  const BotonCompletada({
-    super.key,
-  });
+  const BotonCompletada({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-    onPressed: () {
-      showDialog(context: context, builder: (BuildContext context){
-        return AlertaCompletar();
-      });
-    },
-    
-    style: ElevatedButton.styleFrom(
-      minimumSize: Size(30, 35),
-      backgroundColor: Appcolores.verdeClaro,
-      foregroundColor: Colors.white,
-      elevation: 3,
-
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(5)
-      )
-    ),
-
-    child: Text('Completada'),
+      onPressed: () {
+        showDialog(context: context, builder: (BuildContext context) => const AlertaCompletar());
+      },
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(30, 35),
+        backgroundColor: Appcolores.verdeClaro,
+        foregroundColor: Colors.white,
+        elevation: 3,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
+      ),
+      child: const Text('Completada'),
     );
   }
 }
 
 class AlertaCompletar extends StatelessWidget {
-  const AlertaCompletar({
-    super.key,
-  });
+  const AlertaCompletar({super.key});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Confirmacion"),
-      content: Text("Esta seguro de completar la asesoria?"),
-      contentPadding: EdgeInsets.all(30),
+      title: const Text("Confirmacion"),
+      content: const Text("Esta seguro de completar la asesoria?"),
+      contentPadding: const EdgeInsets.all(30),
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       actionsAlignment: MainAxisAlignment.center,
       actions: [
-        
         TextButton(
           style: TextButton.styleFrom(
             foregroundColor: Colors.white,
             backgroundColor: const Color.fromARGB(255, 143, 143, 143),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-            textStyle: TextStyle(fontWeight: FontWeight.bold)
           ),
-          onPressed: () {
-              Navigator.of(context).pop();
-            },
-          child: Text("Cancelar")),
-    
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text("Cancelar")
+        ),
         TextButton(
           style: TextButton.styleFrom(
             foregroundColor: Colors.white,
             backgroundColor: const Color.fromARGB(255, 74, 149, 86),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-            textStyle: TextStyle(fontWeight: FontWeight.bold)
           ),
           onPressed: () {
             Navigator.of(context).pop();
-
             MensajeConfirmacion.mostrarMensaje(context, "Se completo la tarea correctamente");
-
           },
-          child: Text("Aceptar")),
-        
+          child: const Text("Aceptar")
+        ),
       ],
     );
   }

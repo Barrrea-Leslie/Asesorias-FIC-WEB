@@ -5,7 +5,7 @@
         "materia": "Programacion",
         "fechaInicio": "25/SEP/2025",
         "fechaFin": "25/OCT/2025",
-        "horario": "18:00 - 19:00",
+        "horario": "10:00 - 11:00 AM",
         "modalidad": "Virtual",
         "razon": "Materia reprobada",
         "esAsesor": 1,
@@ -18,7 +18,7 @@
         "materia": "Base de Datos",
         "fechaInicio": "25/SEP/2025",
         "fechaFin": "25/OCT/2025",
-        "horario": "18:00 - 19:00",
+        "horario": "6:00 - 7:00 PM",
         "modalidad": "Virtual",
         "razon": "Dudas en la  materia",
         "esAsesor": 2,
@@ -31,10 +31,10 @@
         "materia": "Matematicas discretas",
         "fechaInicio": "25/SEP/2025",
         "fechaFin": "25/OCT/2025",
-        "horario": "18:00 - 19:00",
-        "modalidad": "Virtual",
+        "horario": "12:00 - 1:00 PM",
+        "modalidad": "Precencial",
         "razon": "Dudas en la  materia",
-        "esAsesor": 1,
+        "esAsesor": 3,
         "observaciones": "asdsd"
     }
 ]

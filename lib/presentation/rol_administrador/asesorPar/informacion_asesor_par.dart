@@ -4,7 +4,9 @@ import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.d
 import 'package:flutter/material.dart';
 
 class InformacionAsesoresPar extends StatefulWidget {
-  const InformacionAsesoresPar({super.key});
+  final AsesorPar? asesor;
+
+  const InformacionAsesoresPar({super.key, this.asesor});
 
   @override
   State<InformacionAsesoresPar> createState() => _InformacionAsesoresParState();
@@ -14,150 +16,194 @@ class _InformacionAsesoresParState extends State<InformacionAsesoresPar> {
   final _editarformKey = GlobalKey<FormState>();
   
   late TextEditingController nombreController;
+  late TextEditingController cuentaController;
+  late TextEditingController contraController;
   late TextEditingController correoController;
   late TextEditingController telefonoController;
+  late TextEditingController promedioController;
+
+  String? _selectedGrupo;
+  String? _selectedLicenciatura;
+
+  final List<String> grupos = ['1-1', '1-2', '2-1', '2-2', '3-1', '3-2', '4-1', '4-2', '4-3'];
+  
+  final List<String> licenciaturas = [
+    "Licenciatura en informatica",
+    "Licenciatura en informatica virtual",
+    "Licenciatura en ingenieria en ciencias de datos",
+    "Licenciatura en ITSE"
+  ];
 
   List<String> materiasSeleccionadas = [];
   List<String> horariosSeleccionados = [];
 
-  bool _isInitialized = false;
-  late AsesorPar asesorOriginal;
-
-  final List<String> catalogoMaterias = [
-    'Programacion I', 'Programacion II', 'Principios de programacion', 
-    'Programacion Web', 'Bases de Datos', 'Estructura de Datos'
-  ];
-
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!_isInitialized) {
-      final args = ModalRoute.of(context)!.settings.arguments;
-      if (args is AsesorPar) {
-        asesorOriginal = args;
-        nombreController = TextEditingController(text: asesorOriginal.nombre);
-        correoController = TextEditingController(text: asesorOriginal.correoInstitucional);
-        telefonoController = TextEditingController(text: asesorOriginal.numeroTelefono);
-        materiasSeleccionadas = List.from(asesorOriginal.materiasAsesora);
-        horariosSeleccionados = List.from(asesorOriginal.horariosAsesora);
-      }
-      _isInitialized = true;
+  void initState() {
+    super.initState();
+    nombreController = TextEditingController(text: widget.asesor?.nombre ?? "");
+    cuentaController = TextEditingController(text: widget.asesor?.numeroCuenta ?? "");
+    contraController = TextEditingController(text: widget.asesor?.contrasena ?? "");
+    correoController = TextEditingController(text: widget.asesor?.correoInstitucional ?? "");
+    telefonoController = TextEditingController(text: widget.asesor?.numeroTelefono ?? "");
+    promedioController = TextEditingController(text: widget.asesor?.promedio.toString() ?? "");
+
+    // --- LÓGICA DE SEGURIDAD PARA DROPDOWNS ---
+    // Verificamos si el valor que viene de la BD existe en nuestras listas. 
+    // Si no existe, lo ponemos como null para evitar el error de "Assertion failed".
+    
+    if (grupos.contains(widget.asesor?.grupo)) {
+      _selectedGrupo = widget.asesor?.grupo;
+    } else {
+      _selectedGrupo = null; 
     }
+
+    if (licenciaturas.contains(widget.asesor?.licenciatura)) {
+      _selectedLicenciatura = widget.asesor?.licenciatura;
+    } else {
+      _selectedLicenciatura = null;
+    }
+
+    materiasSeleccionadas = List.from(widget.asesor?.materiasAsesora ?? []);
+    horariosSeleccionados = List.from(widget.asesor?.horariosAsesora ?? []);
   }
 
   @override
   void dispose() {
     nombreController.dispose();
+    cuentaController.dispose();
+    contraController.dispose();
     correoController.dispose();
     telefonoController.dispose();
+    promedioController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('Información Asesor Par', style: TextStyle(fontWeight: FontWeight.bold)),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Center(
-          child: SizedBox(
-            width: 700,
+    return Column(
+      children: [
+        _buildHeader(),
+        const Divider(height: 1),
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
             child: Form(
               key: _editarformKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildLabel("Nombre completo"),
-                  _buildTextField(nombreController, "Ej. Juan Pérez"),
-                  
-                  const SizedBox(height: 20),
-                  _buildLabel("Correo institucional"),
-                  _buildTextField(correoController, "correo@uas.edu.mx", isEmail: true),
-            
-                  const SizedBox(height: 20),
-                  _buildLabel("Teléfono"),
-                  _buildTextField(telefonoController, "6671234567", isPhone: true),
-            
-                  const SizedBox(height: 30),
-            
-                  _buildHeaderSeccion(
-                    titulo: "Materias que asesora",
-                    onAdd: () => _abrirModalMaterias(),
-                  ),
-                  _buildListaItems(materiasSeleccionadas),
-            
-                  const SizedBox(height: 30),
-            
-                  _buildHeaderSeccion(
-                    titulo: "Horarios de asesoría",
-                    onAdd: () => _seleccionarHorario(),
-                  ),
-                  _buildListaItems(horariosSeleccionados),
-            
-                  const SizedBox(height: 50),
-            
-                  Center(
-                    child: SizedBox(
-                      
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                        backgroundColor: Appcolores.azulUas,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 18),
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                      ),
-                        onPressed: () {
-                          if (_editarformKey.currentState!.validate()) {
-                            final actualizado = asesorOriginal.copyWith(
-                              nombre: nombreController.text,
-                              correoInstitucional: correoController.text,
-                              numeroTelefono: telefonoController.text,
-                              materiasAsesora: materiasSeleccionadas,
-                              horariosAsesora: horariosSeleccionados,
-                            );
-                            Navigator.pop(context, actualizado);
-                            MensajeConfirmacion.mostrarMensaje(context, "Se aplicaron los cambios correctamente.");
-                          }
-                        },
-                        child: const Text("APLICAR CAMBIOS", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              child: LayoutBuilder(builder: (context, constraints) {
+                bool isMobile = constraints.maxWidth < 700;
+                return isMobile 
+                  ? Column(children: [_buildColumna1(), const SizedBox(height: 30), _buildColumna2()])
+                  : Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(child: _buildColumna1()),
+                        const SizedBox(width: 50),
+                        Expanded(child: _buildColumna2()),
+                      ],
+                    );
+              }),
             ),
           ),
         ),
-      ),
-      
+        const Divider(height: 1),
+        _buildActionButtons(),
+      ],
     );
   }
 
-  // --- MISMOS MÉTODOS DE UI ---
+  // --- SUB-WIDGETS ---
+
+  Widget _buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text('Información Asesor Par', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+          IconButton(icon: const Icon(Icons.close), onPressed: () => Navigator.pop(context)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildColumna1() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildLabel("Nombre completo"), _buildTextField(nombreController, "Ej. Elias Cuadras"),
+        const SizedBox(height: 20),
+        _buildLabel("Número de Cuenta"), _buildTextField(cuentaController, "19512348"),
+        const SizedBox(height: 20),
+        _buildLabel("Contraseña"), _buildTextField(contraController, "********", isPassword: true),
+        const SizedBox(height: 20),
+        _buildLabel("Correo institucional"), _buildTextField(correoController, "correo@info.uas.edu.mx"),
+        const SizedBox(height: 20),
+        _buildLabel("Teléfono"), _buildTextField(telefonoController, "6671234567"),
+      
+      ],
+    );
+  }
+
+  Widget _buildColumna2() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        
+        
+        _buildCampoDropdown(
+          'Licenciatura', _selectedLicenciatura, licenciaturas, 
+          (val) => setState(() => _selectedLicenciatura = val)
+        ),
+        const SizedBox(height: 20),
+
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(child: _buildCampoDropdown('Grupo', _selectedGrupo, grupos, (val) => setState(() => _selectedGrupo = val))),
+            const SizedBox(width: 15),
+            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [_buildLabel("Promedio"), _buildTextField(promedioController, "9.8")])),
+          ],
+        ),
+        const SizedBox(height: 30),
+        _buildHeaderSeccion(titulo: "Materias que asesora", onAdd: () {}),
+        _buildListaItems(materiasSeleccionadas),
+      ],
+    );
+  }
+
   Widget _buildLabel(String texto) => Padding(
-    padding: const EdgeInsets.only(bottom: 5),
-    child: Text(texto, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+    padding: const EdgeInsets.only(bottom: 8),
+    child: Text(texto, style: const TextStyle(fontWeight: FontWeight.bold)),
   );
 
-  Widget _buildTextField(TextEditingController controller, String hint, {bool isEmail = false, bool isPhone = false}) {
+  Widget _buildTextField(TextEditingController controller, String hint, {bool isPassword = false}) {
     return TextFormField(
       controller: controller,
-      keyboardType: isEmail ? TextInputType.emailAddress : (isPhone ? TextInputType.phone : TextInputType.text),
+      obscureText: isPassword,
       decoration: InputDecoration(
-        hintText: hint,
-        filled: true,
-        fillColor: Colors.grey[50],
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        hintText: hint, filled: true, fillColor: Colors.grey[50],
+        border: const OutlineInputBorder(),
       ),
-      validator: (val) => val == null || val.isEmpty ? "Campo obligatorio" : null,
+    );
+  }
+
+  Widget _buildCampoDropdown(String label, String? currentVal, List<String> opciones, Function(String?) onChanged) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildLabel(label),
+        DropdownButtonFormField<String>(
+          isExpanded: true,
+          value: currentVal,
+          decoration: InputDecoration(
+            filled: true, fillColor: Colors.grey[50],
+            border: OutlineInputBorder(),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+          ),
+          items: opciones.map((e) => DropdownMenuItem(value: e, child: Text(e, overflow: TextOverflow.ellipsis))).toList(),
+          onChanged: onChanged,
+        ),
+      ],
     );
   }
 
@@ -166,12 +212,8 @@ class _InformacionAsesoresParState extends State<InformacionAsesoresPar> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(titulo, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        ElevatedButton.icon(
-          onPressed: onAdd,
-          icon: const Icon(Icons.add, size: 18),
-          label: const Text("Añadir"),
-          style: ElevatedButton.styleFrom(backgroundColor: Appcolores.verdeClaro, foregroundColor: Colors.white, elevation: 0),
-        ),
+        ElevatedButton.icon(onPressed: onAdd, icon: const Icon(Icons.add, size: 18), label: const Text("Añadir"),
+          style: ElevatedButton.styleFrom(backgroundColor: Appcolores.verdeClaro, foregroundColor: Colors.white)),
       ],
     );
   }
@@ -179,55 +221,31 @@ class _InformacionAsesoresParState extends State<InformacionAsesoresPar> {
   Widget _buildListaItems(List<String> lista) {
     return Column(
       children: lista.map((item) => ListTile(
-        title: Text(item),
-        trailing: const Text("eliminar", style: TextStyle(color: Colors.red)),
+        title: Text(item, style: const TextStyle(fontSize: 14)),
+        trailing: const Icon(Icons.delete_outline, color: Colors.red, size: 20),
         onTap: () => setState(() => lista.remove(item)),
       )).toList(),
     );
   }
 
-  void _abrirModalMaterias() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        String filtro = "";
-        return StatefulBuilder(builder: (context, setModalState) {
-          final sugerencias = catalogoMaterias.where((m) => m.toLowerCase().contains(filtro.toLowerCase())).toList();
-          return AlertDialog(
-            title: const Text("Buscar Materia"),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: "Nombre de materia"),
-                  onChanged: (val) => setModalState(() => filtro = val),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 200, width: 300,
-                  child: ListView.builder(
-                    itemCount: sugerencias.length,
-                    itemBuilder: (ctx, i) => ListTile(
-                      title: Text(sugerencias[i]),
-                      onTap: () {
-                        setState(() => materiasSeleccionadas.add(sugerencias[i]));
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                )
-              ],
-            ),
-          );
-        });
-      },
+  Widget _buildActionButtons() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Appcolores.azulUas, padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 18)),
+            onPressed: () {
+              if (_editarformKey.currentState!.validate()) {
+                Navigator.pop(context);
+                MensajeConfirmacion.mostrarMensaje(context, "Cambios aplicados con éxito.");
+              }
+            },
+            child: const Text('CONFIRMAR CAMBIOS', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
     );
-  }
-
-  void _seleccionarHorario() async {
-    final TimeOfDay? time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
-    if (time != null) {
-      setState(() => horariosSeleccionados.add(time.format(context)));
-    }
   }
 }

@@ -27,6 +27,9 @@ class MaterialAsesorModal extends StatelessWidget {
           Text("Material de $nombreAsesor", 
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        SizedBox(height: 15,),
+          const Divider(height: 1),
+        
         ],
       ),
       content: SizedBox(

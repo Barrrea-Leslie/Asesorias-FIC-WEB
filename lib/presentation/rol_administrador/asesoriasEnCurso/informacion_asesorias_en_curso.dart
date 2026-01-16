@@ -5,43 +5,15 @@ import 'package:asesorias_fic/data/services/estudiantes_service.dart';
 import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.dart';
 import 'package:flutter/material.dart';
 
-// --- WIDGET RESPONSIVE LAYOUT ---
-class ResponsiveLayout extends StatelessWidget {
-  final Widget mobileScaffold;
-  final Widget tabletScaffold;
-  final Widget desktopScaffold;
-
-  const ResponsiveLayout({
-    super.key,
-    required this.mobileScaffold,
-    required this.tabletScaffold,
-    required this.desktopScaffold,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth < 650) {
-        return mobileScaffold;
-      } else if (constraints.maxWidth < 1100) {
-        return tabletScaffold;
-      } else {
-        return desktopScaffold;
-      }
-    });
-  }
-}
-
 class InformacionAsesoriaEnCurso extends StatefulWidget {
-  const InformacionAsesoriaEnCurso({super.key});
+  final Asesorias asesoria; // Recibe la asesoría directamente
+  const InformacionAsesoriaEnCurso({super.key, required this.asesoria});
 
   @override
-  State<InformacionAsesoriaEnCurso> createState() =>
-      _InformacionAsesoriaEnCursoState();
+  State<InformacionAsesoriaEnCurso> createState() => _InformacionAsesoriaEnCursoState();
 }
 
-class _InformacionAsesoriaEnCursoState
-    extends State<InformacionAsesoriaEnCurso> {
+class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso> {
   late Future<List<Estudiantes>> _estudiantesFuture;
 
   late TextEditingController _nombreController;
@@ -97,98 +69,93 @@ class _InformacionAsesoriaEnCursoState
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)?.settings.arguments;
-
-    if (args == null || args is! Asesorias) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Error de datos')),
-        body: const Center(child: Text('No se recibió la información.')),
-      );
-    }
-
-    final asesoria = args;
-
-    return FutureBuilder<List<Estudiantes>>(
-      future: _estudiantesFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
-        }
-        if (snapshot.hasError || !snapshot.hasData) {
-          return const Scaffold(body: Center(child: Text("Error al cargar datos")));
-        }
-
-        final estudiante = snapshot.data!.firstWhere(
-          (e) => e.id == asesoria.idEstudiante,
-          orElse: () => snapshot.data!.first,
-        );
-
-        _initializeDataOnce(asesoria, estudiante);
-
-        // APLICACIÓN DEL LAYOUT RESPONSIVO
-        return ResponsiveLayout(
-          mobileScaffold: _buildMainScaffold(context, isMobile: true),
-          tabletScaffold: _buildMainScaffold(context, isMobile: false),
-          desktopScaffold: _buildMainScaffold(context, isMobile: false),
-        );
-      },
-    );
-  }
-
-  // ESTRUCTURA PRINCIPAL DE LA PÁGINA
-  Widget _buildMainScaffold(BuildContext context, {required bool isMobile}) {
-    return Scaffold(
+    return Dialog(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        title: const Text('Información Asesoría',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.pop(context),
-          ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        constraints: const BoxConstraints(maxWidth: 1000),
+        child: FutureBuilder<List<Estudiantes>>(
+          future: _estudiantesFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const SizedBox(height: 300, child: Center(child: CircularProgressIndicator()));
+            }
+            if (snapshot.hasError || !snapshot.hasData) {
+              return const SizedBox(height: 100, child: Center(child: Text("Error al cargar datos")));
+            }
+
+            final estudiante = snapshot.data!.firstWhere(
+              (e) => e.id == widget.asesoria.idEstudiante,
+              orElse: () => snapshot.data!.first,
+            );
+
+            _initializeDataOnce(widget.asesoria, estudiante);
+
+            return LayoutBuilder(builder: (context, constraints) {
+              bool isMobile = constraints.maxWidth < 700;
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Header del Modal
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Información Asesoría',
+                            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20)),
+                        IconButton(icon: const Icon(Icons.close), onPressed: () => Navigator.pop(context)),
+                      ],
+                    ),
+                  ),
+                  const Divider(height: 1),
+                  // Cuerpo con Scroll
+                  Flexible(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                      child: isMobile ? _buildMobileLayout() : _buildDesktopLayout(),
+                    ),
+                  ),
+                  const Divider(height: 1),
+                  // Footer con Botón
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [_buildBotonAplicar(context)],
+                    ),
+                  )
+                ],
+              );
+            });
+          },
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50,),
-        child: Center(
-          child: Container(
-            constraints: BoxConstraints(maxWidth: isMobile ? double.infinity : 1000),
-            child: isMobile ? _buildMobileLayout() : _buildDesktopLayout(),
-          ),
-        ),
-      ),
-      floatingActionButton: _buildBotonAplicar(context),
     );
   }
 
-  // DISEÑO PARA ESCRITORIO (2 COLUMNAS)
   Widget _buildDesktopLayout() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(child: _buildColumnaIzquierda()),
-        const SizedBox(width: 60),
+        const SizedBox(width: 50),
         Expanded(child: _buildColumnaDerecha()),
       ],
     );
   }
 
-  // DISEÑO PARA MÓVIL (1 COLUMNA)
   Widget _buildMobileLayout() {
     return Column(
       children: [
         _buildColumnaIzquierda(),
+        const SizedBox(height: 20),
         _buildColumnaDerecha(),
       ],
     );
   }
 
-  // COLUMNA 1: DATOS PERSONALES Y MATERIA
   Widget _buildColumnaIzquierda() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,7 +177,6 @@ class _InformacionAsesoriaEnCursoState
     );
   }
 
-  // COLUMNA 2: DETALLES DE ASESORÍA Y EVIDENCIA
   Widget _buildColumnaDerecha() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,8 +187,7 @@ class _InformacionAsesoriaEnCursoState
         _buildCampoDropdown('Horario', _selectedHorario,
             ['07:00 - 08:00', '13:00 - 14:00', '18:00 - 19:00'],
             (val) => setState(() => _selectedHorario = val)),
-        const Text('Periodo de Asesoría',
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        const Text('Periodo de Asesoría', style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         Row(
           children: [
@@ -243,34 +208,28 @@ class _InformacionAsesoriaEnCursoState
           label: const Text('ADJUNTAR EVIDENCIA (FOTO/PDF)'),
           style: TextButton.styleFrom(foregroundColor: Appcolores.azulUas),
         ),
-        const SizedBox(height: 100), // Espacio para no chocar con el botón flotante
       ],
     );
   }
 
-  // BOTÓN FLOTANTE FIJO
   Widget _buildBotonAplicar(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 10, bottom: 10),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Appcolores.azulUas,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 18),
-          elevation: 5,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        ),
-        onPressed: () {
-          MensajeConfirmacion.mostrarMensaje(context, "Cambios aplicados correctamente");
-          Navigator.pop(context);
-        },
-        child: const Text('APLICAR CAMBIOS', style: TextStyle(fontWeight: FontWeight.bold)),
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Appcolores.azulUas,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 18),
+        elevation: 5,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
+      onPressed: () {
+        MensajeConfirmacion.mostrarMensaje(context, "Cambios aplicados correctamente");
+        Navigator.pop(context);
+      },
+      child: const Text('APLICAR CAMBIOS', style: TextStyle(fontWeight: FontWeight.bold)),
     );
   }
 
-  // --- WIDGETS AUXILIARES ---
-
+  // --- WIDGETS AUXILIARES (Sin cambios de diseño) ---
   Widget _buildCampoTexto(String label, TextEditingController controller) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

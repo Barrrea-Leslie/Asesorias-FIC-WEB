@@ -1,11 +1,12 @@
 [
     {
         "id": 1,
-        "nombre": "Jenifer Guadalupe Tizoc Lopez",
+        "nombre": "Elias Cuadras Rodriguez",
         "numeroCuenta": "19512348",
-        "licenciatura": "Informatica",
-        "grupo": "4-3",
-        "correoInstitucional": "jg.tizoc22@info.uas.edu.mx",
+        "contrasena": "Daou123",
+        "licenciatura": "Licenciatura en informatica",
+        "grupo": "4-1",
+        "correoInstitucional": "ec.cuadras22@info.uas.edu.mx",
         "numeroTelefono": "6672136911",
         "promedio": 9.8,
         "materiasAsesora": [
@@ -14,32 +15,34 @@
             "Web"
         ],
         "horariosAsesora": [
-            "18:00 - 19:00",
-            "11:00 - 12:00"
+            "9:00 - 10:00 AM",
+            "11:00 - 12:00 PM"
         ]
     },
     {
         "id": 2,
-        "nombre": "Luis Fernando Velazquez Araujo",
-        "numeroCuenta": "19519958",
-        "licenciatura": "Informatica",
-        "grupo": "4-1",
-        "correoInstitucional": "lf.velazquez22@info.uas.edu.mx",
+        "nombre": "Norma Sarahi Vegas Sauceda ",
+        "numeroCuenta": "20381378",
+        "contrasena": "Offroad456",
+        "licenciatura": "Licenciatura en informatica",
+        "grupo": "2-1",
+        "correoInstitucional": "nm.vegaz22@info.uas.edu.mx",
         "numeroTelefono": "6672136911",
         "promedio": 10,
         "materiasAsesora": [
             "Programacion"
         ],
         "horariosAsesora": [
-            "18:00 - 19:00",
-            "11:00 - 12:00"
+            "11:00 - 12:00 PM",
+            "12:00 - 13:00 PM"
         ]
     },
     {
         "id": 3,
-        "nombre": "Jose Angel Astorga Mejia",
+        "nombre": "Derek Benjamin Cruz Guebara",
         "numeroCuenta": "19519958",
-        "licenciatura": "Informatica",
+        "contrasena": "Daou345",
+        "licenciatura": "Licenciatura en informatica",
         "grupo": "4-3",
         "correoInstitucional": "ja.astorga22@info.uas.edu.mx",
         "numeroTelefono": "6672136911",
@@ -48,34 +51,18 @@
             "Base de Datos"
         ],
         "horariosAsesora": [
-            "18:00 - 19:00",
-            "11:00 - 12:00"
+            "12:00 - 1:00 PM",
+            "1:00 - 2:00 PM"
         ]
     },
     {
         "id": 4,
-        "nombre": "Leslie Mayram Barrera Rdoriguez",
-        "numeroCuenta": "19519958",
-        "licenciatura": "Informatica",
-        "grupo": "4-1",
-        "correoInstitucional": "lm.barrera22@info.uas.edu.mx",
-        "numeroTelefono": "6672136911",
-        "promedio": 9.8,
-        "materiasAsesora": [
-            "Web"
-        ],
-        "horariosAsesora": [
-            "18:00 - 19:00",
-            "11:00 - 12:00"
-        ]
-    },
-    {
-        "id": 5,
-        "nombre": "Crisoforo Ahuelican Ahuejote",
-        "numeroCuenta": "19519958",
-        "licenciatura": "Informatica",
-        "grupo": "4-1",
-        "correoInstitucional": "lf.velazquez22@info.uas.edu.mx",
+        "nombre": "Josue Manuel Medina Lopez",
+        "numeroCuenta": "19518934",
+        "contrasena": "Dao123",
+        "licenciatura": "Licenciatura en informatica",
+        "grupo": "3-1",
+        "correoInstitucional": "jm.medina22@info.uas.edu.mx",
         "numeroTelefono": "6672136911",
         "promedio": 10,
         "materiasAsesora": [
@@ -83,8 +70,8 @@
             "Base de Datos"
         ],
         "horariosAsesora": [
-            "18:00 - 19:00",
-            "11:00 - 12:00"
+            "7:00 - 8:00 AM",
+            "11:00 - 12:00 PM"
         ]
     }
 ]

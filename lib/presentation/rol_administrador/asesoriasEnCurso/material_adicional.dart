@@ -19,6 +19,7 @@ class MaterialAdicionalAsesorias extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       title: Column(
         children: [
@@ -27,6 +28,8 @@ class MaterialAdicionalAsesorias extends StatelessWidget {
           Text("Material de $nombreAsesor", 
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          SizedBox(height: 15,),
+          const Divider(height: 1),
         ],
       ),
       content: SizedBox(
@@ -37,6 +40,7 @@ class MaterialAdicionalAsesorias extends StatelessWidget {
           itemBuilder: (context, index) {
             final material = materialesSimulados[index];
             return Card(
+              color: const Color.fromARGB(203, 255, 255, 255),
               margin: const EdgeInsets.symmetric(vertical: 5),
               child: ListTile(
                 leading: Icon(

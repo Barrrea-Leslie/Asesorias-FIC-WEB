@@ -190,7 +190,7 @@ class FooterCrearAlumno extends StatelessWidget {
                     backgroundColor: Colors.white,
                     content: Container(
                       width: 900,
-                      height: 600,
+                      height: 595,
                       color: Colors.white,
                       child: const CrearEstudiantes(),
                     ),

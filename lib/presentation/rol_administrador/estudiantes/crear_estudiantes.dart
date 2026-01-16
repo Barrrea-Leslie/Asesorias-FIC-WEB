@@ -17,6 +17,7 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
   // Controladores
   final TextEditingController nombreController = TextEditingController();
   final TextEditingController cuentaController = TextEditingController();
+  final TextEditingController contraController = TextEditingController();
   final TextEditingController correoController = TextEditingController();
   final TextEditingController telefonoController = TextEditingController();
   final TextEditingController promedioController = TextEditingController();
@@ -25,7 +26,12 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
   String? _selectedLicenciatura;
   String? _selectedGrupo;
 
-  final List<String> licenciaturas = ['Informática', 'Ing. en Sistemas', 'Software'];
+  final List<String> licenciaturas = [
+    "Licenciatura en informatica",
+    "Licenciatura en informatica virtual",
+    "Licenciatura en ingenieria en ciencias de datos",
+    "Licenciatura en ITSE"
+  ];
   final List<String> grupos = ['1-1', '1-2', '2-1', '2-2', '3-1', '3-2', '4-1', '4-2', '4-3'];
 
   void _guardarEstudiante() async {
@@ -41,6 +47,7 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
         id: DateTime.now().millisecondsSinceEpoch,
         nombre: nombreController.text,
         numeroCuenta: cuentaController.text,
+        contrasena: contraController.text,
         licenciatura: _selectedLicenciatura!,
         grupo: _selectedGrupo!,
         correoInstitucional: correoController.text,
@@ -63,35 +70,53 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        title: const Text('Crear Nuevo Estudiante', 
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-        child: Center(
-          child: Container(
-            constraints: const BoxConstraints(maxWidth: 1000),
-            child: Form(
-              key: _formKey,
-              child: LayoutBuilder(builder: (context, constraints) {
-                bool isMobile = constraints.maxWidth < 700;
-                return isMobile 
-                    ? _buildFormContent(isMobile: true) 
-                    : _buildFormContent(isMobile: false);
-              }),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // --- ENCABEZADO IGUAL A ASESOR PAR ---
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Registrar Nuevo Estudiante',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close, color: Colors.black),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
             ),
-          ),
+            const Divider(height: 1),
+
+            // --- CUERPO DEL FORMULARIO ---
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                child: Center(
+                  child: Container(
+                    constraints: const BoxConstraints(maxWidth: 1000),
+                    child: Form(
+                      key: _formKey,
+                      child: LayoutBuilder(builder: (context, constraints) {
+                        bool isMobile = constraints.maxWidth < 700;
+                        return _buildFormContent(isMobile: isMobile);
+                      }),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            
+            const Divider(height: 1),
+            // --- BARRA INFERIOR CON BOTÓN A LA DERECHA ---
+            _buildBottomBar(),
+          ],
         ),
       ),
-      bottomNavigationBar: _buildBottomBar(),
     );
   }
 
@@ -100,28 +125,30 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildLabel("Nombre Completo"),
-        _buildTextField(nombreController, "Ej. Luis Fernando Velázquez"),
+        _buildTextField(nombreController, ""),
         const SizedBox(height: 20),
         
         _buildLabel("Número de Cuenta"),
-        _buildTextField(cuentaController, "19519958"),
+        _buildTextField(cuentaController, ""),
+        const SizedBox(height: 20),
+
+        _buildLabel("Contraseña"),
+        _buildTextField(contraController, "", isPassword: true),
         const SizedBox(height: 20),
 
         _buildCampoDropdown('Licenciatura', _selectedLicenciatura, licenciaturas, 
             (val) => setState(() => _selectedLicenciatura = val)),
-
-        _buildCampoDropdown('Grupo', _selectedGrupo, grupos, 
-            (val) => setState(() => _selectedGrupo = val)),
       ],
     );
 
     final columna2 = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        
-        
+        _buildCampoDropdown('Grupo', _selectedGrupo, grupos, 
+            (val) => setState(() => _selectedGrupo = val)),
+
         _buildLabel("Promedio"),
-        _buildTextField(promedioController, "10.0", isNumber: true),
+        _buildTextField(promedioController, "", isNumber: true),
         const SizedBox(height: 20),
 
         _buildLabel("Correo Institucional"),
@@ -129,17 +156,20 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
         const SizedBox(height: 20),
 
         _buildLabel("Teléfono"),
-        _buildTextField(telefonoController, "6672136911", isPhone: true),
+        _buildTextField(telefonoController, "", isPhone: true),
       ],
     );
 
     return isMobile 
       ? Column(children: [columna1, columna2]) 
-      : Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Expanded(child: columna1),
-          const SizedBox(width: 50),
-          Expanded(child: columna2),
-        ]);
+      : Row(
+          crossAxisAlignment: CrossAxisAlignment.start, 
+          children: [
+            Expanded(child: columna1),
+            const SizedBox(width: 50),
+            Expanded(child: columna2),
+          ],
+        );
   }
 
   // --- COMPONENTES UI REUTILIZABLES ---
@@ -149,9 +179,10 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
     child: Text(texto, style: const TextStyle(fontWeight: FontWeight.bold)),
   );
 
-  Widget _buildTextField(TextEditingController controller, String hint, {bool isEmail = false, bool isPhone = false, bool isNumber = false}) {
+  Widget _buildTextField(TextEditingController controller, String hint, {bool isEmail = false, bool isPhone = false, bool isNumber = false, bool isPassword = false}) {
     return TextFormField(
       controller: controller,
+      obscureText: isPassword,
       keyboardType: isEmail ? TextInputType.emailAddress : (isPhone || isNumber ? TextInputType.number : TextInputType.text),
       decoration: InputDecoration(
         hintText: hint,
@@ -170,6 +201,7 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
         _buildLabel(label),
         DropdownButtonFormField<String>(
           value: currentVal,
+          isExpanded: true,
           decoration: const InputDecoration(
             filled: true,
             fillColor: Colors.white,
@@ -186,16 +218,21 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
 
   Widget _buildBottomBar() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Appcolores.azulUas,
-          padding: const EdgeInsets.symmetric(vertical: 18),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-        onPressed: _guardarEstudiante,
-        child: const Text('CONFIRMAR REGISTRO', 
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end, // Botón a la derecha
+        children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Appcolores.azulUas,
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 18),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+            onPressed: _guardarEstudiante,
+            child: const Text('CONFIRMAR REGISTRO', 
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          ),
+        ],
       ),
     );
   }

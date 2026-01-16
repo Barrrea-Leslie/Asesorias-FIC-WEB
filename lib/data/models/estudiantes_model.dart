@@ -2,6 +2,7 @@ class Estudiantes {
   final int id;
   final String nombre;
   final String numeroCuenta;
+  final String contrasena;
   final String licenciatura;
   final String grupo;
   final String correoInstitucional;
@@ -12,6 +13,7 @@ class Estudiantes {
     required this.id,
     required this.nombre,
     required this.numeroCuenta,
+    required this.contrasena,
     required this.licenciatura,
     required this.grupo,
     required this.correoInstitucional,
@@ -24,6 +26,7 @@ class Estudiantes {
       id: json['id'],
       nombre: json['nombre'],
       numeroCuenta: json['numeroCuenta'],
+      contrasena: json['contrasena'] ?? '',
       licenciatura: json['licenciatura'],
       grupo: json['grupo'],
       correoInstitucional: json['correoInstitucional'],
@@ -37,6 +40,7 @@ class Estudiantes {
       'id': id,
       'nombre': nombre,
       'numeroCuenta': numeroCuenta,
+      'contrasena': contrasena,
       'licenciatura': licenciatura,
       'grupo': grupo,
       'correoInstitucional': correoInstitucional,
@@ -49,6 +53,7 @@ class Estudiantes {
     int? id,
     String? nombre,
     String? numeroCuenta,
+    String? contrasena,
     String? licenciatura,
     String? grupo,
     String? correoInstitucional,
@@ -59,6 +64,7 @@ class Estudiantes {
       id: id ?? this.id,
       nombre: nombre ?? this.nombre,
       numeroCuenta: numeroCuenta ?? this.numeroCuenta,
+      contrasena: contrasena ?? this.contrasena,
       licenciatura: licenciatura ?? this.licenciatura,
       grupo: grupo ?? this.grupo,
       correoInstitucional: correoInstitucional ?? this.correoInstitucional,

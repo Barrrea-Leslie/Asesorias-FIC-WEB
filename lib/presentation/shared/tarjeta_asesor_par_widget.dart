@@ -1,6 +1,7 @@
 import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/data/models/asesores_par_model.dart';
 import 'package:asesorias_fic/data/services/asesores_par_service.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/asesorPar/informacion_asesor_par.dart'; // Asegura que la ruta sea correcta
 import 'package:flutter/material.dart';
 
 class TarjetaAsesorParWidget extends StatelessWidget {
@@ -17,10 +18,10 @@ class TarjetaAsesorParWidget extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasError) {
-          return const Center(child: Text('Error al cargar los asesores par'));
+          return Center(child: Text('Error al cargar: ${snapshot.error}'));
         }
 
-        final allAsesores = snapshot.data!;
+        final allAsesores = snapshot.data ?? [];
       
         final filteredAsesores = allAsesores.where((asesor) {
           final nombre = asesor.nombre.toLowerCase();
@@ -44,32 +45,52 @@ class ListaAsesoresPar extends StatelessWidget {
   final double anchoTarjeta = 360.0;
   final double alturaTarjeta = 100.0;
 
+  void _abrirModalEdicion(BuildContext context, AsesorPar asesor) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          insetPadding: EdgeInsets.zero,
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          content: Container(
+            width: 900,
+            height: 635,
+            color: Colors.white,
+            // AQUÍ: Se pasa el asesor por constructor como en el Disciplinar
+            child: InformacionAsesoresPar(asesor: asesor), 
+          ),
+        );
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (listAsesoresPar.isEmpty) {
       return const Center(
         child: Padding(
           padding: EdgeInsets.all(20.0),
-          child: Text("No se encontraron asesores con ese nombre.", style: TextStyle(color: Colors.grey)),
+          child: Text("No se encontraron asesores par.", style: TextStyle(color: Colors.grey)),
         ),
       );
     }
 
     return Padding(
-      padding: const EdgeInsets.only(left: 40, right: 40),
+      padding: const EdgeInsets.symmetric(horizontal: 40),
       child: Wrap(
         spacing: 20,
         runSpacing: 10,
         children: listAsesoresPar.map((asesorPar) {
           return GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, '/informacionAsesorPar', arguments: asesorPar);
-            },
+            onTap: () => _abrirModalEdicion(context, asesorPar),
             child: SizedBox(
               width: anchoTarjeta,
               height: alturaTarjeta,
               child: Card(
                 color: Appcolores.azulUas,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 25),
                   child: Row(
@@ -79,7 +100,7 @@ class ListaAsesoresPar extends StatelessWidget {
                       Expanded(
                         child: Text(
                           asesorPar.nombre,
-                          style: const TextStyle(color: Colors.white, fontSize: 16),
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),

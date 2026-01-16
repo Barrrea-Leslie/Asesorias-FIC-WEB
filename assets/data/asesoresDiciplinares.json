@@ -7,7 +7,7 @@
         "correoInstitucional": "lf.velazquez22@info.uas.edu.mx",
         "numeroTelefono": "6672136911",
         "materiasAsesora": [
-            "Base de Datos"
+            "Bases de Datos", "Matemáticas I"
         ],
         "horariosAsesora": [
             "9:00 - 10:00 AM",
@@ -22,7 +22,7 @@
         "correoInstitucional": "jg.tizoc22@info.uas.edu.mx",
         "numeroTelefono": "6672136911",
         "materiasAsesora": [
-            "Programacion"
+            "Redes", "Programación I"
         ],
         "horariosAsesora": [
             "7:00 - 8:00 AM",
@@ -37,8 +37,7 @@
         "correoInstitucional": "ja.astorga22@info.uas.edu.mx",
         "numeroTelefono": "6672136911",
         "materiasAsesora": [
-            "Web",
-            "Base de Datos"
+            "Redes", "Ingeniería de Software"
         ],
         "horariosAsesora": [
             "10:00 - 11:00 AM",
@@ -53,8 +52,7 @@
         "correoInstitucional": "lm.barrera22@info.uas.edu.mx",
         "numeroTelefono": "6672136911",
         "materiasAsesora": [
-            "Programacion",
-            "Base de Datos"
+            "Programación II"
         ],
         "horariosAsesora": [
             "11:00 - 12:00 PM",
@@ -72,8 +70,7 @@
             "Base de Datos"
         ],
         "horariosAsesora": [
-            "12:00 - 1:00 PM",
-            "1:00 - 2:00 PM"
+            "Proyecto Integrador"
         ]
     }
 ]

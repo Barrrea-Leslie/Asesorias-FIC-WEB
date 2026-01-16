@@ -19,6 +19,7 @@ class MaterialAsesorModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       title: Column(
         children: [
@@ -40,6 +41,7 @@ class MaterialAsesorModal extends StatelessWidget {
           itemBuilder: (context, index) {
             final material = materialesSimulados[index];
             return Card(
+              color: const Color.fromARGB(203, 255, 255, 255),
               margin: const EdgeInsets.symmetric(vertical: 5),
               child: ListTile(
                 leading: Icon(

@@ -10,9 +10,7 @@
         "numeroTelefono": "6672136911",
         "promedio": 9.8,
         "materiasAsesora": [
-            "Programacion",
-            "Base de Datos",
-            "Web"
+            "Bases de Datos", "Redes"
         ],
         "horariosAsesora": [
             "9:00 - 10:00 AM",
@@ -30,7 +28,7 @@
         "numeroTelefono": "6672136911",
         "promedio": 10,
         "materiasAsesora": [
-            "Programacion"
+            "Matemáticas I"
         ],
         "horariosAsesora": [
             "11:00 - 12:00 PM",
@@ -48,7 +46,7 @@
         "numeroTelefono": "6672136911",
         "promedio": 8.9,
         "materiasAsesora": [
-            "Base de Datos"
+            "Estructuras de Datos"
         ],
         "horariosAsesora": [
             "12:00 - 1:00 PM",
@@ -66,8 +64,7 @@
         "numeroTelefono": "6672136911",
         "promedio": 10,
         "materiasAsesora": [
-            "Programacion",
-            "Base de Datos"
+            "Estructuras de Datos"
         ],
         "horariosAsesora": [
             "7:00 - 8:00 AM",

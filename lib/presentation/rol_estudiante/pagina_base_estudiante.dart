@@ -5,180 +5,224 @@ import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/soli
 import 'package:asesorias_fic/presentation/rol_estudiante/solicitudesEnRevision/solicitudes_en_revision.dart';
 import 'package:flutter/material.dart';
 
-
 class PaginaBaseEstudiante extends StatefulWidget {
-    const PaginaBaseEstudiante({super.key});
+  const PaginaBaseEstudiante({super.key});
 
-    @override
-    State<PaginaBaseEstudiante> createState() => _PaginaBaseEstudianteState();
+  @override
+  State<PaginaBaseEstudiante> createState() => _PaginaBaseEstudianteState();
 }
 
 class _PaginaBaseEstudianteState extends State<PaginaBaseEstudiante> {
-    
-    int _selectedIndex = 0;
-    
-    final List<Widget> _pages = [
-        SolicitarAsesoria(),
-        AsesoriasEnCursoEstudiante(),
-        SolicitudesEnRevisionScreen(),
-        HistorialDeAsesorias(),
-    ];
+  int _selectedIndex = 0;
 
-    @override
-    Widget build(BuildContext context) {
-        return Scaffold(
-        body: Row(
-            children: [
-            SideMenu(
+  final List<String> _titles = [
+    'Solicitar Asesoría',
+    'Asesorías',
+    'Solicitudes en Revisión',
+    'Historial de Asesorías',
+  ];
+
+  List<Widget> _buildPages(bool isMobile) => [
+    SolicitarAsesoria(mostrarTitulo: !isMobile),
+    AsesoriasEnCursoEstudiante(mostrarTitulo: !isMobile),
+    SolicitudesEnRevisionScreen(mostrarTitulo: !isMobile),
+    HistorialDeAsesorias(mostrarTitulo: !isMobile),
+  ];
+
+  void _onItemSelected(BuildContext context, int index) {
+    if (index == 4) {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      showDialog(context: context, builder: (_) => AlertaCerrarSesion());
+    } else {
+      setState(() => _selectedIndex = index);
+      if (Scaffold.of(context).isDrawerOpen) {
+        Navigator.of(context).pop();
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool isMobile = constraints.maxWidth < 800;
+        final pages = _buildPages(isMobile);
+
+        if (isMobile) {
+          return _buildMobile(pages);
+        } else {
+          return _buildDesktop(pages);
+        }
+      },
+    );
+  }
+
+  Widget _buildMobile(List<Widget> pages) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Appcolores.azulUas,
+        title: Text(
+          _titles[_selectedIndex],
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.white),
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu, size: 28),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          ),
+        ),
+      ),
+      drawer: Builder(
+        builder: (context) => Drawer(
+          width: 260,
+          backgroundColor: Appcolores.azulUas,
+          child: SafeArea(
+            child: _SideMenuContent(
+              selectedIndex: _selectedIndex,
+              onItemSelected: (index) => _onItemSelected(context, index),
+            ),
+          ),
+        ),
+      ),
+      body: IndexedStack(index: _selectedIndex, children: pages),
+    );
+  }
+
+  Widget _buildDesktop(List<Widget> pages) {
+    return Scaffold(
+      backgroundColor: Appcolores.azulUas,
+      body: Row(
+        children: [
+          Builder(
+            builder: (context) => Container(
+              width: 260,
+              color: Appcolores.azulUas,
+              child: _SideMenuContent(
                 selectedIndex: _selectedIndex,
-                onItemSelected: (index) {
-                if (index == 4) {
-                    showDialog(
-                    context: context,
-                    builder: (BuildContext context){
-                        return AlertaCerrarSesion();
-                    });
-                    
-                } else {
-                    setState(() => _selectedIndex = index);
-                }
-                },
+                onItemSelected: (index) => _onItemSelected(context, index),
+              ),
             ),
-
-            Expanded(
-                child: IndexedStack(
-                index: _selectedIndex,
-                children: _pages,
-                ),
+          ),
+          Expanded(
+            child: Container(
+              color: Colors.white,
+              child: IndexedStack(index: _selectedIndex, children: pages),
             ),
-            ],
-        ),
-        );
-    }
-    }
-
-    class AlertaCerrarSesion extends StatelessWidget {
-    const AlertaCerrarSesion({
-        super.key,
-    });
-
-    @override
-    Widget build(BuildContext context) {
-        return AlertDialog(
-        title: Text("Confirmacion"),
-        content: Text("Esta seguro de cerrar sesion?"),
-        contentPadding: EdgeInsets.all(30),
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-        actionsAlignment: MainAxisAlignment.center,
-        actions: [
-            
-            TextButton(
-            style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: const Color.fromARGB(255, 143, 143, 143),
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-                textStyle: TextStyle(fontWeight: FontWeight.bold)
-            ),
-            onPressed: () {
-                Navigator.of(context).pop();
-                },
-            child: Text("Cancelar")),
-        
-            TextButton(
-            style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: const Color.fromARGB(255, 235, 40, 26),
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-                textStyle: TextStyle(fontWeight: FontWeight.bold)
-            ),
-            onPressed: () {
-                Navigator.pushReplacementNamed(context, '/login');
-            },
-            child: Text("Aceptar")),
-            
+          ),
         ],
-        );
-    }
-    }
+      ),
+    );
+  }
+}
 
-    class SideMenu extends StatelessWidget {
-    const SideMenu({super.key, required this.selectedIndex, required this.onItemSelected});
+class AlertaCerrarSesion extends StatelessWidget {
+  const AlertaCerrarSesion({super.key});
 
-    final int selectedIndex;
-    final Function(int) onItemSelected;
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text("Confirmacion"),
+      content: const Text("Esta seguro de cerrar sesion?"),
+      contentPadding: const EdgeInsets.all(30),
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      actionsAlignment: MainAxisAlignment.center,
+      actions: [
+        TextButton(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor: const Color.fromARGB(255, 143, 143, 143),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            textStyle: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text("Cancelar"),
+        ),
+        TextButton(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor: const Color.fromARGB(255, 235, 40, 26),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            textStyle: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+          child: const Text("Aceptar"),
+        ),
+      ],
+    );
+  }
+}
 
-    @override
-    Widget build(BuildContext context) {
-        return Container(
-        width: 260,
-        
-        padding: const EdgeInsets.symmetric(vertical: 20),
+class _SideMenuContent extends StatelessWidget {
+  const _SideMenuContent({
+    required this.selectedIndex,
+    required this.onItemSelected,
+  });
+
+  final int selectedIndex;
+  final Function(int) onItemSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Image.asset('assets/images/fic_logo.png', height: 130),
+        ),
+        const SizedBox(height: 20),
+        _menuItem(Icons.assignment_add, 'Solicitar Asesorias', 0),
+        _menuItem(Icons.assignment, 'Asesorias', 1),
+        _menuItem(Icons.pending_actions, 'Solicitudes en revisión', 2),
+        _menuItem(Icons.history, 'Historial de asesorias', 3),
+        const Spacer(),
+        _menuItem(Icons.logout, 'Cerrar sesión', 4),
+        const SizedBox(height: 10),
+      ],
+    );
+  }
+
+  Widget _menuItem(IconData icon, String text, int index) {
+    final bool selected = index == selectedIndex;
+    return InkWell(
+      onTap: () => onItemSelected(index),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
-            color: Appcolores.azulUas,
-            /* borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(24),
-            bottomRight: Radius.circular(24),
-            ), */
-            boxShadow: [
-            BoxShadow(
-                color: Colors.black12,
-                blurRadius: 10,
-            ),
-            ],
+          color: selected ? Colors.white : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
         ),
-        child: Column(
-            children: [
-            // LOGO
-            Padding(
-                padding: const EdgeInsets.all(16),
-                child: Image.asset('assets/images/fic_logo.png', height: 130),
-            ),
-
-            const SizedBox(height: 20),
-
-            _menuItem(Icons.assignment_add, 'Solicitar Asesorias', 0),
-            _menuItem(Icons.assignment, 'Asesorias', 1),
-            _menuItem(Icons.pending_actions, 'Solicitudes en revisión', 2),
-            _menuItem(Icons.history, 'Historial de asesorias', 3),
-            
-
-            const Spacer(),
-
-            _menuItem(Icons.logout, 'Cerrar sesión', 4),
-            ],
-        ),
-        );
-    }
-
-    Widget _menuItem(IconData icon, String text, int index) {
-        final bool selected = index == selectedIndex;
-
-        return InkWell(
-        onTap: () => onItemSelected(index),
-        child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            decoration: BoxDecoration(
-            color: selected ? Colors.white : Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-            children: [
-                Icon(icon, color: selected ? Appcolores.azulFuerte : Colors.white),
-                const SizedBox(width: 12),
-                Text(
+        child: Row(
+          children: [
+            Icon(icon, color: selected ? Appcolores.azulFuerte : Colors.white),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
                 text,
                 style: TextStyle(
-                    color: selected ? Appcolores.azulFuerte : Colors.white,
-                    fontWeight: FontWeight.w500,
+                  color: selected ? Appcolores.azulFuerte : Colors.white,
+                  fontWeight: FontWeight.w500,
                 ),
-                ),
-            ],
+              ),
             ),
+          ],
         ),
-        );
-    }
+      ),
+    );
+  }
 }

@@ -7,7 +7,9 @@ import 'package:asesorias_fic/presentation/rol_estudiante/widgets/tarjeta_solici
 import 'package:flutter/material.dart';
 
 class SolicitarAsesoria extends StatefulWidget {
-  const SolicitarAsesoria({super.key});
+  const SolicitarAsesoria({super.key, this.mostrarTitulo = false});
+
+  final bool mostrarTitulo;
 
   @override
   State<SolicitarAsesoria> createState() => _SolicitarAsesoriaState();
@@ -42,7 +44,7 @@ class _SolicitarAsesoriaState extends State<SolicitarAsesoria> {
     try {
       final resultados = await Future.wait([
         AsesoresParService().getAsesoresPar(),
-        AsesoresDiciplinaresService().getAsesoresDiciplinares()
+        AsesoresDiciplinaresService().getAsesoresDiciplinares(),
       ]);
       setState(() {
         todosLosAsesores = [...resultados[0], ...resultados[1]];
@@ -59,81 +61,27 @@ class _SolicitarAsesoriaState extends State<SolicitarAsesoria> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    return LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth < 1000) {
-        return PantallaResponsiva(
-          query: query,
-          filtros: filtrosActivos,
-          onTapFiltro: _abrirFiltros,
-          todosLosAsesores: todosLosAsesores,
-          onChanged: (value) => setState(() => query = value),
-        );
-      } else {
-        return PantallaGrande(
-          query: query,
-          filtros: filtrosActivos,
-          onTapFiltro: _abrirFiltros,
-          todosLosAsesores: todosLosAsesores,
-          onChanged: (value) => setState(() => query = value),
-        );
-      }
-    });
-  }
-}
-
-class PantallaGrande extends StatelessWidget {
-  final String query;
-  final Map<String, String?> filtros;
-  final VoidCallback onTapFiltro;
-  final List<dynamic> todosLosAsesores;
-  final ValueChanged<String> onChanged;
-
-  const PantallaGrande({
-    super.key,
-    required this.query,
-    required this.filtros,
-    required this.onTapFiltro,
-    required this.todosLosAsesores,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Appcolores.azulUas,
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Column(
-            children: [
-              SeccionArriba(onChanged: onChanged),
-              const SizedBox(height: 20),
-              GestureDetector(
-                onTap: onTapFiltro,
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 80.0, bottom: 20),
-                  child: Row(
-                    children: [
-                      Text("Filtro", style: TextStyle(fontWeight: FontWeight.bold)),
-                      Icon(Icons.filter_alt)
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: TarjetaSolicitarAsesoria(query: query, filtros: filtros),
-                ),
-              ),
-              Footer(todosLosAsesores: todosLosAsesores),
-            ],
-          ),
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < 500) {
+          return PantallaResponsiva(
+            query: query,
+            filtros: filtrosActivos,
+            onTapFiltro: _abrirFiltros,
+            todosLosAsesores: todosLosAsesores,
+            onChanged: (value) => setState(() => query = value),
+          );
+        } else {
+          return PantallaGrande(
+            query: query,
+            filtros: filtrosActivos,
+            onTapFiltro: _abrirFiltros,
+            todosLosAsesores: todosLosAsesores,
+            mostrarTitulo: widget.mostrarTitulo,
+            onChanged: (value) => setState(() => query = value),
+          );
+        }
+      },
     );
   }
 }
@@ -167,17 +115,28 @@ class PantallaResponsiva extends StatelessWidget {
           ),
           child: Column(
             children: [
-              SeccionArriba(onChanged: onChanged),
+              // BUSCADOR (igual que asesor)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+                child: TextField(
+                  onChanged: onChanged,
+                  decoration: _buscadorDecoration(),
+                ),
+              ),
+
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      const SizedBox(height: 20),
                       TarjetaSolicitarAsesoria(query: query, filtros: filtros),
                     ],
                   ),
                 ),
               ),
+
               Footer(todosLosAsesores: todosLosAsesores),
             ],
           ),
@@ -187,40 +146,115 @@ class PantallaResponsiva extends StatelessWidget {
   }
 }
 
-
-
-class SeccionArriba extends StatelessWidget {
+class PantallaGrande extends StatelessWidget {
+  final String query;
+  final Map<String, String?> filtros;
+  final VoidCallback onTapFiltro;
+  final List<dynamic> todosLosAsesores;
   final ValueChanged<String> onChanged;
-  const SeccionArriba({super.key, required this.onChanged});
+  final bool mostrarTitulo;
+
+  const PantallaGrande({
+    super.key,
+    required this.query,
+    required this.filtros,
+    required this.onTapFiltro,
+    required this.todosLosAsesores,
+    required this.onChanged,
+    this.mostrarTitulo = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Appcolores.azulUas,
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    if (mostrarTitulo)
+                      SeccionArribaPantallaGrande(onChanged: onChanged),
+
+                    if (!mostrarTitulo)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        child: TextField(
+                          onChanged: onChanged,
+                          decoration: _buscadorDecoration(),
+                        ),
+                      ),
+
+                    const SizedBox(height: 20),
+
+                    GestureDetector(
+                      onTap: onTapFiltro,
+                      child: const Padding(
+                        padding: EdgeInsets.only(left: 60.0, bottom: 20),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Filtro",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Icon(Icons.filter_alt),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: TarjetaSolicitarAsesoria(
+                          query: query,
+                          filtros: filtros,
+                        ),
+                      ),
+                    ),
+
+                    Footer(todosLosAsesores: todosLosAsesores),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SeccionArribaPantallaGrande extends StatelessWidget {
+  final ValueChanged<String> onChanged;
+
+  const SeccionArribaPantallaGrande({super.key, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 60.0, top: 20, right: 60.0, bottom: 10),
+      padding: const EdgeInsets.only(left: 60.0, top: 20, right: 60.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text("Solicitar Asesorias",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23)),
+          const Text(
+            "Solicitar Asesorias",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+          ),
           SizedBox(
             width: 220,
             child: TextField(
               onChanged: onChanged,
-              decoration: InputDecoration(
-                  hintText: 'Buscar Asesoria',
-                  hintStyle: const TextStyle(fontSize: 13, color: Color(0xFFb4b4b4)),
-                  prefixIcon: const Icon(Icons.search, color: Color(0xFFb4b4b4), size: 18),
-                  filled: true,
-                  fillColor: const Color(0xFFf2f3f5),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Appcolores.azulUas),
-                    borderRadius: BorderRadius.circular(10)
-                  )
-                ),
+              decoration: _buscadorDecoration(),
             ),
           ),
         ],
@@ -229,8 +263,27 @@ class SeccionArriba extends StatelessWidget {
   }
 }
 
+InputDecoration _buscadorDecoration() {
+  return InputDecoration(
+    hintText: 'Buscar Asesoría',
+    hintStyle: const TextStyle(fontSize: 15, color: Color(0xFFb4b4b4)),
+    prefixIcon: const Icon(Icons.search, color: Color(0xFFb4b4b4), size: 18),
+    filled: true,
+    fillColor: const Color(0xFFf2f3f5),
+    enabledBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.transparent),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Appcolores.azulUas),
+      borderRadius: BorderRadius.circular(10),
+    ),
+  );
+}
+
 class Footer extends StatelessWidget {
   final List<dynamic> todosLosAsesores;
+
   const Footer({super.key, required this.todosLosAsesores});
 
   @override
@@ -245,17 +298,22 @@ class Footer extends StatelessWidget {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (context) => CrearSolicitud(todosLosAsesores: todosLosAsesores),
+                builder: (context) =>
+                    CrearSolicitud(todosLosAsesores: todosLosAsesores),
               );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Appcolores.verdeClaro,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
-            child: const Text("Crear Solicitud", 
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+            child: const Text(
+              "Crear Solicitud",
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),

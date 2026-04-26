@@ -70,7 +70,7 @@ class ListaSolicitudes extends StatelessWidget {
 
               return SizedBox(
                 width: ancho,
-                // ← sin height
+
                 child: Card(
                   color: Appcolores.azulUas,
                   child: Padding(
@@ -228,7 +228,7 @@ class AlertaAceptar extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
-            textStyle: TextStyle(fontWeight: FontWeight.bold),
+            textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
           ),
           onPressed: () {
             Navigator.of(context).pop();

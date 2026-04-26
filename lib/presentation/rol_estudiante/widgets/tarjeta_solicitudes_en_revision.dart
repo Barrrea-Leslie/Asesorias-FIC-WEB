@@ -27,7 +27,7 @@ class TarjetaSolicitudesEnRevision extends StatelessWidget {
         }
 
         List<SolicitudesEnRevision> solicitudesCargadas = snapshot.data!;
-        
+
         List<SolicitudesEnRevision> listaFiltrada;
         if (filtro == "TODO") {
           listaFiltrada = solicitudesCargadas;
@@ -46,9 +46,7 @@ class TarjetaSolicitudesEnRevision extends StatelessWidget {
           );
         }
 
-        return ListaSolicitudesEnRevision(
-          listaSolicitudes: listaFiltrada,
-        );
+        return ListaSolicitudesEnRevision(listaSolicitudes: listaFiltrada);
       },
     );
   }
@@ -83,8 +81,6 @@ class ListaSolicitudesEnRevision extends StatelessWidget {
             runSpacing: 20, // Aumenté el espacio vertical entre filas
             alignment: WrapAlignment.center,
             children: listaSolicitudes.map((solicitud) {
-            
-
               return SizedBox(
                 width: anchoTarjeta,
                 height: alturaTarjeta,
@@ -100,20 +96,30 @@ class ListaSolicitudesEnRevision extends StatelessWidget {
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
+                            fontSize: 15,
                           ),
                         ),
                         const SizedBox(height: 2),
                         Text(
                           "Asesor: ${solicitud.asesor}",
-                          style: const TextStyle(color: Colors.white70),
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 15,
+                          ),
                         ),
                         Text(
                           "Fecha: ${solicitud.fecha}",
-                          style: const TextStyle(color: Colors.white70),
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 15,
+                          ),
                         ),
                         Text(
                           "Horario: ${solicitud.horario}",
-                          style: const TextStyle(color: Colors.white70),
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 15,
+                          ),
                         ),
                         const SizedBox(height: 8),
                         Text.rich(
@@ -121,54 +127,57 @@ class ListaSolicitudesEnRevision extends StatelessWidget {
                             children: [
                               const TextSpan(
                                 text: "Estado: ",
-                                style: TextStyle(color: Colors.white, fontSize: 14),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                ),
                               ),
                               TextSpan(
                                 text: solicitud.estado,
                                 style: TextStyle(
-                                  color: _obtenerColorTextoEstado(solicitud.estado),
+                                  color: _obtenerColorTextoEstado(
+                                    solicitud.estado,
+                                  ),
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 14,
+                                  fontSize: 15,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        
-                      
 
                         const Spacer(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            BotonIzquierdo(solicitud: solicitud,),
+                            BotonIzquierdo(solicitud: solicitud),
                             const SizedBox(width: 15),
                             BotonDerecho(
                               estado: solicitud.estado,
 
                               onPressed: () {
-                                
-                                if (solicitud.estado.toUpperCase() == 'RECHAZADA') {
-
+                                if (solicitud.estado.toUpperCase() ==
+                                    'RECHAZADA') {
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return _AlertaMensajeSolicitudRechazada(solicitud: solicitud,);
-                                    });
-
-                                }else {
+                                      return _AlertaMensajeSolicitudRechazada(
+                                        solicitud: solicitud,
+                                      );
+                                    },
+                                  );
+                                } else {
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return EditarSolicitud(solicitud: solicitud);
-                                    });
+                                      return EditarSolicitud(
+                                        solicitud: solicitud,
+                                      );
+                                    },
+                                  );
                                 }
-
-
-
                               },
-
-                              ),
+                            ),
                           ],
                         ),
                       ],
@@ -185,68 +194,66 @@ class ListaSolicitudesEnRevision extends StatelessWidget {
 }
 
 class _AlertaEditarSolicitud extends StatelessWidget {
-  const _AlertaEditarSolicitud({
-    required this.solicitud
-  });
+  const _AlertaEditarSolicitud({required this.solicitud});
 
   final dynamic solicitud;
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      content: EditarSolicitud(solicitud: solicitud),
-    );
+    return AlertDialog(content: EditarSolicitud(solicitud: solicitud));
   }
 }
 
 class _AlertaMensajeSolicitudRechazada extends StatelessWidget {
-  const _AlertaMensajeSolicitudRechazada({
-    required this.solicitud
-  });
+  const _AlertaMensajeSolicitudRechazada({required this.solicitud});
 
   final dynamic solicitud;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      
-      title:Container(
-        
+
+      title: Container(
         padding: const EdgeInsets.only(bottom: 10),
         child: Center(
-          child: Text('Notas del asesor', style: const TextStyle(fontSize: 20, color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold),)
+          child: Text(
+            'Notas del asesor',
+            style: const TextStyle(
+              fontSize: 20,
+              color: Color.fromARGB(255, 0, 0, 0),
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          ),
-          content: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Text(solicitud.notas ?? 'Sin notas', textAlign: TextAlign.center,),
-          ),
-          actions: [
-            ElevatedButton(
-          
+        ),
+      ),
+      content: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Text(
+          solicitud.notas ?? 'Sin notas',
+          textAlign: TextAlign.center,
+        ),
+      ),
+      actions: [
+        ElevatedButton(
           style: TextButton.styleFrom(
             foregroundColor: Colors.white,
             backgroundColor: Appcolores.azulUas,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
           ),
           onPressed: () => Navigator.of(context).pop(),
           child: const Text("Cerrar"),
         ),
-          ],
-
+      ],
     );
   }
 }
 
 // Botones se mantienen igual que en tu código anterior
 class BotonIzquierdo extends StatelessWidget {
-
-  const BotonIzquierdo({
-    super.key ,
-    required this.solicitud
-    });
+  const BotonIzquierdo({super.key, required this.solicitud});
 
   final dynamic solicitud;
 
@@ -255,17 +262,14 @@ class BotonIzquierdo extends StatelessWidget {
     String texto = 'Ver Info';
     Color colorFondo = Appcolores.amarilloUas;
 
-
     return ElevatedButton(
       onPressed: () {
-
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return _AlertaInformacionSolicitud(solicitud: solicitud,);
-          }
-          );
-
+            return _AlertaInformacionSolicitud(solicitud: solicitud);
+          },
+        );
       },
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(120, 35),
@@ -278,7 +282,6 @@ class BotonIzquierdo extends StatelessWidget {
   }
 }
 
-
 class BotonDerecho extends StatelessWidget {
   final String estado;
   final VoidCallback onPressed;
@@ -286,8 +289,8 @@ class BotonDerecho extends StatelessWidget {
   const BotonDerecho({
     super.key,
     required this.estado,
-    required this.onPressed
-    });
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -312,23 +315,19 @@ class BotonDerecho extends StatelessWidget {
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       ),
-      child: Text(texto)
+      child: Text(texto),
     );
   }
 }
 
-
 class _AlertaInformacionSolicitud extends StatelessWidget {
-  const _AlertaInformacionSolicitud({
-    required this.solicitud
-  });
+  const _AlertaInformacionSolicitud({required this.solicitud});
 
   final dynamic solicitud;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       title: Container(
         width: 370,
@@ -337,7 +336,11 @@ class _AlertaInformacionSolicitud extends StatelessWidget {
         child: Center(
           child: Text(
             solicitud.asesor,
-            style: const TextStyle(fontSize: 20, color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontSize: 20,
+              color: Color.fromARGB(255, 0, 0, 0),
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
@@ -350,26 +353,25 @@ class _AlertaInformacionSolicitud extends StatelessWidget {
             _lineaInfo("Asesor", solicitud.asesor),
             _lineaInfo("Fecha", solicitud.fecha),
             _lineaInfo("Horario", solicitud.horario),
-            _lineaInfo("Estado", solicitud.estado)
+            _lineaInfo("Estado", solicitud.estado),
           ],
         ),
       ),
       actions: [
         ElevatedButton(
-          
           style: TextButton.styleFrom(
             foregroundColor: Colors.white,
             backgroundColor: Appcolores.azulUas,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
           ),
           onPressed: () => Navigator.of(context).pop(),
           child: const Text("Cerrar"),
         ),
       ],
-      
     );
   }
-
 
   Widget _lineaInfo(String etiqueta, String valor) {
     return Padding(
@@ -377,12 +379,20 @@ class _AlertaInformacionSolicitud extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(etiqueta, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color.fromARGB(255, 0, 0, 0))),
-          Text(valor, style: const TextStyle(fontSize: 15, color: Colors.black87)),
+          Text(
+            etiqueta,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+              color: Color.fromARGB(255, 0, 0, 0),
+            ),
+          ),
+          Text(
+            valor,
+            style: const TextStyle(fontSize: 15, color: Colors.black87),
+          ),
         ],
       ),
     );
   }
-
-
 }

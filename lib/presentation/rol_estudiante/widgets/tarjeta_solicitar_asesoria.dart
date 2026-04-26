@@ -7,7 +7,11 @@ import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/soli
 import 'package:flutter/material.dart';
 
 class TarjetaSolicitarAsesoria extends StatelessWidget {
-  const TarjetaSolicitarAsesoria({super.key, this.query = '', this.filtros = const {}});
+  const TarjetaSolicitarAsesoria({
+    super.key,
+    this.query = '',
+    this.filtros = const {},
+  });
 
   final String query;
   final Map<String, String?> filtros;
@@ -17,23 +21,29 @@ class TarjetaSolicitarAsesoria extends StatelessWidget {
     return FutureBuilder(
       future: Future.wait([
         AsesoresParService().getAsesoresPar(),
-        AsesoresDiciplinaresService().getAsesoresDiciplinares()
+        AsesoresDiciplinaresService().getAsesoresDiciplinares(),
       ]),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
+        if (!snapshot.hasData)
+          return const Center(child: CircularProgressIndicator());
 
         final asesoresPar = snapshot.data![0] as List<AsesorPar>;
-        final asesoresDiciplinares = snapshot.data![1] as List<AsesorDisciplinar>;
+        final asesoresDiciplinares =
+            snapshot.data![1] as List<AsesorDisciplinar>;
         final todos = [...asesoresPar, ...asesoresDiciplinares];
 
         final listaFiltrada = todos.where((ase) {
           final item = ase as dynamic;
-          final matchesQuery = item.nombre.toLowerCase().contains(query.toLowerCase());
-          
-          final matchesMateria = filtros['materia'] == null ||
+          final matchesQuery = item.nombre.toLowerCase().contains(
+            query.toLowerCase(),
+          );
+
+          final matchesMateria =
+              filtros['materia'] == null ||
               item.materiasAsesora.contains(filtros['materia']);
-              
-          final matchesHorario = filtros['horario'] == null || 
+
+          final matchesHorario =
+              filtros['horario'] == null ||
               item.horariosAsesora.contains(filtros['horario']);
 
           return matchesQuery && matchesMateria && matchesHorario;
@@ -41,7 +51,9 @@ class TarjetaSolicitarAsesoria extends StatelessWidget {
 
         return ListaTarjetasSolicitar(
           listaAsesoresPar: listaFiltrada.whereType<AsesorPar>().toList(),
-          listaAsesoresDiciplinares: listaFiltrada.whereType<AsesorDisciplinar>().toList(),
+          listaAsesoresDiciplinares: listaFiltrada
+              .whereType<AsesorDisciplinar>()
+              .toList(),
         );
       },
     );
@@ -52,7 +64,7 @@ class ListaTarjetasSolicitar extends StatelessWidget {
   const ListaTarjetasSolicitar({
     super.key,
     required this.listaAsesoresPar,
-    required this.listaAsesoresDiciplinares
+    required this.listaAsesoresDiciplinares,
   });
 
   final List<dynamic> listaAsesoresPar;
@@ -62,10 +74,21 @@ class ListaTarjetasSolicitar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final todosLosAsesores = [...listaAsesoresPar, ...listaAsesoresDiciplinares];
+    final todosLosAsesores = [
+      ...listaAsesoresPar,
+      ...listaAsesoresDiciplinares,
+    ];
 
     if (todosLosAsesores.isEmpty) {
-      return const Center(child: Padding(padding: EdgeInsets.all(20.0), child: Text("No se encontraron asesores.", style: TextStyle(color: Colors.grey))));
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Text(
+            "No se encontraron asesores.",
+            style: TextStyle(color: Colors.grey),
+          ),
+        ),
+      );
     }
 
     return Padding(
@@ -80,18 +103,40 @@ class ListaTarjetasSolicitar extends StatelessWidget {
 
               return SizedBox(
                 width: anchoTarjeta,
-                height: alturaTarjeta,
+
                 child: Card(
                   color: Appcolores.azulUas,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 30, left: 30, right: 30, bottom: 20),
+                    padding: const EdgeInsets.only(
+                      top: 30,
+                      left: 30,
+                      right: 30,
+                      bottom: 20,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(item.nombre, style: const TextStyle(color: Colors.white)),
+                        Text(
+                          item.nombre,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
+                        ),
                         const SizedBox(height: 5), // Espacio pequeño original
-                        Text("Materias: ${item.materiasAsesora.join(', ')}", style: const TextStyle(color: Colors.white70), maxLines: 2),
-                        const Text("Modalidad: Presencial / Virtual", style: TextStyle(color: Colors.white70), maxLines: 2),
+                        Text(
+                          "Materias: ${item.materiasAsesora.join(', ')}",
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 15,
+                          ),
+                          maxLines: 2,
+                        ),
+                        const Text(
+                          "Modalidad: Presencial / Virtual",
+                          style: TextStyle(color: Colors.white70, fontSize: 15),
+                          maxLines: 2,
+                        ),
                         const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -99,7 +144,7 @@ class ListaTarjetasSolicitar extends StatelessWidget {
                           children: [
                             BotonInformacion(asesor: item),
                             const SizedBox(width: 20),
-                            BotonSolicitar(asesor: item)
+                            BotonSolicitar(asesor: item),
                           ],
                         ),
                       ],
@@ -116,10 +161,7 @@ class ListaTarjetasSolicitar extends StatelessWidget {
 }
 
 class BotonInformacion extends StatelessWidget {
-  const BotonInformacion({
-    super.key,
-    required this.asesor
-  });
+  const BotonInformacion({super.key, required this.asesor});
 
   final dynamic asesor;
 
@@ -135,16 +177,17 @@ class BotonInformacion extends StatelessWidget {
         );
       },
       style: ElevatedButton.styleFrom(
-      minimumSize: Size(30, 35),
-      backgroundColor: Appcolores.amarilloUas,
-      foregroundColor: Colors.white,
-      elevation: 3,
+        minimumSize: Size(30, 35),
+        backgroundColor: Appcolores.amarilloUas,
+        foregroundColor: Colors.white,
+        elevation: 3,
 
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(5)
-      )
-    ),
-      child: Text('Ver Info'));
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(5),
+        ),
+      ),
+      child: Text('Ver Info'),
+    );
   }
 }
 
@@ -162,20 +205,23 @@ class BotonSolicitar extends StatelessWidget {
       onPressed: () {
         showDialog(
           context: context,
-          builder: (context) => SolicitarAsesoriaDirecta(asesor: asesor), // Pasas el objeto del asesor aquí
+          builder: (context) => SolicitarAsesoriaDirecta(
+            asesor: asesor,
+          ), // Pasas el objeto del asesor aquí
         );
       },
       style: ElevatedButton.styleFrom(
-      minimumSize: Size(30, 35),
-      backgroundColor: Appcolores.verdeClaro,
-      foregroundColor: Colors.white,
-      elevation: 3,
+        minimumSize: Size(30, 35),
+        backgroundColor: Appcolores.verdeClaro,
+        foregroundColor: Colors.white,
+        elevation: 3,
 
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(5)
-      )
-    ),
-      child: Text('Solicitar Asesoria'));
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(5),
+        ),
+      ),
+      child: Text('Solicitar Asesoria'),
+    );
   }
 }
 
@@ -187,7 +233,6 @@ class _AlertaInformacionAsesor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       title: Container(
         width: 370,
@@ -196,8 +241,12 @@ class _AlertaInformacionAsesor extends StatelessWidget {
         child: Center(
           child: Text(
             asesor.nombre,
-            
-            style: const TextStyle(fontSize: 20, color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold),
+
+            style: const TextStyle(
+              fontSize: 20,
+              color: Color.fromARGB(255, 0, 0, 0),
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
@@ -210,7 +259,7 @@ class _AlertaInformacionAsesor extends StatelessWidget {
             _lineaInfo("Teléfono:", asesor.numeroTelefono),
             _lineaInfo("Materias:", asesor.materiasAsesora.join(', ')),
             _lineaInfo("Horarios:", asesor.horariosAsesora.join('\n')),
-            
+
             // Si el objeto tiene licenciatura (es Asesor Par), lo mostramos
             if (asesor.runtimeType.toString().contains('AsesorPar')) ...[
               _lineaInfo("Licenciatura:", asesor.licenciatura),
@@ -221,11 +270,12 @@ class _AlertaInformacionAsesor extends StatelessWidget {
       ),
       actions: [
         ElevatedButton(
-          
           style: TextButton.styleFrom(
             foregroundColor: Colors.white,
             backgroundColor: Appcolores.azulUas,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
           ),
           onPressed: () => Navigator.of(context).pop(),
           child: const Text("Cerrar"),
@@ -241,8 +291,18 @@ class _AlertaInformacionAsesor extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(etiqueta, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color.fromARGB(255, 0, 0, 0))),
-          Text(valor, style: const TextStyle(fontSize: 15, color: Colors.black87)),
+          Text(
+            etiqueta,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+              color: Color.fromARGB(255, 0, 0, 0),
+            ),
+          ),
+          Text(
+            valor,
+            style: const TextStyle(fontSize: 15, color: Colors.black87),
+          ),
         ],
       ),
     );

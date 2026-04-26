@@ -101,8 +101,6 @@ class ListaTarjetasSolicitar extends StatelessWidget {
               return SizedBox(
                 width: anchoTarjeta,
 
-                height: alturaTarjeta,
-
                 child: Card(
                   color: Appcolores.azulUas,
 
@@ -122,18 +120,24 @@ class ListaTarjetasSolicitar extends StatelessWidget {
                       children: [
                         Text(
                           item.nombre,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
 
                         Text(
                           "Materias: ${item.materiasAsesora.join(', ')}",
-                          style: const TextStyle(color: Colors.white70),
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 15,
+                          ),
                           maxLines: 2,
                         ),
 
                         Text(
                           "Modalidad: Presencial / Virtual",
-                          style: const TextStyle(color: Colors.white70),
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 15,
+                          ),
                           maxLines: 2,
                         ),
 
@@ -145,11 +149,11 @@ class ListaTarjetasSolicitar extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
 
                           children: [
-                            BotonChat(nombreAsesor: item.nombre,),
+                            BotonChat(nombreAsesor: item.nombre),
 
                             SizedBox(width: 20),
 
-                            BotonMaterial(nombreAsesor: item.nombre,),
+                            BotonMaterial(nombreAsesor: item.nombre),
                           ],
                         ),
                       ],
@@ -182,7 +186,7 @@ class _BotonChatState extends State<BotonChat> {
     _overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
         bottom: 20, // Distancia desde abajo
-        right: 20,  // Distancia desde la derecha (estilo Facebook)
+        right: 20, // Distancia desde la derecha (estilo Facebook)
         child: ChatEstudiante(
           nombreAsesor: widget.nombreAsesor,
           onCerrar: _cerrarChat,
@@ -210,11 +214,7 @@ class _BotonChatState extends State<BotonChat> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       ),
       child: const Row(
-        children: [
-          Icon(Icons.chat),
-          SizedBox(width: 10),
-          Text('Chat'),
-        ],
+        children: [Icon(Icons.chat), SizedBox(width: 10), Text('Chat')],
       ),
     );
   }

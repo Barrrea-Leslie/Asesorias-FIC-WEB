@@ -75,7 +75,7 @@ class PantallaResponsiva extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: 'Buscar Asesoría',
                         hintStyle: const TextStyle(
-                          fontSize: 13,
+                          fontSize: 15,
                           color: Color(0xFFb4b4b4),
                         ),
                         prefixIcon: const Icon(
@@ -187,7 +187,7 @@ class PantallaGrande extends StatelessWidget {
       onChanged: onChanged,
       decoration: InputDecoration(
         hintText: 'Buscar Asesoría',
-        hintStyle: const TextStyle(fontSize: 13, color: Color(0xFFb4b4b4)),
+        hintStyle: const TextStyle(fontSize: 16, color: Color(0xFFb4b4b4)),
         prefixIcon: const Icon(
           Icons.search,
           color: Color(0xFFb4b4b4),
@@ -273,7 +273,7 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
   InputDecoration _buscadorDecoration() {
     return InputDecoration(
       hintText: 'Buscar Asesoria',
-      hintStyle: const TextStyle(fontSize: 13, color: Color(0xFFb4b4b4)),
+      hintStyle: const TextStyle(fontSize: 15, color: Color(0xFFb4b4b4)),
       prefixIcon: const Icon(Icons.search, color: Color(0xFFb4b4b4), size: 18),
       filled: true,
       fillColor: const Color(0xFFf2f3f5),

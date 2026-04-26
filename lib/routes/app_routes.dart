@@ -16,7 +16,7 @@ import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/info
 import 'package:flutter/widgets.dart';
 
 class AppRoutes {
-  static const initialRoute = '/paginaBaseAdministrador';
+  static const initialRoute = '/paginaBaseEstudiantes';
 
   static Map<String, WidgetBuilder> routes = {
     '/login': (context) => const LoginScreen(),

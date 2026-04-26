@@ -16,26 +16,19 @@ import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/info
 import 'package:flutter/widgets.dart';
 
 class AppRoutes {
-
-
   static const initialRoute = '/paginaBaseAsesores';
 
-
-  static Map <String, WidgetBuilder> routes = {
-
+  static Map<String, WidgetBuilder> routes = {
     '/login': (context) => const LoginScreen(),
-    
-    //Direcciones del rol de administrador
 
+    //Direcciones del rol de administrador
     '/asesoriasEnCurso': (context) => const AsesoriasEnCursoScreen(),
-    
 
     '/solicitudesPendientes': (context) => const SolicitudesPenidentesScreen(),
 
     '/reportes': (context) => const ReportesScreen(),
 
     '/asesoresDiciplinares': (context) => const AsesoresDiciplinaresScreen(),
-
 
     '/asesoresPar': (context) => const AsesoresParScreen(),
     '/informacionAsesorPar': (context) => const InformacionAsesoresPar(),
@@ -44,25 +37,16 @@ class AppRoutes {
     '/estudiantes': (context) => const EstudiantesScreen(),
     '/crearAsesorDisiplinar': (context) => const CrearAsesorDisiplinar(),
 
-
     '/filtrosAsesoria': (context) => const FiltrosAsesoria(),
-    
 
-    
     '/paginaBaseAdministrador': (context) => const HomePage(),
 
     //Direcciones del rol de estudiante
-
     '/informacionAsesores': (context) => const InformacionAsesores(),
 
     '/paginaBaseEstudiantes': (context) => const PaginaBaseEstudiante(),
 
     //Direcciones del rol de asesores
-
     '/paginaBaseAsesores': (context) => const PaginaBaseAsesor(),
-
-
   };
-
 }
-

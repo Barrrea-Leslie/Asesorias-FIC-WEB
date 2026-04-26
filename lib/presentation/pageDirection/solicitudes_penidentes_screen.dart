@@ -1,4 +1,3 @@
-
 import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/presentation/shared/mydrawer.dart';
 import 'package:asesorias_fic/presentation/shared/tarjeta_solicitud_widget.dart';
@@ -27,7 +26,7 @@ class PantallaResponsiva extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: const Color.fromARGB(255, 155, 56, 56),
 
       appBar: AppBar(
         leading: Builder(
@@ -39,7 +38,10 @@ class PantallaResponsiva extends StatelessWidget {
           ),
         ),
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        title: Text('Solicitudes Pendientes', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(
+          'Solicitudes Pendientes',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
 
       drawer: Mydrawer(rutaActual: '/solicitudesPendintes'),
@@ -47,18 +49,14 @@ class PantallaResponsiva extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            SizedBox(height: 60,),
+            SizedBox(height: 60),
 
-              Expanded(
-                      
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      TarjetaSolicitudWidget()
-                    ],
-                  ),
-                )),
-        
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(children: [TarjetaSolicitudWidget()]),
+              ),
+            ),
+
             FooterCrearAlumno(),
           ],
         ),
@@ -94,7 +92,6 @@ class PantallaGrande extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
-
             //menu
             Mydrawer(rutaActual: '/solicitudesPendientes'),
 
@@ -109,20 +106,14 @@ class PantallaGrande extends StatelessWidget {
                 child: Column(
                   children: [
                     SeccionArribaPantallaGrande(),
-                    
-                    SizedBox(height: 60,),
+
+                    SizedBox(height: 60),
 
                     Expanded(
-                      
                       child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            TarjetaSolicitudWidget()
-                          ],
-                        ),
-                      )),
-                      
-                      
+                        child: Column(children: [TarjetaSolicitudWidget()]),
+                      ),
+                    ),
 
                     FooterCrearAlumno(),
                   ],
@@ -137,39 +128,34 @@ class PantallaGrande extends StatelessWidget {
 }
 
 class SeccionArribaPantallaGrande extends StatelessWidget {
-  const SeccionArribaPantallaGrande({
-    super.key,
-  });
+  const SeccionArribaPantallaGrande({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      
+
       child: Padding(
         padding: const EdgeInsets.only(left: 60.0, top: 20, right: 60.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-        
-            Text("Solicitudes Pendientes", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),),
+            Text(
+              "Solicitudes Pendientes",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+            ),
 
             const SizedBox(width: 15),
-
-        
           ],
         ),
       ),
-
     );
   }
 }
 
 class FooterCrearAlumno extends StatelessWidget {
-  const FooterCrearAlumno({
-    super.key,
-  });
+  const FooterCrearAlumno({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +165,6 @@ class FooterCrearAlumno extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        
       ),
     );
   }

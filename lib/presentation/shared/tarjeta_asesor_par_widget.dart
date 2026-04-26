@@ -22,7 +22,7 @@ class TarjetaAsesorParWidget extends StatelessWidget {
         }
 
         final allAsesores = snapshot.data ?? [];
-      
+
         final filteredAsesores = allAsesores.where((asesor) {
           final nombre = asesor.nombre.toLowerCase();
           final search = query.toLowerCase();
@@ -36,10 +36,7 @@ class TarjetaAsesorParWidget extends StatelessWidget {
 }
 
 class ListaAsesoresPar extends StatelessWidget {
-  const ListaAsesoresPar({
-    super.key,
-    required this.listAsesoresPar,
-  });
+  const ListaAsesoresPar({super.key, required this.listAsesoresPar});
 
   final List<AsesorPar> listAsesoresPar;
   final double anchoTarjeta = 360.0;
@@ -53,16 +50,18 @@ class ListaAsesoresPar extends StatelessWidget {
         return AlertDialog(
           insetPadding: EdgeInsets.zero,
           backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
           content: Container(
             width: 900,
             height: 635,
             color: Colors.white,
             // AQUÍ: Se pasa el asesor por constructor como en el Disciplinar
-            child: InformacionAsesoresPar(asesor: asesor), 
+            child: InformacionAsesoresPar(asesor: asesor),
           ),
         );
-      }
+      },
     );
   }
 
@@ -72,7 +71,10 @@ class ListaAsesoresPar extends StatelessWidget {
       return const Center(
         child: Padding(
           padding: EdgeInsets.all(20.0),
-          child: Text("No se encontraron asesores par.", style: TextStyle(color: Colors.grey)),
+          child: Text(
+            "No se encontraron asesores par.",
+            style: TextStyle(color: Colors.grey),
+          ),
         ),
       );
     }
@@ -90,9 +92,11 @@ class ListaAsesoresPar extends StatelessWidget {
               height: alturaTarjeta,
               child: Card(
                 color: Appcolores.azulUas,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 25),
+                  padding: const EdgeInsets.only(left: 25, right: 25),
                   child: Row(
                     children: [
                       Image.asset('assets/images/foto_icon.png', width: 60),
@@ -100,7 +104,10 @@ class ListaAsesoresPar extends StatelessWidget {
                       Expanded(
                         child: Text(
                           asesorPar.nombre,
-                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),

@@ -7,8 +7,6 @@ import 'package:asesorias_fic/presentation/rol_administrador/reportes.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/solicitudes_pendientes.dart';
 import 'package:flutter/material.dart';
 
-
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -19,40 +17,108 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [
-    AsesoriasEnCurso(),
-    SolicitudesPendientes(),
-    Reportes(),
-    AsesoresDiciplinares(),
-    AsesoresPar(),
-    Estudiantes(),
+  final List<String> _titles = [
+    'Asesorías',
+    'Solicitudes',
+    'Reportes',
+    'Asesores Disciplinares',
+    'Asesores Par',
+    'Estudiantes',
   ];
+
+  List<Widget> _buildPages(bool isMobile) => [
+    AsesoriasEnCurso(mostrarTitulo: !isMobile),
+    SolicitudesPendientes(mostrarTitulo: !isMobile),
+    Reportes(mostrarTitulo: !isMobile),
+    AsesoresDiciplinares(mostrarTitulo: !isMobile),
+    AsesoresPar(mostrarTitulo: !isMobile),
+    Estudiantes(mostrarTitulo: !isMobile),
+  ];
+
+  void _onItemSelected(BuildContext context, int index) {
+    if (index == 6) {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      showDialog(context: context, builder: (_) => AlertaCerrarSesion());
+    } else {
+      setState(() => _selectedIndex = index);
+      if (Scaffold.of(context).isDrawerOpen) {
+        Navigator.of(context).pop();
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool isMobile = constraints.maxWidth < 800;
+        final pages = _buildPages(isMobile);
+
+        if (isMobile) {
+          return _buildMobile(pages);
+        } else {
+          return _buildDesktop(pages);
+        }
+      },
+    );
+  }
+
+  Widget _buildMobile(List<Widget> pages) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Appcolores.azulUas,
+        title: Text(
+          _titles[_selectedIndex],
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.white),
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu, size: 28),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          ),
+        ),
+      ),
+      drawer: Builder(
+        builder: (context) => Drawer(
+          width: 260,
+          backgroundColor: Appcolores.azulUas,
+          child: SafeArea(
+            child: _SideMenuContent(
+              selectedIndex: _selectedIndex,
+              onItemSelected: (index) => _onItemSelected(context, index),
+            ),
+          ),
+        ),
+      ),
+      body: IndexedStack(index: _selectedIndex, children: pages),
+    );
+  }
+
+  Widget _buildDesktop(List<Widget> pages) {
+    return Scaffold(
+      backgroundColor: Appcolores.azulUas,
       body: Row(
         children: [
-          SideMenu( 
-            selectedIndex: _selectedIndex,
-            onItemSelected: (index) {
-              if (index == 6) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context){
-                    return AlertaCerrarSesion();
-                  });
-                
-              } else {
-                setState(() => _selectedIndex = index);
-              }
-            },
+          Builder(
+            builder: (context) => Container(
+              width: 260,
+              color: Appcolores.azulUas,
+              child: _SideMenuContent(
+                selectedIndex: _selectedIndex,
+                onItemSelected: (index) => _onItemSelected(context, index),
+              ),
+            ),
           ),
-
           Expanded(
-            child: IndexedStack(
-              index: _selectedIndex,
-              children: _pages,
+            child: Container(
+              color: Colors.white,
+              child: IndexedStack(index: _selectedIndex, children: pages),
             ),
           ),
         ],
@@ -62,107 +128,86 @@ class _HomePageState extends State<HomePage> {
 }
 
 class AlertaCerrarSesion extends StatelessWidget {
-  const AlertaCerrarSesion({
-    super.key,
-  });
+  const AlertaCerrarSesion({super.key});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Confirmacion"),
-      content: Text("Esta seguro de cerrar sesion?"),
-      contentPadding: EdgeInsets.all(30),
+      title: const Text("Confirmacion"),
+      content: const Text("Esta seguro de cerrar sesion?"),
+      contentPadding: const EdgeInsets.all(30),
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       actionsAlignment: MainAxisAlignment.center,
       actions: [
-        
         TextButton(
           style: TextButton.styleFrom(
             foregroundColor: Colors.white,
             backgroundColor: const Color.fromARGB(255, 143, 143, 143),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-            textStyle: TextStyle(fontWeight: FontWeight.bold)
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            textStyle: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          onPressed: () {
-              Navigator.of(context).pop();
-            },
-          child: Text("Cancelar")),
-    
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text("Cancelar"),
+        ),
         TextButton(
           style: TextButton.styleFrom(
             foregroundColor: Colors.white,
             backgroundColor: const Color.fromARGB(255, 235, 40, 26),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-            textStyle: TextStyle(fontWeight: FontWeight.bold)
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            textStyle: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          onPressed: () {
-            Navigator.pushReplacementNamed(context, '/login');
-          },
-          child: Text("Aceptar")),
-        
+          onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+          child: const Text("Aceptar"),
+        ),
       ],
     );
   }
 }
 
-class SideMenu extends StatelessWidget {
-  const SideMenu({super.key, required this.selectedIndex, required this.onItemSelected});
+class _SideMenuContent extends StatelessWidget {
+  const _SideMenuContent({
+    required this.selectedIndex,
+    required this.onItemSelected,
+  });
 
   final int selectedIndex;
   final Function(int) onItemSelected;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 260,
-      
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      decoration: BoxDecoration(
-        color: Appcolores.azulUas,
-        /* borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(24),
-          bottomRight: Radius.circular(24),
-        ), */
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          // LOGO
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Image.asset('assets/images/fic_logo.png', height: 130),
-          ),
-
-          const SizedBox(height: 20),
-
-          _menuItem(Icons.assignment_turned_in, 'Asesorías', 0),
-          _menuItem(Icons.assignment_late, 'Solicitudes', 1),
-          _menuItem(Icons.assignment_rounded, 'Reportes', 2),
-          _menuItem(Icons.people, 'Asesores Disciplinares', 3),
-          _menuItem(Icons.group, 'Asesores Par', 4),
-          _menuItem(Icons.school, 'Estudiantes', 5),
-
-          const Spacer(),
-
-          _menuItem(Icons.logout, 'Cerrar sesión', 6),
-        ],
-      ),
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Image.asset('assets/images/fic_logo.png', height: 130),
+        ),
+        const SizedBox(height: 20),
+        _menuItem(Icons.assignment_turned_in, 'Asesorías', 0),
+        _menuItem(Icons.assignment_late, 'Solicitudes', 1),
+        _menuItem(Icons.assignment_rounded, 'Reportes', 2),
+        _menuItem(Icons.people, 'Asesores Disciplinares', 3),
+        _menuItem(Icons.group, 'Asesores Par', 4),
+        _menuItem(Icons.school, 'Estudiantes', 5),
+        const Spacer(),
+        _menuItem(Icons.logout, 'Cerrar sesión', 6),
+        const SizedBox(height: 10),
+      ],
     );
   }
 
   Widget _menuItem(IconData icon, String text, int index) {
     final bool selected = index == selectedIndex;
-
     return InkWell(
       onTap: () => onItemSelected(index),
+      borderRadius: BorderRadius.circular(12),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
@@ -174,11 +219,13 @@ class SideMenu extends StatelessWidget {
           children: [
             Icon(icon, color: selected ? Appcolores.azulFuerte : Colors.white),
             const SizedBox(width: 12),
-            Text(
-              text,
-              style: TextStyle(
-                color: selected ? Appcolores.azulFuerte : Colors.white,
-                fontWeight: FontWeight.w500,
+            Expanded(
+              child: Text(
+                text,
+                style: TextStyle(
+                  color: selected ? Appcolores.azulFuerte : Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ],

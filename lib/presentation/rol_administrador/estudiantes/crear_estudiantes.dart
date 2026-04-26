@@ -30,15 +30,27 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
     "Licenciatura en informatica",
     "Licenciatura en informatica virtual",
     "Licenciatura en ingenieria en ciencias de datos",
-    "Licenciatura en ITSE"
+    "Licenciatura en ITSE",
   ];
-  final List<String> grupos = ['1-1', '1-2', '2-1', '2-2', '3-1', '3-2', '4-1', '4-2', '4-3'];
+  final List<String> grupos = [
+    '1-1',
+    '1-2',
+    '2-1',
+    '2-2',
+    '3-1',
+    '3-2',
+    '4-1',
+    '4-2',
+    '4-3',
+  ];
 
   void _guardarEstudiante() async {
     if (_formKey.currentState!.validate()) {
       if (_selectedLicenciatura == null || _selectedGrupo == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Por favor seleccione Licenciatura y Grupo")),
+          const SnackBar(
+            content: Text("Por favor seleccione Licenciatura y Grupo"),
+          ),
         );
         return;
       }
@@ -59,7 +71,10 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
 
       if (exito && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Estudiante registrado con éxito"), backgroundColor: Colors.green),
+          const SnackBar(
+            content: Text("Estudiante registrado con éxito"),
+            backgroundColor: Colors.green,
+          ),
         );
         Navigator.pop(context, nuevoEstudiante);
       }
@@ -80,7 +95,7 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Registrar Nuevo Estudiante',
+                    'Nuevo Estudiante',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   IconButton(
@@ -95,22 +110,27 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
             // --- CUERPO DEL FORMULARIO ---
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 30,
+                ),
                 child: Center(
                   child: Container(
                     constraints: const BoxConstraints(maxWidth: 1000),
                     child: Form(
                       key: _formKey,
-                      child: LayoutBuilder(builder: (context, constraints) {
-                        bool isMobile = constraints.maxWidth < 700;
-                        return _buildFormContent(isMobile: isMobile);
-                      }),
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          bool isMobile = constraints.maxWidth < 700;
+                          return _buildFormContent(isMobile: isMobile);
+                        },
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-            
+
             const Divider(height: 1),
             // --- BARRA INFERIOR CON BOTÓN A LA DERECHA ---
             _buildBottomBar(),
@@ -127,7 +147,7 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
         _buildLabel("Nombre Completo"),
         _buildTextField(nombreController, ""),
         const SizedBox(height: 20),
-        
+
         _buildLabel("Número de Cuenta"),
         _buildTextField(cuentaController, ""),
         const SizedBox(height: 20),
@@ -136,23 +156,35 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
         _buildTextField(contraController, "", isPassword: true),
         const SizedBox(height: 20),
 
-        _buildCampoDropdown('Licenciatura', _selectedLicenciatura, licenciaturas, 
-            (val) => setState(() => _selectedLicenciatura = val)),
+        _buildCampoDropdown(
+          'Licenciatura',
+          _selectedLicenciatura,
+          licenciaturas,
+          (val) => setState(() => _selectedLicenciatura = val),
+        ),
       ],
     );
 
     final columna2 = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildCampoDropdown('Grupo', _selectedGrupo, grupos, 
-            (val) => setState(() => _selectedGrupo = val)),
+        _buildCampoDropdown(
+          'Grupo',
+          _selectedGrupo,
+          grupos,
+          (val) => setState(() => _selectedGrupo = val),
+        ),
 
         _buildLabel("Promedio"),
         _buildTextField(promedioController, "", isNumber: true),
         const SizedBox(height: 20),
 
         _buildLabel("Correo Institucional"),
-        _buildTextField(correoController, "correo@info.uas.edu.mx", isEmail: true),
+        _buildTextField(
+          correoController,
+          "correo@info.uas.edu.mx",
+          isEmail: true,
+        ),
         const SizedBox(height: 20),
 
         _buildLabel("Teléfono"),
@@ -160,16 +192,16 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
       ],
     );
 
-    return isMobile 
-      ? Column(children: [columna1, columna2]) 
-      : Row(
-          crossAxisAlignment: CrossAxisAlignment.start, 
-          children: [
-            Expanded(child: columna1),
-            const SizedBox(width: 50),
-            Expanded(child: columna2),
-          ],
-        );
+    return isMobile
+        ? Column(children: [columna1, columna2])
+        : Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: columna1),
+              const SizedBox(width: 50),
+              Expanded(child: columna2),
+            ],
+          );
   }
 
   // --- COMPONENTES UI REUTILIZABLES ---
@@ -179,22 +211,37 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
     child: Text(texto, style: const TextStyle(fontWeight: FontWeight.bold)),
   );
 
-  Widget _buildTextField(TextEditingController controller, String hint, {bool isEmail = false, bool isPhone = false, bool isNumber = false, bool isPassword = false}) {
+  Widget _buildTextField(
+    TextEditingController controller,
+    String hint, {
+    bool isEmail = false,
+    bool isPhone = false,
+    bool isNumber = false,
+    bool isPassword = false,
+  }) {
     return TextFormField(
       controller: controller,
       obscureText: isPassword,
-      keyboardType: isEmail ? TextInputType.emailAddress : (isPhone || isNumber ? TextInputType.number : TextInputType.text),
+      keyboardType: isEmail
+          ? TextInputType.emailAddress
+          : (isPhone || isNumber ? TextInputType.number : TextInputType.text),
       decoration: InputDecoration(
         hintText: hint,
         filled: true,
         fillColor: Colors.grey[50],
         border: const OutlineInputBorder(),
       ),
-      validator: (val) => val == null || val.isEmpty ? "Campo obligatorio" : null,
+      validator: (val) =>
+          val == null || val.isEmpty ? "Campo obligatorio" : null,
     );
   }
 
-  Widget _buildCampoDropdown(String label, String? currentVal, List<String> opciones, Function(String?) onChanged) {
+  Widget _buildCampoDropdown(
+    String label,
+    String? currentVal,
+    List<String> opciones,
+    Function(String?) onChanged,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -205,9 +252,11 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
           decoration: const InputDecoration(
             filled: true,
             fillColor: Colors.white,
-            border: OutlineInputBorder()
+            border: OutlineInputBorder(),
           ),
-          items: opciones.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          items: opciones
+              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+              .toList(),
           onChanged: onChanged,
           validator: (val) => val == null ? "Seleccione una opción" : null,
         ),
@@ -226,11 +275,18 @@ class _CrearEstudiantesState extends State<CrearEstudiantes> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Appcolores.azulUas,
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 18),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             onPressed: _guardarEstudiante,
-            child: const Text('CONFIRMAR REGISTRO', 
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            child: const Text(
+              'CONFIRMAR REGISTRO',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),

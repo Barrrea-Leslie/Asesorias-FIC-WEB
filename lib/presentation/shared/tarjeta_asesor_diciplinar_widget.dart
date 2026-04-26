@@ -22,14 +22,16 @@ class TarjetaAsesorDiciplinarWidget extends StatelessWidget {
         }
 
         final allAsesores = snapshot.data ?? [];
-        
+
         final filteredAsesores = allAsesores.where((asesor) {
           final nombre = asesor.nombre.toLowerCase();
           final search = query.toLowerCase();
           return nombre.contains(search);
         }).toList();
 
-        return ListaAsesoresDiciplinares(listAsesoresDiciplinares: filteredAsesores);
+        return ListaAsesoresDiciplinares(
+          listAsesoresDiciplinares: filteredAsesores,
+        );
       },
     );
   }
@@ -61,8 +63,7 @@ class ListaAsesoresDiciplinares extends StatelessWidget {
             child: EditarAsesorDisciplinar(asesor: asesor),
           ),
         );
-      }
-      
+      },
     );
   }
 
@@ -72,7 +73,10 @@ class ListaAsesoresDiciplinares extends StatelessWidget {
       return const Center(
         child: Padding(
           padding: EdgeInsets.all(20.0),
-          child: Text("No se encontraron asesores.", style: TextStyle(color: Colors.grey)),
+          child: Text(
+            "No se encontraron asesores.",
+            style: TextStyle(color: Colors.grey),
+          ),
         ),
       );
     }
@@ -90,9 +94,11 @@ class ListaAsesoresDiciplinares extends StatelessWidget {
               height: alturaTarjeta,
               child: Card(
                 color: Appcolores.azulUas,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 25),
+                  padding: const EdgeInsets.only(left: 25, right: 25),
                   child: Row(
                     children: [
                       Image.asset('assets/images/foto_icon.png', width: 60),
@@ -100,11 +106,14 @@ class ListaAsesoresDiciplinares extends StatelessWidget {
                       Expanded(
                         child: Text(
                           asesor.nombre,
-                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      
+
                       const SizedBox(width: 15),
                     ],
                   ),

@@ -21,8 +21,12 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
   List<String> horariosSeleccionados = [];
 
   final List<String> catalogoMaterias = [
-    'Programacion I', 'Programacion II', 'Principios de programacion', 
-    'Programacion Web', 'Bases de Datos', 'Estructura de Datos'
+    'Programacion I',
+    'Programacion II',
+    'Principios de programacion',
+    'Programacion Web',
+    'Bases de Datos',
+    'Estructura de Datos',
   ];
 
   // NUEVA LISTA DE HORARIOS
@@ -43,7 +47,7 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
     {"id_horario": 14, "horario": "8:00-9:00 PM"},
     {"id_horario": 15, "horario": "9:00-10:00 PM"},
     {"id_horario": 16, "horario": "10:00-11:00 PM"},
-    {"id_horario": 17, "horario": "11:00-12:00 AM"}
+    {"id_horario": 17, "horario": "11:00-12:00 AM"},
   ];
 
   @override
@@ -59,8 +63,12 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Registrar Nuevo Asesor Disciplinar',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+                    'Nuevo Asesor Disciplinar',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
                   ),
                   IconButton(
                     icon: const Icon(Icons.close, color: Colors.black),
@@ -72,22 +80,35 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
             const Divider(height: 1),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 30,
+                ),
                 child: Center(
                   child: Container(
                     constraints: const BoxConstraints(maxWidth: 1000),
                     child: Form(
                       key: _formKey,
-                      child: LayoutBuilder(builder: (context, constraints) {
-                        bool isMobile = constraints.maxWidth < 700;
-                        return isMobile 
-                          ? Column(children: [_buildColumna1(), _buildColumna2()])
-                          : Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                              Expanded(child: _buildColumna1()),
-                              const SizedBox(width: 50),
-                              Expanded(child: _buildColumna2()),
-                            ]);
-                      }),
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          bool isMobile = constraints.maxWidth < 700;
+                          return isMobile
+                              ? Column(
+                                  children: [
+                                    _buildColumna1(),
+                                    _buildColumna2(),
+                                  ],
+                                )
+                              : Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(child: _buildColumna1()),
+                                    const SizedBox(width: 50),
+                                    Expanded(child: _buildColumna2()),
+                                  ],
+                                );
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -128,11 +149,17 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
         _buildLabel("Teléfono"),
         _buildTextField(telefonoController, "6671234567", isPhone: true),
         const SizedBox(height: 30),
-        _buildHeaderSeccion(titulo: "Materias que asesora", onAdd: () => _abrirModalMaterias()),
+        _buildHeaderSeccion(
+          titulo: "Materias que asesora",
+          onAdd: () => _abrirModalMaterias(),
+        ),
         _buildListaItems(materiasSeleccionadas),
         const SizedBox(height: 30),
         // AHORA LLAMA A _abrirModalHorarios
-        _buildHeaderSeccion(titulo: "Horarios de asesoría", onAdd: () => _abrirModalHorarios()),
+        _buildHeaderSeccion(
+          titulo: "Horarios de asesoría",
+          onAdd: () => _abrirModalHorarios(),
+        ),
         _buildListaItems(horariosSeleccionados),
       ],
     );
@@ -144,26 +171,41 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
     child: Text(texto, style: const TextStyle(fontWeight: FontWeight.bold)),
   );
 
-  Widget _buildTextField(TextEditingController controller, String hint, {bool isEmail = false, bool isPhone = false, bool isPassword = false}) {
+  Widget _buildTextField(
+    TextEditingController controller,
+    String hint, {
+    bool isEmail = false,
+    bool isPhone = false,
+    bool isPassword = false,
+  }) {
     return TextFormField(
       controller: controller,
       obscureText: isPassword,
-      keyboardType: isEmail ? TextInputType.emailAddress : (isPhone ? TextInputType.phone : TextInputType.text),
+      keyboardType: isEmail
+          ? TextInputType.emailAddress
+          : (isPhone ? TextInputType.phone : TextInputType.text),
       decoration: InputDecoration(
         hintText: hint,
         filled: true,
         fillColor: Colors.grey[50],
         border: const OutlineInputBorder(),
       ),
-      validator: (val) => val == null || val.isEmpty ? "Campo obligatorio" : null,
+      validator: (val) =>
+          val == null || val.isEmpty ? "Campo obligatorio" : null,
     );
   }
 
-  Widget _buildHeaderSeccion({required String titulo, required VoidCallback onAdd}) {
+  Widget _buildHeaderSeccion({
+    required String titulo,
+    required VoidCallback onAdd,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(titulo, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+        Text(
+          titulo,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
         ElevatedButton.icon(
           onPressed: onAdd,
           icon: const Icon(Icons.add, size: 18),
@@ -180,11 +222,19 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
 
   Widget _buildListaItems(List<String> lista) {
     return Column(
-      children: lista.map((item) => ListTile(
-        title: Text(item, style: const TextStyle(fontSize: 14)),
-        trailing: const Icon(Icons.delete_outline, color: Colors.red, size: 20),
-        onTap: () => setState(() => lista.remove(item)),
-      )).toList(),
+      children: lista
+          .map(
+            (item) => ListTile(
+              title: Text(item, style: const TextStyle(fontSize: 14)),
+              trailing: const Icon(
+                Icons.delete_outline,
+                color: Colors.red,
+                size: 20,
+              ),
+              onTap: () => setState(() => lista.remove(item)),
+            ),
+          )
+          .toList(),
     );
   }
 
@@ -198,14 +248,22 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Appcolores.azulUas,
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 18),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 Navigator.pop(context);
               }
             },
-            child: const Text('CONFIRMAR REGISTRO', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            child: const Text(
+              'CONFIRMAR REGISTRO',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
@@ -218,37 +276,52 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
       context: context,
       builder: (context) {
         String filtro = "";
-        return StatefulBuilder(builder: (context, setModalState) {
-          final sugerencias = catalogoMaterias.where((m) => m.toLowerCase().contains(filtro.toLowerCase())).toList();
-          return AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            title: const Text("Buscar Materia"),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: "Nombre de materia"),
-                  onChanged: (val) => setModalState(() => filtro = val),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 200, width: 300,
-                  child: ListView.builder(
-                    itemCount: sugerencias.length,
-                    itemBuilder: (ctx, i) => ListTile(
-                      title: Text(sugerencias[i]),
-                      trailing: const Icon(Icons.add_circle, color: Colors.green),
-                      onTap: () {
-                        setState(() => materiasSeleccionadas.add(sugerencias[i]));
-                        Navigator.pop(context);
-                      },
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            final sugerencias = catalogoMaterias
+                .where((m) => m.toLowerCase().contains(filtro.toLowerCase()))
+                .toList();
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              title: const Text("Buscar Materia"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.search),
+                      hintText: "Nombre de materia",
+                    ),
+                    onChanged: (val) => setModalState(() => filtro = val),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    height: 200,
+                    width: 300,
+                    child: ListView.builder(
+                      itemCount: sugerencias.length,
+                      itemBuilder: (ctx, i) => ListTile(
+                        title: Text(sugerencias[i]),
+                        trailing: const Icon(
+                          Icons.add_circle,
+                          color: Colors.green,
+                        ),
+                        onTap: () {
+                          setState(
+                            () => materiasSeleccionadas.add(sugerencias[i]),
+                          );
+                          Navigator.pop(context);
+                        },
+                      ),
                     ),
                   ),
-                )
-              ],
-            ),
-          );
-        });
+                ],
+              ),
+            );
+          },
+        );
       },
     );
   }
@@ -259,44 +332,63 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
       context: context,
       builder: (context) {
         String filtro = "";
-        return StatefulBuilder(builder: (context, setModalState) {
-          final sugerencias = catalogoHorarios
-              .where((h) => h["horario"].toString().toLowerCase().contains(filtro.toLowerCase()))
-              .toList();
-          
-          return AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            title: const Text("Seleccionar Horario"),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: "Ej. 7:00 AM"),
-                  onChanged: (val) => setModalState(() => filtro = val),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 250, width: 300,
-                  child: ListView.builder(
-                    itemCount: sugerencias.length,
-                    itemBuilder: (ctx, i) => ListTile(
-                      title: Text(sugerencias[i]["horario"]),
-                      trailing: const Icon(Icons.add_circle, color: Colors.green),
-                      onTap: () {
-                        setState(() {
-                          if (!horariosSeleccionados.contains(sugerencias[i]["horario"])) {
-                              horariosSeleccionados.add(sugerencias[i]["horario"]);
-                          }
-                        });
-                        Navigator.pop(context);
-                      },
-                    ),
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            final sugerencias = catalogoHorarios
+                .where(
+                  (h) => h["horario"].toString().toLowerCase().contains(
+                    filtro.toLowerCase(),
                   ),
                 )
-              ],
-            ),
-          );
-        });
+                .toList();
+
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              title: const Text("Seleccionar Horario"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.search),
+                      hintText: "Ej. 7:00 AM",
+                    ),
+                    onChanged: (val) => setModalState(() => filtro = val),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    height: 250,
+                    width: 300,
+                    child: ListView.builder(
+                      itemCount: sugerencias.length,
+                      itemBuilder: (ctx, i) => ListTile(
+                        title: Text(sugerencias[i]["horario"]),
+                        trailing: const Icon(
+                          Icons.add_circle,
+                          color: Colors.green,
+                        ),
+                        onTap: () {
+                          setState(() {
+                            if (!horariosSeleccionados.contains(
+                              sugerencias[i]["horario"],
+                            )) {
+                              horariosSeleccionados.add(
+                                sugerencias[i]["horario"],
+                              );
+                            }
+                          });
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
       },
     );
   }
@@ -641,4 +733,3 @@ class _CrearAsesorDisiplinarState extends State<CrearAsesorDisiplinar> {
 }
 
  */
-

@@ -9,16 +9,14 @@ import 'package:flutter/material.dart';
 class TarjetaSolicitudWidget extends StatelessWidget {
   const TarjetaSolicitudWidget({super.key});
 
-
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
       future: Future.wait([
         SolicitudesPendientesService().getSolicitudes(),
-        EstudiantesService().getEstudiantes()
+        EstudiantesService().getEstudiantes(),
       ]),
-       // usa el service
+      // usa el service
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -29,13 +27,14 @@ class TarjetaSolicitudWidget extends StatelessWidget {
         final solicitudes = snapshot.data![0] as List<SolicitudesPendientes>;
         final estudiantes = snapshot.data![1] as List<Estudiantes>;
 
-        return ListaSolicitudes(listaSolicitudes: solicitudes, listaEstudiantes: estudiantes);
+        return ListaSolicitudes(
+          listaSolicitudes: solicitudes,
+          listaEstudiantes: estudiantes,
+        );
       },
     );
   }
 }
-
-
 
 class ListaSolicitudes extends StatelessWidget {
   const ListaSolicitudes({
@@ -52,153 +51,164 @@ class ListaSolicitudes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final Map<int, Estudiantes> estudiantesPorId = {
-      for (var e in listaEstudiantes) e.id: e
+      for (var e in listaEstudiantes) e.id: e,
     };
 
     return Padding(
       padding: const EdgeInsets.only(left: 40, right: 40, top: 00),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          
-        
           return Wrap(
-      
-              spacing: 20,
-              runSpacing: 10,
-      
-              children: listaSolicitudes.map((solicitud) {
+            spacing: 20,
+            runSpacing: 10,
+            children: listaSolicitudes.map((solicitud) {
+              final estudiante = estudiantesPorId[solicitud.idEstudiante];
+              final double ancho = constraints.maxWidth < 600
+                  ? double.infinity
+                  : 360.0;
 
-                final estudiante = estudiantesPorId[solicitud.idEstudiante];
-
-                return SizedBox(
-                  width: anchoTarjeta,
-                  height: alturaTarjeta,
-                  child: Card(
-                    color: Appcolores.azulUas,
-                    
+              return SizedBox(
+                width: ancho,
+                // ← sin height
+                child: Card(
+                  color: Appcolores.azulUas,
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
-                      
-                        
+                      mainAxisSize: MainAxisSize
+                          .min, // <- importante, se ajusta al contenido
                       children: [
-                    
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 5,
                           children: [
-                    
-                            Text('Alumno: ${estudiante?.nombre ?? "Estudiante no encontrado"}', style: TextStyle(color: Colors.white),),
-                            Text('Materia: ${solicitud.materia}', style: TextStyle(color: Colors.white),),
-                            Text('Fecha: ${solicitud.fechaInicio}', style: TextStyle(color: Colors.white),),
-                            Text('Horario: ${solicitud.horario}', style: TextStyle(color: Colors.white),),
-                            Text('Modalidad: ${solicitud.modalidad}', style: TextStyle(color: Colors.white),),
-                    
+                            Text(
+                              'Alumno: ${estudiante?.nombre ?? "Estudiante no encontrado"}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              'Materia: ${solicitud.materia}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              'Fecha: ${solicitud.fechaInicio}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              'Horario: ${solicitud.horario}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              'Modalidad: ${solicitud.modalidad}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            ),
                           ],
-                                
                         ),
-                    
-                        const SizedBox(height: 20,),
-                    
+
+                        const SizedBox(height: 20),
+
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            spacing: 20,
-                            children: [
-                              BotonRecahzar(),
-                              BotonAceptar(),
-                    
-                            ],
-                    
-                        )
-                    
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            BotonRecahzar(),
+                            const SizedBox(width: 20),
+                            BotonAceptar(),
+                          ],
+                        ),
                       ],
-                    
                     ),
-                  )
                   ),
-                );
-      
-              }).toList(),
-      
-            );
-      
-        
-        
+                ),
+              );
+            }).toList(),
+          );
         },
-      
       ),
     );
   }
 }
 
 class BotonRecahzar extends StatelessWidget {
-  const BotonRecahzar({
-    super.key,
-  });
+  const BotonRecahzar({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-    onPressed: () {
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertaRechazar();
+          },
+        );
+      },
 
-      showDialog(context: context, builder: (BuildContext context){
-        return AlertaRechazar();
-      });
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Appcolores.rojo,
+        foregroundColor: Colors.white,
+        elevation: 3,
 
-    },
-    
-    style: ElevatedButton.styleFrom(
-      backgroundColor: Appcolores.rojo,
-      foregroundColor: Colors.white,
-      elevation: 3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(5),
+        ),
+      ),
 
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(5)
-      )
-    ),
-
-    child: Text('Rechazar'),
+      child: Text('Rechazar'),
     );
   }
 }
 
 class BotonAceptar extends StatelessWidget {
-  const BotonAceptar({
-    super.key,
-  });
+  const BotonAceptar({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-    onPressed: () {
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertaAceptar();
+          },
+        );
+      },
 
-      showDialog(context: context, builder: (BuildContext context){
-        return AlertaAceptar();
-      });
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Appcolores.verdeClaro,
+        foregroundColor: Colors.white,
+        elevation: 3,
 
-    },
-    
-    style: ElevatedButton.styleFrom(
-      backgroundColor: Appcolores.verdeClaro,
-      foregroundColor: Colors.white,
-      elevation: 3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(5),
+        ),
+      ),
 
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(5)
-      )
-    ),
-
-    child: Text('Aceptar'),
+      child: Text('Aceptar'),
     );
   }
 }
 
 class AlertaAceptar extends StatelessWidget {
-  const AlertaAceptar({
-    super.key,
-  });
+  const AlertaAceptar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -210,46 +220,49 @@ class AlertaAceptar extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       actionsAlignment: MainAxisAlignment.center,
       actions: [
-        
         TextButton(
           style: TextButton.styleFrom(
             foregroundColor: Colors.white,
             backgroundColor: const Color.fromARGB(255, 143, 143, 143),
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-            textStyle: TextStyle(fontWeight: FontWeight.bold)
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            textStyle: TextStyle(fontWeight: FontWeight.bold),
           ),
           onPressed: () {
-              Navigator.of(context).pop();
-            },
-          child: Text("Cancelar")),
-    
+            Navigator.of(context).pop();
+          },
+          child: Text("Cancelar"),
+        ),
+
         TextButton(
           style: TextButton.styleFrom(
             foregroundColor: Colors.white,
             backgroundColor: const Color.fromARGB(255, 74, 149, 86),
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-            textStyle: TextStyle(fontWeight: FontWeight.bold)
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            textStyle: TextStyle(fontWeight: FontWeight.bold),
           ),
           onPressed: () {
             Navigator.of(context).pop();
 
-            MensajeConfirmacion.mostrarMensaje(context, "Se acepto la solicitud correctamente");
-
+            MensajeConfirmacion.mostrarMensaje(
+              context,
+              "Se acepto la solicitud correctamente",
+            );
           },
-          child: Text("Aceptar")),
-        
+          child: Text("Aceptar"),
+        ),
       ],
     );
   }
 }
 
-
 class AlertaRechazar extends StatelessWidget {
-  const AlertaRechazar({
-    super.key,
-  });
+  const AlertaRechazar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -261,38 +274,43 @@ class AlertaRechazar extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       actionsAlignment: MainAxisAlignment.center,
       actions: [
-        
         TextButton(
           style: TextButton.styleFrom(
             foregroundColor: Colors.white,
             backgroundColor: const Color.fromARGB(255, 143, 143, 143),
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-            textStyle: TextStyle(fontWeight: FontWeight.bold)
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            textStyle: TextStyle(fontWeight: FontWeight.bold),
           ),
           onPressed: () {
-              Navigator.of(context).pop();
-            },
-          child: Text("Cancelar")),
-    
+            Navigator.of(context).pop();
+          },
+          child: Text("Cancelar"),
+        ),
+
         TextButton(
           style: TextButton.styleFrom(
             foregroundColor: Colors.white,
             backgroundColor: const Color.fromARGB(255, 74, 149, 86),
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-            textStyle: TextStyle(fontWeight: FontWeight.bold)
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            textStyle: TextStyle(fontWeight: FontWeight.bold),
           ),
           onPressed: () {
             Navigator.of(context).pop();
 
-            MensajeConfirmacion.mostrarMensaje(context, "Se rechazo la solicitud correctamente");
-
+            MensajeConfirmacion.mostrarMensaje(
+              context,
+              "Se rechazo la solicitud correctamente",
+            );
           },
-          child: Text("Aceptar")),
-        
+          child: Text("Aceptar"),
+        ),
       ],
     );
   }
 }
-

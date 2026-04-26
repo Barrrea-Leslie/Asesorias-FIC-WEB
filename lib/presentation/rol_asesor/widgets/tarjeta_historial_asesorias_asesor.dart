@@ -17,7 +17,7 @@ class TarjetaHistorialAsesoriasAsesor extends StatelessWidget {
     return FutureBuilder(
       future: Future.wait([
         AsesoriasService().getAsesorias(),
-        EstudiantesService().getEstudiantes()
+        EstudiantesService().getEstudiantes(),
       ]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -29,11 +29,14 @@ class TarjetaHistorialAsesoriasAsesor extends StatelessWidget {
 
         final asesoriasRaw = snapshot.data![0] as List<Asesorias>;
         final estudiantes = snapshot.data![1] as List<Estudiantes>;
-        final Map<int, Estudiantes> estudiantesMap = {for (var e in estudiantes) e.id: e};
+        final Map<int, Estudiantes> estudiantesMap = {
+          for (var e in estudiantes) e.id: e,
+        };
 
         // Filtramos por búsqueda
         final asesoriasFiltradas = asesoriasRaw.where((ase) {
-          final nombreEstudiante = estudiantesMap[ase.idEstudiante]?.nombre.toLowerCase() ?? '';
+          final nombreEstudiante =
+              estudiantesMap[ase.idEstudiante]?.nombre.toLowerCase() ?? '';
           final materia = ase.materia.toLowerCase();
           final search = query.toLowerCase();
           return materia.contains(search) || nombreEstudiante.contains(search);
@@ -60,7 +63,9 @@ class ListaHistorial extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<int, Estudiantes> estudiantesPorId = {for (var e in listaEstudiantes) e.id: e};
+    final Map<int, Estudiantes> estudiantesPorId = {
+      for (var e in listaEstudiantes) e.id: e,
+    };
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -75,21 +80,42 @@ class ListaHistorial extends StatelessWidget {
 
               return SizedBox(
                 width: 360,
-                height: 190, // Altura reducida ya que tiene menos botones
+                // Altura reducida ya que tiene menos botones
                 child: Card(
                   color: Appcolores.azulUas,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(25),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Alumno: $nombreAlumno', style: const TextStyle(color: Colors.white, fontSize: 16)),
+                        Text(
+                          'Alumno: $nombreAlumno',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
                         const SizedBox(height: 5),
-                        Text('Materia: ${asesoria.materia}', style: const TextStyle(color: Colors.white)),
+                        Text(
+                          'Materia: ${asesoria.materia}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
+                        ),
                         const SizedBox(height: 5),
-                        Text('Fecha: ${asesoria.fechaInicio} - ${asesoria.fechaFin}', style: const TextStyle(color: Colors.white)),
-                        SizedBox(height: 20,),
+                        Text(
+                          'Fecha: ${asesoria.fechaInicio} - ${asesoria.fechaFin}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
+                        ),
+                        SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -98,13 +124,18 @@ class ListaHistorial extends StatelessWidget {
                               onPressed: () {
                                 showDialog(
                                   context: context,
-                                  builder: (context) => InformacionAsesoriaEnCurso(asesoria: asesoria),
+                                  builder: (context) =>
+                                      InformacionAsesoriaEnCurso(
+                                        asesoria: asesoria,
+                                      ),
                                 );
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Appcolores.azulClaro,
                                 foregroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
                               ),
                               child: Text("Informacion"),
                             ),

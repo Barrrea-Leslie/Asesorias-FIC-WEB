@@ -2,17 +2,26 @@ import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/presentation/shared/tarjeta_solicitud_widget.dart';
 import 'package:flutter/material.dart';
 
-class SolicitudesPendientesAsesor extends StatelessWidget {
-  const SolicitudesPendientesAsesor({super.key});
+class SolicitudesPendientesAsesor extends StatefulWidget {
+  const SolicitudesPendientesAsesor({super.key, this.mostrarTitulo = false});
 
+  final bool mostrarTitulo;
+
+  @override
+  State<SolicitudesPendientesAsesor> createState() =>
+      _SolicitudesPendientesAsesorState();
+}
+
+class _SolicitudesPendientesAsesorState
+    extends State<SolicitudesPendientesAsesor> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth < 1000) {
+        if (constraints.maxWidth < 500) {
           return PantallaResponsiva();
         } else {
-          return PantallaGrande();
+          return PantallaGrande(mostrarTitulo: widget.mostrarTitulo);
         }
       },
     );
@@ -41,9 +50,7 @@ class PantallaResponsiva extends StatelessWidget {
 
                 child: Column(
                   children: [
-                    SeccionArribaPantallaGrande(),
-
-                    SizedBox(height: 60),
+                    SizedBox(height: 40),
 
                     Expanded(
                       child: SingleChildScrollView(
@@ -64,7 +71,9 @@ class PantallaResponsiva extends StatelessWidget {
 }
 
 class PantallaGrande extends StatelessWidget {
-  const PantallaGrande({super.key});
+  const PantallaGrande({super.key, this.mostrarTitulo = false});
+
+  final bool mostrarTitulo;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +94,7 @@ class PantallaGrande extends StatelessWidget {
 
                 child: Column(
                   children: [
-                    SeccionArribaPantallaGrande(),
+                    if (mostrarTitulo) SeccionArribaPantallaGrande(),
 
                     SizedBox(height: 60),
 

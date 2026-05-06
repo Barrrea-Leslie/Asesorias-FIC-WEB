@@ -22,12 +22,14 @@ class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso>
   late TextEditingController _observacionesController;
   late TextEditingController _fechaInicioController;
   late TextEditingController _fechaFinalController;
+  
 
   String? _selectedGrupo;
   String? _selectedMateria;
   String? _selectedModalidad;
   String? _selectedHorario;
   String? _selectedRazon;
+
 
   bool _isInitialized = false;
 
@@ -63,6 +65,7 @@ class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso>
     _selectedModalidad = asesoria.modalidad;
     _selectedHorario = asesoria.horario;
     _selectedRazon = asesoria.razon;
+    
 
     _isInitialized = true;
   }
@@ -293,23 +296,37 @@ class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso>
   }
 
   Widget _buildCampoNumero(String label, TextEditingController controller) {
+    List<String> opciones = List.generate(10, (index) => (index + 1).toString());
+
+    String? currentVal= controller.text.isNotEmpty ? controller.text : null;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 4),
-        SizedBox(
-          width: 80,
-          child: TextFormField(
-            controller: controller,
-            keyboardType: TextInputType.number,
-            textAlign: TextAlign.center,
-            decoration: const InputDecoration(border: OutlineInputBorder()),
+
+        DropdownButtonFormField<String>(
+          value: currentVal,
+          isDense: true,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
           ),
-        ),
-      ],
+          items: opciones
+          .map((e) => DropdownMenuItem(
+            value: e,
+            child: Text(e),
+            )).toList(),
+          onChanged: (val) {
+            setState(() {
+              controller.text = val!;
+            });
+          })
+      ]
     );
   }
+    
+  
 
   Widget _buildCampoObservaciones(TextEditingController controller) {
     return Column(
@@ -330,3 +347,4 @@ class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso>
     );
   }
 }
+

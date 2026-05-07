@@ -1,3 +1,4 @@
+import 'package:asesorias_fic/conocenos/conocenos.dart';
 import 'package:asesorias_fic/presentation/loginScreens/login_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesores_diciplinares_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesores_par_screen.dart';
@@ -16,7 +17,7 @@ import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/info
 import 'package:flutter/widgets.dart';
 
 class AppRoutes {
-  static const initialRoute = '/paginaBaseEstudiantes';
+  static const initialRoute = '/paginaConocenos';
 
   static Map<String, WidgetBuilder> routes = {
     '/login': (context) => const LoginScreen(),
@@ -48,5 +49,8 @@ class AppRoutes {
 
     //Direcciones del rol de asesores
     '/paginaBaseAsesores': (context) => const PaginaBaseAsesor(),
+
+    //Direccion de conocenos
+    '/paginaConocenos': (conttext) => const Conocenos(),
   };
 }

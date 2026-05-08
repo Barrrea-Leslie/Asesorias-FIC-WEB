@@ -1,13 +1,20 @@
 import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/data/models/asesores_par_model.dart';
 import 'package:asesorias_fic/data/services/asesores_par_service.dart';
-import 'package:asesorias_fic/presentation/rol_administrador/asesorPar/informacion_asesor_par.dart'; // Asegura que la ruta sea correcta
+import 'package:asesorias_fic/presentation/rol_administrador/asesorPar/informacion_asesor_par.dart';
 import 'package:flutter/material.dart';
 
 class TarjetaAsesorParWidget extends StatelessWidget {
   final String query;
+  final String? filtroGrupo;
+  final String? filtroCarrera;
 
-  const TarjetaAsesorParWidget({super.key, this.query = ''});
+  const TarjetaAsesorParWidget({
+    super.key,
+    this.query = '',
+    this.filtroGrupo,
+    this.filtroCarrera,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +24,7 @@ class TarjetaAsesorParWidget extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
+
         if (snapshot.hasError) {
           return Center(child: Text('Error al cargar: ${snapshot.error}'));
         }
@@ -26,7 +34,24 @@ class TarjetaAsesorParWidget extends StatelessWidget {
         final filteredAsesores = allAsesores.where((asesor) {
           final nombre = asesor.nombre.toLowerCase();
           final search = query.toLowerCase();
-          return nombre.contains(search);
+
+          if (!nombre.contains(search)) return false;
+
+          // Filtro por grupo completo
+          if (filtroGrupo != null && filtroGrupo!.isNotEmpty) {
+            if (asesor.grupo.trim() != filtroGrupo!.trim()) {
+              return false;
+            }
+          }
+
+          // Filtro por carrera
+          if (filtroCarrera != null && filtroCarrera!.isNotEmpty) {
+            if (asesor.licenciatura != filtroCarrera) {
+              return false;
+            }
+          }
+
+          return true;
         }).toList();
 
         return ListaAsesoresPar(listAsesoresPar: filteredAsesores);
@@ -57,7 +82,6 @@ class ListaAsesoresPar extends StatelessWidget {
             width: 900,
             height: 635,
             color: Colors.white,
-            // AQUÍ: Se pasa el asesor por constructor como en el Disciplinar
             child: InformacionAsesoresPar(asesor: asesor),
           ),
         );

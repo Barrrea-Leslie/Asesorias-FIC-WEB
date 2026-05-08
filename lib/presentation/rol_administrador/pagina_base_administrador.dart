@@ -163,7 +163,8 @@ class AlertaCerrarSesion extends StatelessWidget {
             ),
             textStyle: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+          onPressed: () =>
+              Navigator.pushReplacementNamed(context, '/loginNuevo'),
           child: const Text("Aceptar"),
         ),
       ],

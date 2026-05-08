@@ -66,12 +66,22 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  fonts:
+    - family: Iner
+      fonts:
+        - asset: fonts/Inder-Regular.ttf
+        - asset: fonts/Roboto-Bold.ttf
+        - asset: fonts/Roboto-Regular.ttf
+        - asset: fonts/Roboto-SemiBold.ttf
+
   assets:
     - assets/images/fic_logo.png
     - assets/images/foto_icon.png
     - assets/images/logo_blanco.png
     - assets/images/cargarImagen.png
     - assets/data/
+    - assets/images/
+    - assets/images/dependencias/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

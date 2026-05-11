@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-
-
-class Appcolores  {
-
+class Appcolores {
   static const Color azulUas = Color(0xFF08338f);
   static const Color amarilloUas = Color(0xFFc49e0d);
   static const Color gris = Color(0xFFf2f3f5);
@@ -11,8 +8,10 @@ class Appcolores  {
   static const Color azulFuerte = Color(0xFF13004c);
   static const Color azulClaro = Color(0xff41a4ec);
   static const Color verdeClaro = Color(0xff47a757);
-  
 }
 
-
-
+class UasColores {
+  static const Color uasAzul = Color(0xFF003595);
+  static const Color uasAmarillo = Color(0xFFC59525);
+  static const Color azulVariableFuerte = Color(0xFF002470);
+}

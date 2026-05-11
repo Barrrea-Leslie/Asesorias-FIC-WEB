@@ -14,6 +14,8 @@ class AsesoresPar extends StatefulWidget {
 
 class _AsesoresParState extends State<AsesoresPar> {
   String query = '';
+  String? filtroGrupo;
+  String? filtroCarrera;
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +24,20 @@ class _AsesoresParState extends State<AsesoresPar> {
         if (constraints.maxWidth < 500) {
           return PantallaResponsiva(
             query: query,
+            filtroGrupo: filtroGrupo,
+            filtroCarrera: filtroCarrera,
             onChanged: (value) => setState(() => query = value),
+            onGrupoChanged: (value) => setState(() => filtroGrupo = value),
+            onCarreraChanged: (value) => setState(() => filtroCarrera = value),
           );
         } else {
           return PantallaGrande(
             query: query,
+            filtroGrupo: filtroGrupo,
+            filtroCarrera: filtroCarrera,
             onChanged: (value) => setState(() => query = value),
+            onGrupoChanged: (value) => setState(() => filtroGrupo = value),
+            onCarreraChanged: (value) => setState(() => filtroCarrera = value),
             mostrarTitulo: widget.mostrarTitulo,
           );
         }
@@ -38,12 +48,20 @@ class _AsesoresParState extends State<AsesoresPar> {
 
 class PantallaResponsiva extends StatelessWidget {
   final String query;
+  final String? filtroGrupo;
+  final String? filtroCarrera;
   final ValueChanged<String> onChanged;
+  final ValueChanged<String?> onGrupoChanged;
+  final ValueChanged<String?> onCarreraChanged;
 
   const PantallaResponsiva({
     super.key,
     required this.query,
     required this.onChanged,
+    required this.onGrupoChanged,
+    required this.onCarreraChanged,
+    this.filtroGrupo,
+    this.filtroCarrera,
   });
 
   @override
@@ -64,19 +82,32 @@ class PantallaResponsiva extends StatelessWidget {
                   horizontal: 16,
                   vertical: 12,
                 ),
-                child: Center(
-                  child: SizedBox(
-                    child: TextField(
+                child: Column(
+                  children: [
+                    TextField(
                       onChanged: onChanged,
                       decoration: _buscadorDecoration('Buscar Asesor'),
                     ),
-                  ),
+                    const SizedBox(height: 8),
+                    _FiltrosDropdowns(
+                      filtroGrupo: filtroGrupo,
+                      filtroCarrera: filtroCarrera,
+                      onGrupoChanged: onGrupoChanged,
+                      onCarreraChanged: onCarreraChanged,
+                    ),
+                  ],
                 ),
               ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
-                    children: [TarjetaAsesorParWidget(query: query)],
+                    children: [
+                      TarjetaAsesorParWidget(
+                        query: query,
+                        filtroGrupo: filtroGrupo,
+                        filtroCarrera: filtroCarrera,
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -91,13 +122,21 @@ class PantallaResponsiva extends StatelessWidget {
 
 class PantallaGrande extends StatelessWidget {
   final String query;
+  final String? filtroGrupo;
+  final String? filtroCarrera;
   final ValueChanged<String> onChanged;
+  final ValueChanged<String?> onGrupoChanged;
+  final ValueChanged<String?> onCarreraChanged;
   final bool mostrarTitulo;
 
   const PantallaGrande({
     super.key,
     required this.query,
     required this.onChanged,
+    required this.onGrupoChanged,
+    required this.onCarreraChanged,
+    this.filtroGrupo,
+    this.filtroCarrera,
     this.mostrarTitulo = false,
   });
 
@@ -118,26 +157,46 @@ class PantallaGrande extends StatelessWidget {
                 child: Column(
                   children: [
                     if (mostrarTitulo)
-                      SeccionArribaPantallaGrande(onChanged: onChanged),
-
+                      SeccionArribaPantallaGrande(
+                        onChanged: onChanged,
+                        onGrupoChanged: onGrupoChanged,
+                        onCarreraChanged: onCarreraChanged,
+                        filtroGrupo: filtroGrupo,
+                        filtroCarrera: filtroCarrera,
+                      ),
                     if (!mostrarTitulo)
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 12,
                         ),
-                        child: TextField(
-                          onChanged: onChanged,
-                          decoration: _buscadorDecoration('Buscar Asesor'),
+                        child: Column(
+                          children: [
+                            TextField(
+                              onChanged: onChanged,
+                              decoration: _buscadorDecoration('Buscar Asesor'),
+                            ),
+                            const SizedBox(height: 8),
+                            _FiltrosDropdowns(
+                              filtroGrupo: filtroGrupo,
+                              filtroCarrera: filtroCarrera,
+                              onGrupoChanged: onGrupoChanged,
+                              onCarreraChanged: onCarreraChanged,
+                            ),
+                          ],
                         ),
                       ),
-
                     const SizedBox(height: 40),
-
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(
-                          children: [TarjetaAsesorParWidget(query: query)],
+                          children: [
+                            TarjetaAsesorParWidget(
+                              query: query,
+                              filtroGrupo: filtroGrupo,
+                              filtroCarrera: filtroCarrera,
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -153,28 +212,21 @@ class PantallaGrande extends StatelessWidget {
   }
 }
 
-InputDecoration _buscadorDecoration(String hint) {
-  return InputDecoration(
-    hintText: hint,
-    hintStyle: const TextStyle(fontSize: 15, color: Color(0xFFb4b4b4)),
-    prefixIcon: const Icon(Icons.search, color: Color(0xFFb4b4b4), size: 18),
-    filled: true,
-    fillColor: const Color(0xFFf2f3f5),
-    enabledBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Colors.transparent),
-      borderRadius: BorderRadius.circular(10),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Appcolores.azulUas),
-      borderRadius: BorderRadius.circular(10),
-    ),
-  );
-}
-
 class SeccionArribaPantallaGrande extends StatelessWidget {
   final ValueChanged<String> onChanged;
+  final ValueChanged<String?> onGrupoChanged;
+  final ValueChanged<String?> onCarreraChanged;
+  final String? filtroGrupo;
+  final String? filtroCarrera;
 
-  const SeccionArribaPantallaGrande({super.key, required this.onChanged});
+  const SeccionArribaPantallaGrande({
+    super.key,
+    required this.onChanged,
+    required this.onGrupoChanged,
+    required this.onCarreraChanged,
+    this.filtroGrupo,
+    this.filtroCarrera,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -198,11 +250,16 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      SizedBox(
-                        child: TextField(
-                          onChanged: onChanged,
-                          decoration: _buscadorDecoration('Buscar Asesor'),
-                        ),
+                      TextField(
+                        onChanged: onChanged,
+                        decoration: _buscadorDecoration('Buscar Asesor'),
+                      ),
+                      const SizedBox(height: 8),
+                      _FiltrosDropdowns(
+                        filtroGrupo: filtroGrupo,
+                        filtroCarrera: filtroCarrera,
+                        onGrupoChanged: onGrupoChanged,
+                        onCarreraChanged: onCarreraChanged,
                       ),
                     ],
                   )
@@ -217,13 +274,23 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
                           fontSize: 23,
                         ),
                       ),
-                      const SizedBox(width: 15),
-                      SizedBox(
-                        width: 220,
-                        child: TextField(
-                          onChanged: onChanged,
-                          decoration: _buscadorDecoration('Buscar Asesor'),
-                        ),
+                      Wrap(
+                        spacing: 10,
+                        children: [
+                          SizedBox(
+                            width: 220,
+                            child: TextField(
+                              onChanged: onChanged,
+                              decoration: _buscadorDecoration('Buscar Asesor'),
+                            ),
+                          ),
+                          _FiltrosDropdowns(
+                            filtroGrupo: filtroGrupo,
+                            filtroCarrera: filtroCarrera,
+                            onGrupoChanged: onGrupoChanged,
+                            onCarreraChanged: onCarreraChanged,
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -232,6 +299,131 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
       },
     );
   }
+}
+
+class _FiltrosDropdowns extends StatelessWidget {
+  final String? filtroGrupo;
+  final String? filtroCarrera;
+  final ValueChanged<String?> onGrupoChanged;
+  final ValueChanged<String?> onCarreraChanged;
+
+  const _FiltrosDropdowns({
+    required this.filtroGrupo,
+    required this.filtroCarrera,
+    required this.onGrupoChanged,
+    required this.onCarreraChanged,
+  });
+
+  InputDecoration _dropdownDeco() => InputDecoration(
+    filled: true,
+    fillColor: const Color(0xFFf2f3f5),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+    enabledBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.transparent),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.transparent),
+      borderRadius: BorderRadius.circular(10),
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    final grupos = [
+      '1-1',
+      '1-2',
+      '2-1',
+      '2-2',
+      '3-1',
+      '3-2',
+      '4-1',
+      '4-2',
+      '4-3',
+    ];
+
+    final carreras = [
+      "Licenciatura en informatica",
+      "Licenciatura en informatica virtual",
+      "Licenciatura en ingenieria en ciencias de datos",
+      "Licenciatura en ITSE",
+    ];
+
+    return Wrap(
+      spacing: 10,
+      children: [
+        SizedBox(
+          width: 120,
+          height: 48,
+          child: InputDecorator(
+            decoration: _dropdownDeco(),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: filtroGrupo,
+                isExpanded: true,
+                hint: const Text('Grupo'),
+                items: [
+                  const DropdownMenuItem<String>(
+                    value: null,
+                    child: Text('Todos'),
+                  ),
+                  ...grupos.map(
+                    (g) => DropdownMenuItem<String>(value: g, child: Text(g)),
+                  ),
+                ],
+                onChanged: onGrupoChanged,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 200,
+          height: 48,
+          child: InputDecorator(
+            decoration: _dropdownDeco(),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: filtroCarrera,
+                isExpanded: true,
+                hint: const Text('Carrera'),
+                items: [
+                  const DropdownMenuItem<String>(
+                    value: null,
+                    child: Text('Todas'),
+                  ),
+                  ...carreras.map(
+                    (c) => DropdownMenuItem<String>(
+                      value: c,
+                      child: Text(c, overflow: TextOverflow.ellipsis),
+                    ),
+                  ),
+                ],
+                onChanged: onCarreraChanged,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+InputDecoration _buscadorDecoration(String hint) {
+  return InputDecoration(
+    hintText: hint,
+    hintStyle: const TextStyle(fontSize: 15, color: Color(0xFFb4b4b4)),
+    prefixIcon: const Icon(Icons.search, color: Color(0xFFb4b4b4), size: 18),
+    filled: true,
+    fillColor: const Color(0xFFf2f3f5),
+    enabledBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.transparent),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Appcolores.azulUas),
+      borderRadius: BorderRadius.circular(10),
+    ),
+  );
 }
 
 class FooterCrearAlumno extends StatelessWidget {

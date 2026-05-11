@@ -1,53 +1,79 @@
 import 'package:asesorias_fic/core/colores.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-class Conocenos extends StatelessWidget {
+class Conocenos extends StatefulWidget {
   const Conocenos({super.key});
 
   @override
+  State<Conocenos> createState() => _ConocenosState();
+}
+
+class _ConocenosState extends State<Conocenos> {
+  final GlobalKey nuestroEquipooKey = GlobalKey();
+  final GlobalKey nuestroProyectoKey = GlobalKey();
+  final GlobalKey quienesSomosKey = GlobalKey();
+  final GlobalKey comoSurgioKey = GlobalKey();
+  final GlobalKey objetivosKey = GlobalKey();
+  final GlobalKey misionVKey = GlobalKey();
+  final GlobalKey vinculacionKey = GlobalKey();
+  final GlobalKey agradecimientosKey = GlobalKey();
+  final GlobalKey contactoKey = GlobalKey();
+
+  void irASection(GlobalKey key) {
+    Scrollable.ensureVisible(
+      key.currentContext!,
+      duration: const Duration(milliseconds: 700),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // return LayoutBuilder(
-    //   builder: context, constraints){
-    //   final bool esMovil = constraints.maxWidth < 700;
-    // }
+    final tamanoPantalla = MediaQuery.of(context).size.width;
+
+    final bool esMovil = tamanoPantalla < 700;
 
     return Scaffold(
       body: CustomScrollView(
-        slivers: [
+        slivers: <Widget>[
           SliverToBoxAdapter(
             child: Container(
               height: 100,
-              color: Appcolores.azulUas,
+              color: const Color.fromARGB(255, 0, 34, 106),
               padding: EdgeInsets.symmetric(horizontal: 100),
 
               child: Row(
                 children: [
-                  SizedBox(width: 550),
+                  Image.asset('assets/images/logo_uas.png', height: 60),
 
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
 
-                    children: [
-                      Text(
-                        'Asesorias FIC',
-                        style: TextStyle(
-                          color: Appcolores.gris,
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
+                      children: [
+                        Text(
+                          'Asesorias FIC',
+                          style: TextStyle(
+                            color: const Color.fromARGB(255, 245, 246, 247),
+                            fontSize: esMovil ? 22 : 28,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
 
-                      Text(
-                        'Facultad de informatica Culiacan',
-                        style: TextStyle(
-                          color: Appcolores.gris,
-                          fontSize: 22,
-                          fontWeight: FontWeight.normal,
+                        const SizedBox(height: 5),
+
+                        Text(
+                          'Facultad de informatica Culiacan',
+                          style: TextStyle(
+                            color: Appcolores.gris,
+                            fontSize: esMovil ? 22 : 28,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -64,19 +90,33 @@ class Conocenos extends StatelessWidget {
             titleSpacing: 100,
 
             title: SizedBox(
-              height: 60,
+              height: 50,
+              width: double.infinity,
               child: ListView(
                 scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.symmetric(horizontal: esMovil ? 10 : 100),
                 children: [
-                  _itemMenu('Nuestro equipo'),
-                  _itemMenu('Nuestro proyecto'),
-                  _itemMenu('¿Quienes somos?'),
-                  _itemMenu('¿Como surgio?'),
-                  _itemMenu('Objetivos'),
-                  _itemMenu('Mision y Vision'),
-                  _itemMenu('Vinculacion'),
-                  _itemMenu('Agradecimiento'),
-                  _itemMenu('Contacto'),
+                  _itemMenu(
+                    'Nuestro equipo',
+                    () => irASection(nuestroEquipooKey),
+                  ),
+                  _itemMenu(
+                    'Nuestro proyecto',
+                    () => irASection(nuestroProyectoKey),
+                  ),
+                  _itemMenu(
+                    '¿Quienes somos?',
+                    () => irASection(quienesSomosKey),
+                  ),
+                  _itemMenu('¿Como surgio?', () => irASection(comoSurgioKey)),
+                  _itemMenu('Objetivos', () => irASection(objetivosKey)),
+                  _itemMenu('Mision y Vision', () => irASection(misionVKey)),
+                  _itemMenu('Vinculacion', () => irASection(vinculacionKey)),
+                  _itemMenu(
+                    'Agradeciniento',
+                    () => irASection(agradecimientosKey),
+                  ),
+                  _itemMenu('Contacto', () => irASection(contactoKey)),
                 ],
               ),
             ),
@@ -107,16 +147,17 @@ class Conocenos extends StatelessWidget {
 
                 //primer contenedor
                 Container(
+                  key: nuestroEquipooKey,
                   width: double.infinity,
-                  color: const Color(0xFFE8E1CF),
+                  color: const Color.fromARGB(107, 156, 118, 28),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 120,
-                    vertical: 50
+                    vertical: 50,
                   ),
 
                   child: Center(
                     child: SizedBox(
-                      width: 900,
+                      width: 1000,
 
                       child: const Text(
                         'La Universidad Autónoma de Sinaloa a través de Bienestar Universitario y la Facultad de Informática Culiacán en colaboración con el Laboratorio de Innovación, Desarrollo Académico y Tecnológico de la Facultad de Informática Culiacán, presenta el Sistema de tutorias FIC.',
@@ -138,12 +179,27 @@ class Conocenos extends StatelessWidget {
                   child: Wrap(
                     spacing: 70,
                     runSpacing: 70,
+                    alignment: WrapAlignment.center,
+                    runAlignment: WrapAlignment.center,
                     children: [
                       _tarjetita(
                         'GERENTES DE PROYECTO',
-                        'MC. Alejandro Yahir Sicairos Ochoa  C. Axel Manuel Aguilar Perez MGTI.\n Oscar Mejía Quintero \nJose Angel Astorga Mejia',
+                        'MC. Alejandro Yahir Sicairos Ochoa\n'
+                            'C. Axel Manuel Aguilar Perez MGTI.\n'
+                            'Oscar Mejía Quintero\n'
+                            'Jose Angel Astorga Mejia',
                       ),
-                      _tarjetita('GERENTES DE DESARROLLO', ''),
+
+                      _tarjetita(
+                        'GERENTES DE DESARROLLO',
+                        'Jose Angel Astorga Mejia\n'
+                            'Leslie Mayram Barrera Rodriguez\n'
+                            'Raquel del Pilar Ibarra Meza\n'
+                            'Bhrandon Nedel Medina Hernandez\n'
+                            'Erick Fernando Sanchez Barraza\n'
+                            'Jenifer Guadalupe Tizoc Lopez',
+                      ),
+
                       _tarjetita('ESPECIALISTAS SEO', ''),
                       _tarjetita('ANALISTAS DE DESARROLLO Y CALIDAD', ''),
                       _tarjetita('DISEÑADOR UI/UX', ''),
@@ -153,234 +209,86 @@ class Conocenos extends StatelessWidget {
 
                 const SizedBox(height: 80), //espacio entre el bloque
                 //TERCER CONTENEDOR
-                Container(
-                  width: double.infinity,
+                contenedorTexto(
+                  key: nuestroProyectoKey,
                   color: const Color(0xffb6c3db),
-                  padding: const EdgeInsets.symmetric(horizontal: 120,
-                    vertical: 50),
 
-                  child: Column(
-                    children: [
-                      const Text(
-                        'Nuestro proyecto',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-
-                      const SizedBox(height: 40),
-
-                      SizedBox(
-                        width: 900,
-                        child: const Text(
-                          'El Sistema de tutorías FIC es una plataforma móvil y web desarrollada para permitir la gestión de asesorías en la facultad de informática de culiacan, facilitando la interacción entre estudiantes, asesores y administradores mediante una plataforma moderna, eficiente y centralizada.\n\n'
-                          'Sus objetivos principales son automatizar la solicitud, aprobación y seguimiento de asesorías y proveer a los estudiantes un espacio para consultar horarios disponibles y enviar solicitudes para asesorías.\n\n'
-                          'En el sistema se facilita a los asesores la administración de sus horarios, asesorías, evidencias y reportes, además de la generación de historial y evidencia de cada asesoría para respaldos y evaluaciones.\n\n'
-                          'El desarrollo de este sistema busca digitalizar y automatizar el flujo completo de asesorías, tanto para estudiantes, asesores disciplinares y pares, como para administradores, mejorando la comunicación, la organización y la eficiencia operativa.',
-
-                          textAlign: TextAlign.justify,
-
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            height: 1.5,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  titulo: 'Nuestro proyecto',
+                  contenido:
+                      'El Sistema de tutorías FIC es una plataforma móvil y web desarrollada para permitir la gestión de asesorías en la facultad de informática de culiacan, facilitando la interacción entre estudiantes, asesores y administradores mediante una plataforma moderna, eficiente y centralizada.\n\n'
+                      'Sus objetivos principales son automatizar la solicitud, aprobación y seguimiento de asesorías y proveer a los estudiantes un espacio para consultar horarios disponibles y enviar solicitudes para asesorías.\n\n'
+                      'En el sistema se facilita a los asesores la administración de sus horarios, asesorías, evidencias y reportes, además de la generación de historial y evidencia de cada asesoría para respaldos y evaluaciones.\n\n'
+                      'El desarrollo de este sistema busca digitalizar y automatizar el flujo completo de asesorías, tanto para estudiantes, asesores disciplinares y pares, como para administradores, mejorando la comunicación, la organización y la eficiencia operativa.',
                 ),
 
                 const SizedBox(height: 80),
 
                 //Quienes somos
-                Container(
-                  width: double.infinity,
+                contenedorTexto(
+                  key: quienesSomosKey,
                   color: const Color(0xffb6c3db),
-                  padding: const EdgeInsets.symmetric(horizontal: 120,
-                    vertical: 50),
 
-                  child: Column(
-                    children: [
-                      const Text(
-                        '¿Quienes somos?',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-
-                      const SizedBox(height: 70),
-
-                      SizedBox(
-                        width: 900,
-                        child: const Text(
-                          'Somos el Laboratorio de Innovación, Desarrollo Académico y Tecnológico de la Facultad de Informática Culiacán, un espacio dedicado a la creación de soluciones tecnológicas que impacten positivamente los procesos académicos y administrativos dentro de la universidad.\n\n'
-                          'Nuestro laboratorio está conformado por estudiantes y docentes comprometidos con la mejora continua, la transformación digital y la implementación de herramientas tecnológicas reales que resuelvan problemáticas institucionales. Trabajamos en proyectos de software, automatización de procesos, desarrollo web, sistemas de gestión y propuestas innovadoras orientadas a la eficiencia operativa.\n\n'
-                          'Más que un espacio de desarrollo, somos un equipo que busca aplicar el conocimiento adquirido en el aula para generar soluciones funcionales que beneficien directamente a la comunidad universitaria.',
-
-                          textAlign: TextAlign.justify,
-
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            height: 1.5,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  titulo: '¿Quienes somos?',
+                  contenido:
+                      'Somos el Laboratorio de Innovación, Desarrollo Académico y Tecnológico de la Facultad de Informática Culiacán, un espacio dedicado a la creación de soluciones tecnológicas que impacten positivamente los procesos académicos y administrativos dentro de la universidad.\n\n'
+                      'Nuestro laboratorio está conformado por estudiantes y docentes comprometidos con la mejora continua, la transformación digital y la implementación de herramientas tecnológicas reales que resuelvan problemáticas institucionales. Trabajamos en proyectos de software, automatización de procesos, desarrollo web, sistemas de gestión y propuestas innovadoras orientadas a la eficiencia operativa.\n\n'
+                      'Más que un espacio de desarrollo, somos un equipo que busca aplicar el conocimiento adquirido en el aula para generar soluciones funcionales que beneficien directamente a la comunidad universitaria.',
                 ),
 
                 const SizedBox(height: 80),
 
                 //como surgio
-                Container(
-                  width: double.infinity,
+                contenedorTexto(
+                  key: comoSurgioKey,
                   color: const Color(0xffb6c3db),
-                  padding: const EdgeInsets.symmetric(horizontal: 120,
-                    vertical: 50),
 
-                  child: Column(
-                    children: [
-                      const Text(
-                        '¿Como surgio?',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-
-                      const SizedBox(height: 70),
-
-                      SizedBox(
-                        width: 900,
-                        child: const Text(
-                          'El Sistema de Tutorías FIC surgió como respuesta a la necesidad de mejorar la gestión de asesorías en la Facultad de Informática Culiacán. Observamos que muchos estudiantes enfrentaban dificultades para acceder a las asesorías y que los asesores necesitaban una herramienta eficiente para administrar sus horarios y solicitudes. Con el apoyo de Bienestar Universitario y el Laboratorio de Innovación, decidimos desarrollar una plataforma que facilite esta interacción, optimizando los procesos y promoviendo un ambiente académico más colaborativo y accesible.',
-
-                          textAlign: TextAlign.justify,
-
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            height: 1.5,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  titulo: '¿Como surgio?',
+                  contenido:
+                      'El Sistema de Tutorías FIC surgió como respuesta a la necesidad de mejorar la gestión de asesorías en la Facultad de Informática Culiacán. Observamos que muchos estudiantes enfrentaban dificultades para acceder a las asesorías y que los asesores necesitaban una herramienta eficiente para administrar sus horarios y solicitudes. Con el apoyo de Bienestar Universitario y el Laboratorio de Innovación, decidimos desarrollar una plataforma que facilite esta interacción, optimizando los procesos y promoviendo un ambiente académico más colaborativo y accesible.',
                 ),
 
                 const SizedBox(height: 70),
 
                 //objetivos
-                Container(
-                  width: double.infinity,
+                contenedorTexto(
+                  key: objetivosKey,
                   color: const Color(0xffb6c3db),
-                  padding: const EdgeInsets.symmetric(horizontal: 120,
-                    vertical: 50),
 
-                  child: Column(
-                    children: [
-                      const Text(
-                        'Objetivos',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-
-                      const SizedBox(height: 70),
-
-                      SizedBox(
-                        width: 900,
-                        child: const Text(
-                          '',
-
-                          textAlign: TextAlign.justify,
-
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            height: 1.5,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  titulo: 'Objetivos',
+                  contenido: '',
                 ),
                 const SizedBox(height: 80),
 
                 //Alcance
-                Container(
-                  width: double.infinity,
+                contenedorTexto(
+                  key: agradecimientosKey,
+
                   color: const Color(0xffb6c3db),
-                  padding: const EdgeInsets.symmetric(horizontal: 120,
-                    vertical: 50),
 
-                  child: Column(
-                    children: [
-                      const Text(
-                        'Alcance',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-
-                      const SizedBox(height: 50),
-
-                      SizedBox(
-                        width: 900,
-                        child: const Text(
-                          'Gestión de asesorías: Permitir a los estudiantes solicitar asesorías de manera sencilla y a los asesores gestionar sus horarios y citas.\n\n'
-                          'Interacción eficiente: Facilitar la comunicación entre estudiantes, asesores y administradores a través de una plataforma centralizada. \n\n'
-                          'Automatización de procesos: Automatizar la solicitud, aprobación y seguimiento de asesorías para reducir tiempos de espera y mejorar la experiencia del usuario. \n\n '
-                          'Historial y reportes: Generar un historial de asesorías y reportes que permitan a los administradores evaluar la efectividad del sistema y realizar mejoras continuas.',
-
-                          textAlign: TextAlign.justify,
-
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            height: 1.5,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  titulo: 'Alcance',
+                  contenido:
+                      'Gestión de asesorías: Permitir a los estudiantes solicitar asesorías de manera sencilla y a los asesores gestionar sus horarios y citas.\n\n'
+                      'Interacción eficiente: Facilitar la comunicación entre estudiantes, asesores y administradores a través de una plataforma centralizada. \n\n'
+                      'Automatización de procesos: Automatizar la solicitud, aprobación y seguimiento de asesorías para reducir tiempos de espera y mejorar la experiencia del usuario. \n\n '
+                      'Historial y reportes: Generar un historial de asesorías y reportes que permitan a los administradores evaluar la efectividad del sistema y realizar mejoras continuas.',
                 ),
 
                 //Mision y vision
                 Container(
-                  padding: const EdgeInsets.all(30),
+                  key: misionVKey,
+                  padding: EdgeInsets.symmetric(horizontal: esMovil ? 20 : 80),
 
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        'Mision y Vision',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 70),
+                      SizedBox(height: 70),
 
                       Wrap(
-                        spacing: 70,
-                        runSpacing: 70,
+                        spacing: 40,
+                        runSpacing: 40,
+                        alignment: WrapAlignment.center,
+                        runAlignment: WrapAlignment.center,
                         children: [
                           _tarjetita(
                             'Mision',
@@ -398,10 +306,10 @@ class Conocenos extends StatelessWidget {
 
                 //Depenencias
                 Container(
+                  key: vinculacionKey,
                   width: double.infinity,
-                  color: const Color(0xFFF3F3F3),
                   padding: const EdgeInsets.symmetric(
-                    vertical: 50,
+                    vertical: 60,
                     horizontal: 30,
                   ),
 
@@ -414,23 +322,27 @@ class Conocenos extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 50),
+                      const SizedBox(height: 40),
 
                       Wrap(
                         spacing: 20,
                         runSpacing: 20,
                         alignment: WrapAlignment.center,
 
-                        children: [],
+                        children: [
+                          logosDependencia('assets/images/fic_logo.png'),
+                          logosDependencia('assets/images/foto_icon.png'),
+                          logosDependencia('ruta'),
+                        ],
                       ),
                     ],
                   ),
                 ),
+                SectionFooterTwo(key: contactoKey),
               ],
             ),
           ),
 
-          
           /* Container(
             width: double.infinity,
             color: Appcolores.azulFuerte,
@@ -489,12 +401,86 @@ class Conocenos extends StatelessWidget {
   }
 }
 
+//contenedor con texto y titulo
+Widget contenedorTexto({
+  required Key key,
+  required String titulo,
+  required String contenido,
+  Color? color,
+}) {
+  return LayoutBuilder(
+    builder: (context, constraints) {
+      bool esMovil = constraints.maxWidth < 700;
+
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: esMovil ? 20 : 190),
+
+        child: Container(
+          key: key,
+          width: double.infinity,
+
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(5),
+
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.12),
+                blurRadius: 12,
+                offset: const Offset(0, 15),
+              ),
+            ],
+          ),
+
+          padding: EdgeInsets.symmetric(
+            horizontal: esMovil ? 20 : 60,
+            vertical: esMovil ? 35 : 60,
+          ),
+
+          child: Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: esMovil ? double.infinity : 900,
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    titulo,
+                    style: TextStyle(
+                      fontSize: esMovil ? 22 : 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+
+                  SizedBox(height: esMovil ? 30 : 50),
+
+                  Text(
+                    contenido,
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                      fontSize: esMovil ? 16 : 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      height: 1.5,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
 //Widgets del menu horizontal
-Widget _itemMenu(String text) {
+Widget _itemMenu(String text, VoidCallback onTap) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 10),
     child: TextButton(
-      onPressed: () {},
+      onPressed: onTap,
       child: Text(
         text,
         style: TextStyle(color: Appcolores.gris, fontWeight: FontWeight.bold),
@@ -512,19 +498,16 @@ Widget _tarjetita(String titulo, String contenido) {
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
 
-      width: 350,
+      width: 340,
+      height: 450,
       padding: const EdgeInsets.all(30),
 
-      decoration: BoxDecoration(
+      decoration: BoxDecoration( 
         color: const Color(0xFFE7E7E7),
         borderRadius: BorderRadius.circular(5),
 
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 0),
-          ),
+          BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10),
         ],
       ),
 
@@ -554,5 +537,130 @@ Widget _tarjetita(String titulo, String contenido) {
         ],
       ),
     ),
+  );
+}
+
+//parte de abajo de la pagina FOOTER
+class SectionFooterTwo extends StatelessWidget {
+  const SectionFooterTwo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 280,
+
+      decoration: BoxDecoration(
+        color: Color(0xFF0E0231),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(0),
+          topRight: Radius.circular(0),
+        ),
+      ),
+
+      child: Padding(
+        padding: const EdgeInsets.only(left: 55, right: 55, top: 40),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Contacto',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
+
+                  const Text(
+                    'Facultad de Informática Culiacán \n'
+                    'C. Josefa Ortiz de Domínguez S/N, Cd Universitaria, CIUDAD UNIVERSITARIA, 80013 Culiacán\n',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      height: 1.5,
+                    ),
+                  ),
+                  const Text(
+                    'sitema@correo.com',
+                    style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 18,
+                        backgroundColor: const Color.fromARGB(
+                          255,
+                          255,
+                          255,
+                          255,
+                        ),
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: const Color.fromARGB(255, 255, 255, 255),
+                          size: 18,
+                        ),
+                      ),
+
+                      SizedBox(height: 20),
+
+                      CircleAvatar(
+                        radius: 16,
+                        backgroundColor: const Color.fromARGB(255,255,255,255,
+                        ),
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: const Color.fromARGB(255, 255, 255, 255),
+                          size: 18,
+                        ),
+                      ),
+
+                      SizedBox(width: 40),
+
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          '',
+                          width: 120,
+                          height: 120,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+//Dependencia
+Widget logosDependencia(String ruta) {
+  return Container(
+    width: 90,
+    height: 70,
+    padding: EdgeInsets.all(10),
+
+    decoration: BoxDecoration(
+      color: const Color.fromARGB(255, 255, 255, 255),
+      borderRadius: BorderRadius.circular(8),
+
+      boxShadow: [
+        BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 5),
+      ],
+    ),
+    child: Image.asset(ruta),
   );
 }

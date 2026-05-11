@@ -6,8 +6,15 @@ import 'package:flutter/material.dart';
 
 class TarjetaEstudianteWidget extends StatelessWidget {
   final String query;
+  final String? filtroAnio;
+  final String? filtroCarrera;
 
-  const TarjetaEstudianteWidget({super.key, this.query = ''});
+  const TarjetaEstudianteWidget({
+    super.key,
+    this.query = '',
+    this.filtroAnio,
+    this.filtroCarrera,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,17 +24,31 @@ class TarjetaEstudianteWidget extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
+
         if (snapshot.hasError) {
           return const Center(child: Text('Error al cargar los estudiantes'));
         }
 
         final allEstudiantes = snapshot.data!;
 
-        // Lógica de filtrado
         final filteredEstudiantes = allEstudiantes.where((estudiante) {
+          // Filtro por nombre
           final nombre = estudiante.nombre.toLowerCase();
           final search = query.toLowerCase();
-          return nombre.contains(search);
+
+          if (!nombre.contains(search)) return false;
+
+          // Filtro por grupo completo (ej: 4-1)
+          if (filtroAnio != null && filtroAnio!.isNotEmpty) {
+            if (estudiante.grupo != filtroAnio) return false;
+          }
+
+          // Filtro por carrera
+          if (filtroCarrera != null && filtroCarrera!.isNotEmpty) {
+            if (estudiante.licenciatura != filtroCarrera) return false;
+          }
+
+          return true;
         }).toList();
 
         return ListaEstudiantesWeb(listaEstudiantes: filteredEstudiantes);
@@ -49,16 +70,14 @@ class ListaEstudiantesWeb extends StatelessWidget {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return Dialog(
-          // Cambiado a Dialog simple para controlar mejor el tamaño
           backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
           child: Container(
             width: 900,
-            height: 590, // Ajustado para que quepa todo el formulario
-            clipBehavior: Clip
-                .antiAlias, // Para que el contenido respete los bordes redondeados
+            height: 590,
+            clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
@@ -72,7 +91,6 @@ class ListaEstudiantesWeb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Si no hay resultados, mostrar un mensaje
     if (listaEstudiantes.isEmpty) {
       return const Center(
         child: Padding(

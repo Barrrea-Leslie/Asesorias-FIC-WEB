@@ -1,4 +1,5 @@
 import 'package:asesorias_fic/conocenos/conocenos.dart';
+import 'package:asesorias_fic/presentation/loginScreens/login_nuevo.dart';
 import 'package:asesorias_fic/presentation/loginScreens/login_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesores_diciplinares_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesores_par_screen.dart';
@@ -49,6 +50,8 @@ class AppRoutes {
 
     //Direcciones del rol de asesores
     '/paginaBaseAsesores': (context) => const PaginaBaseAsesor(),
+
+    '/loginNuevo': (context) => const LoginNuevo(),
 
     //Direccion de conocenos
     '/paginaConocenos': (conttext) => const Conocenos(),

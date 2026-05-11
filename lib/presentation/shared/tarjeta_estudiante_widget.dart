@@ -38,7 +38,7 @@ class TarjetaEstudianteWidget extends StatelessWidget {
 
           if (!nombre.contains(search)) return false;
 
-          // Filtro por grupo completo (ej: 4-1)
+          // Filtro por grupo completo
           if (filtroAnio != null && filtroAnio!.isNotEmpty) {
             if (estudiante.grupo != filtroAnio) return false;
           }

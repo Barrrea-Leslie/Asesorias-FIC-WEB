@@ -1,8 +1,11 @@
 import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/data/services/estudiantes_service.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/estudiantes/carga_nuevo_estudiante.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/estudiantes/crear_estudiantes.dart';
 import 'package:asesorias_fic/presentation/shared/tarjeta_estudiante_widget.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart' as fp;
 
 class Estudiantes extends StatefulWidget {
   const Estudiantes({super.key, this.mostrarTitulo = false});
@@ -87,7 +90,7 @@ class PantallaResponsiva extends StatelessWidget {
                   children: [
                     TextField(
                       onChanged: onChanged,
-                      decoration: _buscadorDecoration('Buscar Estudiante'),
+                      decoration: _buscadorDecoration('Buscar Estudiantes'),
                     ),
                     const SizedBox(height: 8),
                     _FiltrosDropdowns(
@@ -489,13 +492,20 @@ class FooterCrearAlumno extends StatelessWidget {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (_) => AlertDialog(
-                  content: SizedBox(
-                    width: 900,
-                    height: 595,
-                    child: const CrearEstudiantes(),
-                  ),
-                ),
+
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    insetPadding: EdgeInsets.zero,
+                    backgroundColor: Colors.white,
+
+                    content: Container(
+                      width: 400,
+                      height: 300,
+                      color: Colors.white,
+                      child: const CargaNuevoEstudiante(),
+                    ),
+                  );
+                },
               );
             },
             style: ElevatedButton.styleFrom(

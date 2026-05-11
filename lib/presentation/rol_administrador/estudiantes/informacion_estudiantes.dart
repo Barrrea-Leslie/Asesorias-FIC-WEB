@@ -16,7 +16,7 @@ class InformacionEstudiantes extends StatefulWidget {
 class _InformacionEstudiantesState extends State<InformacionEstudiantes> {
   final _editarformKey = GlobalKey<FormState>();
   final EstudiantesRepository _repository = EstudiantesRepository();
-  
+
   late TextEditingController nombreController;
   late TextEditingController cuentaController;
   late TextEditingController contraController; // Nuevo controlador
@@ -30,13 +30,25 @@ class _InformacionEstudiantesState extends State<InformacionEstudiantes> {
   void initState() {
     super.initState();
     nombreController = TextEditingController(text: widget.estudiante.nombre);
-    cuentaController = TextEditingController(text: widget.estudiante.numeroCuenta);
-    contraController = TextEditingController(text: widget.estudiante.contrasena); // Cargar contraseña
-    licenciaturaController = TextEditingController(text: widget.estudiante.licenciatura);
+    cuentaController = TextEditingController(
+      text: widget.estudiante.numeroCuenta,
+    );
+    contraController = TextEditingController(
+      text: widget.estudiante.contrasena,
+    ); // Cargar contraseña
+    licenciaturaController = TextEditingController(
+      text: widget.estudiante.licenciatura,
+    );
     grupoController = TextEditingController(text: widget.estudiante.grupo);
-    correoController = TextEditingController(text: widget.estudiante.correoInstitucional);
-    telefonoController = TextEditingController(text: widget.estudiante.numeroTelefono);
-    promedioController = TextEditingController(text: widget.estudiante.promedio.toString());
+    correoController = TextEditingController(
+      text: widget.estudiante.correoInstitucional,
+    );
+    telefonoController = TextEditingController(
+      text: widget.estudiante.numeroTelefono,
+    );
+    promedioController = TextEditingController(
+      text: widget.estudiante.promedio.toString(),
+    );
   }
 
   @override
@@ -83,10 +95,12 @@ class _InformacionEstudiantesState extends State<InformacionEstudiantes> {
                   constraints: const BoxConstraints(maxWidth: 1000),
                   child: Form(
                     key: _editarformKey,
-                    child: LayoutBuilder(builder: (context, constraints) {
-                      bool isMobile = constraints.maxWidth < 700;
-                      return _buildFormContent(isMobile: isMobile);
-                    }),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        bool isMobile = constraints.maxWidth < 700;
+                        return _buildFormContent(isMobile: isMobile);
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -106,7 +120,7 @@ class _InformacionEstudiantesState extends State<InformacionEstudiantes> {
         _buildLabel("Nombre Completo"),
         _buildTextField(nombreController, ""),
         const SizedBox(height: 20),
-        
+
         _buildLabel("Número de Cuenta"),
         _buildTextField(cuentaController, ""),
         const SizedBox(height: 20),
@@ -142,13 +156,17 @@ class _InformacionEstudiantesState extends State<InformacionEstudiantes> {
       ],
     );
 
-    return isMobile 
-      ? Column(children: [columna1, columna2]) 
-      : Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Expanded(child: columna1),
-          const SizedBox(width: 50),
-          Expanded(child: columna2),
-        ]);
+    return isMobile
+        ? Column(children: [columna1, columna2])
+        : Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(child: columna1),
+              const SizedBox(width: 50),
+              Expanded(child: columna2),
+            ],
+          );
   }
 
   Widget _buildBottomBar() {
@@ -161,10 +179,18 @@ class _InformacionEstudiantesState extends State<InformacionEstudiantes> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Appcolores.azulUas,
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 18),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             onPressed: _guardarCambios,
-            child: const Text('APLICAR CAMBIOS', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            child: const Text(
+              'APLICAR CAMBIOS',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
@@ -188,7 +214,10 @@ class _InformacionEstudiantesState extends State<InformacionEstudiantes> {
 
       if (exito && mounted) {
         Navigator.pop(context, actualizado);
-        MensajeConfirmacion.mostrarMensaje(context, "Se aplicaron los cambios correctamente.");
+        MensajeConfirmacion.mostrarMensaje(
+          context,
+          "Se aplicaron los cambios correctamente.",
+        );
       }
     }
   }
@@ -198,18 +227,32 @@ class _InformacionEstudiantesState extends State<InformacionEstudiantes> {
     child: Text(texto, style: const TextStyle(fontWeight: FontWeight.bold)),
   );
 
-  Widget _buildTextField(TextEditingController controller, String hint, {bool isEmail = false, bool isPhone = false, bool isNumber = false, bool isPassword = false}) {
+  Widget _buildTextField(
+    TextEditingController controller,
+    String hint, {
+    bool isEmail = false,
+    bool isPhone = false,
+    bool isNumber = false,
+    bool isPassword = false,
+  }) {
     return TextFormField(
       controller: controller,
-      obscureText: isPassword, // Soporte para ocultar texto
-      keyboardType: isEmail ? TextInputType.emailAddress : (isPhone || isNumber ? TextInputType.number : TextInputType.text),
+      obscureText: isPassword,
+      keyboardType: isEmail
+          ? TextInputType.emailAddress
+          : isPhone
+          ? TextInputType.phone
+          : isNumber
+          ? const TextInputType.numberWithOptions(decimal: true)
+          : TextInputType.text,
       decoration: InputDecoration(
         hintText: hint,
         filled: true,
         fillColor: Colors.grey[50],
         border: const OutlineInputBorder(),
       ),
-      validator: (val) => val == null || val.isEmpty ? "Campo obligatorio" : null,
+      validator: (val) =>
+          val == null || val.isEmpty ? "Campo obligatorio" : null,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:asesorias_fic/core/colores.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/asesorPar/carga_nuevo_asesor_par.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesorPar/crear_asesor_par.dart';
 import 'package:asesorias_fic/presentation/shared/tarjeta_asesor_par_widget.dart';
 import 'package:flutter/material.dart';
@@ -445,15 +446,17 @@ class FooterCrearAlumno extends StatelessWidget {
             onPressed: () {
               showDialog(
                 context: context,
+
                 builder: (BuildContext context) {
                   return AlertDialog(
                     insetPadding: EdgeInsets.zero,
                     backgroundColor: Colors.white,
+
                     content: Container(
-                      width: 900,
-                      height: 600,
+                      width: 400,
+                      height: 300,
                       color: Colors.white,
-                      child: const CrearAsesoresPar(),
+                      child: const CargaNuevoAsesorPar(),
                     ),
                   );
                 },

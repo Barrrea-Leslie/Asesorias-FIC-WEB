@@ -325,14 +325,56 @@ class _ConocenosState extends State<Conocenos> {
                       const SizedBox(height: 40),
 
                       Wrap(
-                        spacing: 20,
-                        runSpacing: 20,
+                        spacing: 40,
+                        runSpacing: 40,
                         alignment: WrapAlignment.center,
 
                         children: [
-                          logosDependencia('assets/images/fic_logo.png'),
-                          logosDependencia('assets/images/foto_icon.png'),
-                          logosDependencia('ruta'),
+                          logosDependencia('assets/images/dependencias/logofic.png'),
+
+                          logosDependencia('assets/images/dependencias/lidatfic.png'),
+
+                          logosDependencia('assets/images/dependencias/bienestar.png'),
+
+                          logosDependencia('assets/images/dependencias/biblioteca.png'),
+
+                          logosDependencia('assets/images/dependencias/serviciosocial.png'),
+
+                          logosDependencia('assets/images/dependencias/adiuas.png'),
+                          
+                          logosDependencia('assets/images/dependencias/sau.png'),
+
+                          logosDependencia('assets/images/dependencias/dgvri.png'),
+
+                          logosDependencia('assets/images/dependencias/piefad.png'),
+
+                          logosDependencia('assets/images/dependencias/culturauaslogo.png'),
+
+                          logosDependencia('assets/images/dependencias/direccionartistica.png'),
+
+                          logosDependencia('assets/images/dependencias/psicologia.png'),
+
+                          logosDependencia('assets/images/dependencias/medicina.png'),
+
+                          logosDependencia('assets/images/dependencias/dgep.jpeg'),
+
+                          logosDependencia('assets/images/dependencias/logo_dsgc.png'),
+
+                          logosDependencia('assets/images/dependencias/logo_prodep.jpeg'),
+
+                          logosDependencia('assets/images/dependencias/ciencias.jpg'),
+
+                          logosDependencia('assets/images/dependencias/ccu.jpeg'),
+
+                          logosDependencia('assets/images/dependencias/logo_odontologia.png'),
+
+                          logosDependencia('assets/images/dependencias/EMPRENDEUAS.png'),
+
+                          logosDependencia('assets/images/dependencias/logo_dges.png'),
+
+
+
+                          
                         ],
                       ),
                     ],
@@ -658,7 +700,7 @@ Widget logosDependencia(String ruta) {
       borderRadius: BorderRadius.circular(8),
 
       boxShadow: [
-        BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 5),
+        BoxShadow(color: Colors.black.withOpacity(0.6), blurRadius: 5),
       ],
     ),
     child: Image.asset(ruta),

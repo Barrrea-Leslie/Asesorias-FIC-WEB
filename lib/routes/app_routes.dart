@@ -1,4 +1,4 @@
-import 'package:asesorias_fic/conocenos/conocenos.dart';
+import 'package:asesorias_fic/presentation/conocenos/conocenos.dart';
 import 'package:asesorias_fic/presentation/loginScreens/login_nuevo.dart';
 import 'package:asesorias_fic/presentation/loginScreens/login_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesores_diciplinares_screen.dart';

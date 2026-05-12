@@ -1,7 +1,8 @@
-import 'package:asesorias_fic/conocenos/conocenos.dart';
+import 'package:asesorias_fic/presentation/conocenos/conocenos.dart';
 import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginNuevo extends StatelessWidget {
   const LoginNuevo({super.key});
@@ -20,45 +21,52 @@ class ScreenLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final esMovil = MediaQuery.of(context).size.width < 500;
+
     return SingleChildScrollView(
       child: Column(
-        children: [SeccionArriba(), SeccionLogin(), SeccionFooter()],
+        children: [
+          SeccionArriba(esMovil: esMovil),
+          SeccionLogin(esMovil: esMovil),
+          SeccionFooter(esMovil: esMovil),
+        ],
       ),
     );
   }
 }
 
 class SeccionLogin extends StatelessWidget {
-  const SeccionLogin({super.key});
+  final bool esMovil;
+
+  const SeccionLogin({super.key, required this.esMovil});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 690,
-      child: Center(
-        child: Container(
-          width: 380,
-          height: 530,
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(126, 255, 255, 255),
-            borderRadius: BorderRadius.circular(15),
-          ),
-
-          child: Column(
-            children: [
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 56, right: 11),
-                  child: ImagenLogo(),
-                ),
-              ),
-              SizedBox(height: 80),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
-                child: Formulario(),
-              ),
-            ],
+      height: esMovil ? 800 : 690,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: esMovil ? 80 : 80,
+          horizontal: 20,
+        ),
+        child: Center(
+          child: Container(
+            width: esMovil ? 300 : 380,
+            height: esMovil ? 450 : 530,
+            constraints: const BoxConstraints(maxWidth: 380),
+            padding: EdgeInsets.all(esMovil ? 25 : 40),
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(126, 255, 255, 255),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              children: [
+                ImagenLogo(esMovil: esMovil),
+                SizedBox(height: esMovil ? 35 : 80),
+                Formulario(),
+              ],
+            ),
           ),
         ),
       ),
@@ -256,108 +264,146 @@ class InputEstilo extends StatelessWidget {
 //Widget para el logo del formualrio
 
 class ImagenLogo extends StatelessWidget {
-  const ImagenLogo({super.key});
+  const ImagenLogo({super.key, required this.esMovil});
+
+  final bool esMovil;
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Image.asset('assets/images/Logo.png', width: 227));
+    return Center(
+      child: Image.asset('assets/images/Logo.png', width: esMovil ? 200 : 227),
+    );
   }
 }
 
 class SeccionArriba extends StatelessWidget {
-  const SeccionArriba({super.key});
+  final bool esMovil;
+
+  const SeccionArriba({super.key, required this.esMovil});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: UasColores.uasAmarillo,
       width: double.infinity,
-      height: 70,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 90),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Image.asset(
-              'assets/images/logo_uas.png',
-              width: 50,
-              fit: BoxFit.cover,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Tutorias FIC",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+      height: esMovil ? 84 : 70,
+      padding: EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: esMovil ? 35 : 90,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Image.asset(
+            'assets/images/logo_uas.png',
+            width: esMovil ? 40 : 50,
+            fit: BoxFit.cover,
+          ),
+          Column(
+            children: [
+              Text(
+                "Tutorias FIC",
+                style: TextStyle(
+                  fontSize: esMovil ? 17 : 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
-                Text(
-                  "Facultad de Informática Culiacán",
-                  style: TextStyle(fontSize: 15, color: Colors.white),
+              ),
+              Text(
+                "Facultad de Informática Culiacán",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: esMovil ? 14 : 15,
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
 }
 
 class SeccionFooter extends StatelessWidget {
-  const SeccionFooter({super.key});
+  final bool esMovil;
+
+  const SeccionFooter({super.key, required this.esMovil});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 280,
-
-      decoration: BoxDecoration(
+      padding: EdgeInsets.all(esMovil ? 25 : 65),
+      decoration: const BoxDecoration(
         color: Color(0xFF0E0231),
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20), // ← esquina superior izquierda
-          topRight: Radius.circular(20), // ← esquina superior derecha
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
         ),
       ),
-
-      child: Padding(
-        padding: const EdgeInsets.only(top: 65),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ContenedorLogos(),
-            SizedBox(width: 50),
-            InfoDesarolladores(),
-            SizedBox(width: 50),
-            InfoColaboradores(),
-            SizedBox(width: 50),
-            InfoContacto(),
-            SizedBox(width: 50),
-            InfoCopy(),
-          ],
-        ),
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        spacing: esMovil ? 20 : 50,
+        runSpacing: 25,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 25, top: 20),
+            child: ContenedorLogos(),
+          ),
+          InfoDesarolladores(),
+          InfoColaboradores(),
+          InfoContacto(),
+          Padding(
+            padding: EdgeInsets.only(bottom: esMovil ? 40 : 0),
+            child: InfoCopy(),
+          ),
+        ],
       ),
     );
   }
 }
 
-class InfoCopy extends StatelessWidget {
+class InfoCopy extends StatefulWidget {
   const InfoCopy({super.key});
+
+  @override
+  State<InfoCopy> createState() => _InfoCopyState();
+}
+
+class _InfoCopyState extends State<InfoCopy> {
+  bool isHovering = false;
+
+  Future<void> _abrirPagina() async {
+    final Uri url = Uri.parse('https://fic.uas.edu.mx/');
+
+    if (!await launchUrl(url, mode: LaunchMode.platformDefault)) {
+      throw Exception('No se pudo abrir la página');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "© Facultad de Informática Culiacán - 2026",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w100),
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            onEnter: (_) => setState(() => isHovering = true),
+            onExit: (_) => setState(() => isHovering = false),
+            child: InkWell(
+              onTap: _abrirPagina,
+              child: Text(
+                "© Facultad de Informática Culiacán - 2026",
+                style: TextStyle(
+                  color: isHovering ? UasColores.uasAmarillo : Colors.white,
+                  fontWeight: FontWeight.w100,
+                  decoration: isHovering
+                      ? TextDecoration.underline
+                      : TextDecoration.none,
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -380,7 +426,7 @@ class InfoContacto extends StatelessWidget {
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 13),
-          Text("contacto@correo.mx", style: TextStyle(color: Colors.white)),
+          Correo(),
           SizedBox(height: 13),
           TextButton.icon(
             onPressed: () {
@@ -415,6 +461,48 @@ class InfoContacto extends StatelessWidget {
             icon: Icon(Icons.open_in_new, color: Colors.white, size: 14),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class Correo extends StatefulWidget {
+  const Correo({super.key});
+
+  @override
+  State<Correo> createState() => _CorreoState();
+}
+
+class _CorreoState extends State<Correo> {
+  bool isHovering = false;
+
+  Future<void> _abrirCorreo() async {
+    final Uri email = Uri(
+      scheme: 'mailto',
+      path: 'contacto@correo.mx',
+      queryParameters: {'subject': 'Solicitud de información'},
+    );
+
+    if (!await launchUrl(email)) {
+      throw Exception('No se pudo abrir el correo');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => isHovering = true),
+      onExit: (_) => setState(() => isHovering = false),
+      child: InkWell(
+        onTap: _abrirCorreo,
+        child: Text(
+          "contacto@correo.mx",
+          style: TextStyle(
+            color: isHovering ? UasColores.uasAmarillo : Colors.white,
+            decoration: TextDecoration.underline,
+          ),
+        ),
       ),
     );
   }
@@ -501,12 +589,22 @@ class ContenedorLogos extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/images/dependencias/logofic.png', width: 70),
+          Image.asset(
+            'assets/images/dependencias/logofic.png',
+            width: MediaQuery.of(context).size.width < 500 ? 45 : 70,
+          ),
           SizedBox(width: 20),
-          Image.asset('assets/images/dependencias/lidatfic.png', width: 68),
+          Image.asset(
+            'assets/images/dependencias/lidatfic.png',
+            width: MediaQuery.of(context).size.width < 500 ? 45 : 68,
+          ),
           SizedBox(width: 20),
-          Image.asset('assets/images/dependencias/bienestar.png', width: 88),
+          Image.asset(
+            'assets/images/dependencias/bienestar.png',
+            width: MediaQuery.of(context).size.width < 500 ? 45 : 88,
+          ),
         ],
       ),
     );

@@ -40,9 +40,9 @@ class _ConocenosState extends State<Conocenos> {
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: Container(
-              height: 100,
+              height: 140,
               color: const Color.fromARGB(255, 0, 34, 106),
-              padding: EdgeInsets.symmetric(horizontal: 100),
+              padding: EdgeInsets.symmetric(horizontal:  100, vertical: 10),
 
               child: Row(
                 children: [
@@ -80,6 +80,8 @@ class _ConocenosState extends State<Conocenos> {
             ),
           ),
 
+          
+
           //Menu Horizontal
           SliverAppBar(
             backgroundColor: Appcolores.amarilloUas,
@@ -96,26 +98,14 @@ class _ConocenosState extends State<Conocenos> {
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.symmetric(horizontal: esMovil ? 10 : 100),
                 children: [
-                  _itemMenu(
-                    'Nuestro equipo',
-                    () => irASection(nuestroEquipooKey),
-                  ),
-                  _itemMenu(
-                    'Nuestro proyecto',
-                    () => irASection(nuestroProyectoKey),
-                  ),
-                  _itemMenu(
-                    '¿Quienes somos?',
-                    () => irASection(quienesSomosKey),
-                  ),
+                  _itemMenu('Nuestro equipo',() => irASection(nuestroEquipooKey)),
+                  _itemMenu('Nuestro proyecto',() => irASection(nuestroProyectoKey)),
+                  _itemMenu('¿Quienes somos?',() => irASection(quienesSomosKey),),
                   _itemMenu('¿Como surgio?', () => irASection(comoSurgioKey)),
                   _itemMenu('Objetivos', () => irASection(objetivosKey)),
                   _itemMenu('Mision y Vision', () => irASection(misionVKey)),
                   _itemMenu('Vinculacion', () => irASection(vinculacionKey)),
-                  _itemMenu(
-                    'Agradeciniento',
-                    () => irASection(agradecimientosKey),
-                  ),
+                  _itemMenu('Agradeciniento', () => irASection(agradecimientosKey)),
                   _itemMenu('Contacto', () => irASection(contactoKey)),
                 ],
               ),
@@ -126,7 +116,7 @@ class _ConocenosState extends State<Conocenos> {
             child: Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 40),
+                  padding: const EdgeInsets.symmetric(vertical: 70),
                   child: Column(
                     children: [
                       Text(
@@ -149,10 +139,10 @@ class _ConocenosState extends State<Conocenos> {
                 Container(
                   key: nuestroEquipooKey,
                   width: double.infinity,
-                  color: const Color.fromARGB(107, 156, 118, 28),
+                  color: Color(0xFFC59525).withOpacity(0.15),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 120,
-                    vertical: 50,
+                    vertical: 70,
                   ),
 
                   child: Center(
@@ -172,7 +162,7 @@ class _ConocenosState extends State<Conocenos> {
                   ),
                 ),
 
-                const SizedBox(height: 40),
+                const SizedBox(height: 70),
 
                 Container(
                   padding: const EdgeInsets.all(10),
@@ -247,7 +237,7 @@ class _ConocenosState extends State<Conocenos> {
                       'El Sistema de Tutorías FIC surgió como respuesta a la necesidad de mejorar la gestión de asesorías en la Facultad de Informática Culiacán. Observamos que muchos estudiantes enfrentaban dificultades para acceder a las asesorías y que los asesores necesitaban una herramienta eficiente para administrar sus horarios y solicitudes. Con el apoyo de Bienestar Universitario y el Laboratorio de Innovación, decidimos desarrollar una plataforma que facilite esta interacción, optimizando los procesos y promoviendo un ambiente académico más colaborativo y accesible.',
                 ),
 
-                const SizedBox(height: 70),
+                const SizedBox(height: 80),
 
                 //objetivos
                 contenedorTexto(
@@ -273,6 +263,8 @@ class _ConocenosState extends State<Conocenos> {
                       'Historial y reportes: Generar un historial de asesorías y reportes que permitan a los administradores evaluar la efectividad del sistema y realizar mejoras continuas.',
                 ),
 
+                SizedBox(height: 135),
+
                 //Mision y vision
                 Container(
                   key: misionVKey,
@@ -282,7 +274,8 @@ class _ConocenosState extends State<Conocenos> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 70),
+
+                     
 
                       Wrap(
                         spacing: 40,
@@ -302,88 +295,140 @@ class _ConocenosState extends State<Conocenos> {
                       ),
                     ],
                   ),
-                ),
+                ),  
+
+                SizedBox(height: 70),
 
                 //Depenencias
-                Container(
-                  key: vinculacionKey,
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 60,
-                    horizontal: 30,
-                  ),
-
-                  child: Column(
-                    children: [
-                      const Text(
-                        'Dependencias Vinculadas',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 70),
+                  child: Container(
+                    key: vinculacionKey,
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 60,
+                      horizontal: 30,
+                    ),
+                  
+                    
+                  
+                    child: Column(
+                      children: [
+                        const Text(
+                          'Dependencias Vinculadas',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 40),
-
-                      Wrap(
-                        spacing: 40,
-                        runSpacing: 40,
-                        alignment: WrapAlignment.center,
-
-                        children: [
-                          logosDependencia('assets/images/dependencias/logofic.png'),
-
-                          logosDependencia('assets/images/dependencias/lidatfic.png'),
-
-                          logosDependencia('assets/images/dependencias/bienestar.png'),
-
-                          logosDependencia('assets/images/dependencias/biblioteca.png'),
-
-                          logosDependencia('assets/images/dependencias/serviciosocial.png'),
-
-                          logosDependencia('assets/images/dependencias/adiuas.png'),
-                          
-                          logosDependencia('assets/images/dependencias/sau.png'),
-
-                          logosDependencia('assets/images/dependencias/dgvri.png'),
-
-                          logosDependencia('assets/images/dependencias/piefad.png'),
-
-                          logosDependencia('assets/images/dependencias/culturauaslogo.png'),
-
-                          logosDependencia('assets/images/dependencias/direccionartistica.png'),
-
-                          logosDependencia('assets/images/dependencias/psicologia.png'),
-
-                          logosDependencia('assets/images/dependencias/medicina.png'),
-
-                          logosDependencia('assets/images/dependencias/dgep.jpeg'),
-
-                          logosDependencia('assets/images/dependencias/logo_dsgc.png'),
-
-                          logosDependencia('assets/images/dependencias/logo_prodep.jpeg'),
-
-                          logosDependencia('assets/images/dependencias/ciencias.jpg'),
-
-                          logosDependencia('assets/images/dependencias/ccu.jpeg'),
-
-                          logosDependencia('assets/images/dependencias/logo_odontologia.png'),
-
-                          logosDependencia('assets/images/dependencias/EMPRENDEUAS.png'),
-
-                          logosDependencia('assets/images/dependencias/logo_dges.png'),
-
-
-
-                          
-                        ],
-                      ),
-                    ],
+                        const SizedBox(height: 40),
+                  
+                        Wrap(
+                          spacing: 40,
+                          runSpacing: 40,
+                          alignment: WrapAlignment.center,
+                  
+                          children: [
+                            logosDependencia(
+                              'assets/images/dependencias/logofic.png',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/lidatfic.png',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/bienestar.png',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/biblioteca.png',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/serviciosocial.png',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/adiuas.png',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/sau.png',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/dgvri.png',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/piefad.png',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/culturauaslogo.png',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/direccionartistica.png',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/psicologia.png',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/medicina.png',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/dgep.jpeg',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/logo_dsgc.png',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/logo_prodep.jpeg',
+                            ),
+                  
+                            logosDependencia('assets/images/dependencias/radio_uas.png'),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/ciencias.jpg',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/ccu.jpeg',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/logo_odontologia.png',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/EMPRENDEUAS.png',
+                            ),
+                  
+                            logosDependencia(
+                              'assets/images/dependencias/logo_dges.png',
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
+        
                 SectionFooterTwo(key: contactoKey),
               ],
             ),
           ),
+
+          
+
+          
 
           /* Container(
             width: double.infinity,
@@ -541,15 +586,15 @@ Widget _tarjetita(String titulo, String contenido) {
       curve: Curves.easeInOut,
 
       width: 340,
-      height: 450,
+      height: 430,
       padding: const EdgeInsets.all(30),
 
-      decoration: BoxDecoration( 
-        color: const Color(0xFFE7E7E7),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 232, 232, 232),
         borderRadius: BorderRadius.circular(5),
 
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10),
+          BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4),
         ],
       ),
 
@@ -648,24 +693,27 @@ class SectionFooterTwo extends StatelessWidget {
                         child: Icon(
                           Icons.camera_alt,
                           color: const Color.fromARGB(255, 255, 255, 255),
-                          size: 18,
+                          size: 16,
                         ),
                       ),
 
-                      SizedBox(height: 20),
+                      SizedBox(width: 15),
 
                       CircleAvatar(
-                        radius: 16,
-                        backgroundColor: const Color.fromARGB(255,255,255,255,
+                        radius: 18,
+                        backgroundColor: const Color.fromARGB(
+                          255,
+                          255,
+                          255,
+                          255,
                         ),
                         child: Icon(
                           Icons.camera_alt,
                           color: const Color.fromARGB(255, 255, 255, 255),
-                          size: 18,
+                          size: 16,
                         ),
                       ),
 
-                      SizedBox(width: 40),
 
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),

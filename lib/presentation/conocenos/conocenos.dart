@@ -149,7 +149,7 @@ class _ConocenosState extends State<Conocenos> {
                 Container(
                   key: nuestroEquipooKey,
                   width: double.infinity,
-                  color: const Color.fromARGB(107, 156, 118, 28),
+                  color: Color(0xFFC59525).withOpacity(0.15),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 120,
                     vertical: 50,
@@ -330,51 +330,89 @@ class _ConocenosState extends State<Conocenos> {
                         alignment: WrapAlignment.center,
 
                         children: [
-                          logosDependencia('assets/images/dependencias/logofic.png'),
+                          logosDependencia(
+                            'assets/images/dependencias/logofic.png',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/lidatfic.png'),
+                          logosDependencia(
+                            'assets/images/dependencias/lidatfic.png',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/bienestar.png'),
+                          logosDependencia(
+                            'assets/images/dependencias/bienestar.png',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/biblioteca.png'),
+                          logosDependencia(
+                            'assets/images/dependencias/biblioteca.png',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/serviciosocial.png'),
+                          logosDependencia(
+                            'assets/images/dependencias/serviciosocial.png',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/adiuas.png'),
-                          
-                          logosDependencia('assets/images/dependencias/sau.png'),
+                          logosDependencia(
+                            'assets/images/dependencias/adiuas.png',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/dgvri.png'),
+                          logosDependencia(
+                            'assets/images/dependencias/sau.png',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/piefad.png'),
+                          logosDependencia(
+                            'assets/images/dependencias/dgvri.png',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/culturauaslogo.png'),
+                          logosDependencia(
+                            'assets/images/dependencias/piefad.png',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/direccionartistica.png'),
+                          logosDependencia(
+                            'assets/images/dependencias/culturauaslogo.png',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/psicologia.png'),
+                          logosDependencia(
+                            'assets/images/dependencias/direccionartistica.png',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/medicina.png'),
+                          logosDependencia(
+                            'assets/images/dependencias/psicologia.png',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/dgep.jpeg'),
+                          logosDependencia(
+                            'assets/images/dependencias/medicina.png',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/logo_dsgc.png'),
+                          logosDependencia(
+                            'assets/images/dependencias/dgep.jpeg',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/logo_prodep.jpeg'),
+                          logosDependencia(
+                            'assets/images/dependencias/logo_dsgc.png',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/ciencias.jpg'),
+                          logosDependencia(
+                            'assets/images/dependencias/logo_prodep.jpeg',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/ccu.jpeg'),
+                          logosDependencia(
+                            'assets/images/dependencias/ciencias.jpg',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/logo_odontologia.png'),
+                          logosDependencia(
+                            'assets/images/dependencias/ccu.jpeg',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/EMPRENDEUAS.png'),
+                          logosDependencia(
+                            'assets/images/dependencias/logo_odontologia.png',
+                          ),
 
-                          logosDependencia('assets/images/dependencias/logo_dges.png'),
+                          logosDependencia(
+                            'assets/images/dependencias/EMPRENDEUAS.png',
+                          ),
 
-
-
-                          
+                          logosDependencia(
+                            'assets/images/dependencias/logo_dges.png',
+                          ),
                         ],
                       ),
                     ],
@@ -541,15 +579,15 @@ Widget _tarjetita(String titulo, String contenido) {
       curve: Curves.easeInOut,
 
       width: 340,
-      height: 450,
+      height: 430,
       padding: const EdgeInsets.all(30),
 
-      decoration: BoxDecoration( 
-        color: const Color(0xFFE7E7E7),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 232, 232, 232),
         borderRadius: BorderRadius.circular(5),
 
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10),
+          BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4),
         ],
       ),
 
@@ -652,11 +690,15 @@ class SectionFooterTwo extends StatelessWidget {
                         ),
                       ),
 
-                      SizedBox(height: 20),
+                      SizedBox(width: 20),
 
                       CircleAvatar(
                         radius: 16,
-                        backgroundColor: const Color.fromARGB(255,255,255,255,
+                        backgroundColor: const Color.fromARGB(
+                          255,
+                          255,
+                          255,
+                          255,
                         ),
                         child: Icon(
                           Icons.camera_alt,

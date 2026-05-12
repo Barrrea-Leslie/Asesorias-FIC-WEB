@@ -33,7 +33,7 @@ class _CargaVuevoAsesorParState extends State<CargaNuevoAsesorPar> {
       await descargarFormato(
         assetPath: 'assets/formatos/FormatoAlumnos.xlsx',
         nombreArchivo: 'FormatoAsesoresPar.xlsx',
-      ); // con esto sellama al helper correcto automáticamente
+      );
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

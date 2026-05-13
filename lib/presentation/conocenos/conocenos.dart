@@ -1,4 +1,5 @@
 import 'package:asesorias_fic/core/colores.dart';
+import 'package:asesorias_fic/presentation/loginScreens/login_nuevo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -42,19 +43,23 @@ class _ConocenosState extends State<Conocenos> {
             child: Container(
               height: 140,
               color: const Color.fromARGB(255, 0, 34, 106),
-              padding: EdgeInsets.symmetric(horizontal:  100, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal:  esMovil ? 20 : 100, vertical: 10),
 
               child: Row(
                 children: [
-                  Image.asset('assets/images/logo_uas.png', height: 60),
+                  navegacioLoginTwo(context),
+
+                  SizedBox(width: esMovil ? 10: 20),
 
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: esMovil ? CrossAxisAlignment.start : CrossAxisAlignment.center,
 
                       children: [
                         Text(
                           'Asesorias FIC',
+                          textAlign: esMovil ? TextAlign.start: TextAlign.center,
                           style: TextStyle(
                             color: const Color.fromARGB(255, 245, 246, 247),
                             fontSize: esMovil ? 22 : 28,
@@ -62,13 +67,13 @@ class _ConocenosState extends State<Conocenos> {
                           ),
                         ),
 
-                        const SizedBox(height: 5),
+                         SizedBox(height: 5),
 
                         Text(
                           'Facultad de informatica Culiacan',
                           style: TextStyle(
                             color: Appcolores.gris,
-                            fontSize: esMovil ? 22 : 28,
+                            fontSize: esMovil ? 13 : 22,
                             fontWeight: FontWeight.normal,
                           ),
                         ),
@@ -168,7 +173,7 @@ class _ConocenosState extends State<Conocenos> {
                   padding: const EdgeInsets.all(10),
                   child: Wrap(
                     spacing: 70,
-                    runSpacing: 70,
+                    runSpacing: 50,
                     alignment: WrapAlignment.center,
                     runAlignment: WrapAlignment.center,
                     children: [
@@ -283,11 +288,11 @@ class _ConocenosState extends State<Conocenos> {
                         alignment: WrapAlignment.center,
                         runAlignment: WrapAlignment.center,
                         children: [
-                          _tarjetita(
+                          tarjetaMision(
                             'Mision',
                             'Nuestra misión es proporcionar una plataforma digital que facilite la gestión de asesorías en la Facultad de Informática de Culiacán, promoviendo la interacción efectiva entre estudiantes y asesores y contribuyendo al desarrollo académico de los estudiantes mediante el acceso a recursos de asesoría de calidad.',
                           ),
-                          _tarjetita(
+                          tarjetaMision(
                             'Vision',
                             'Nuestra visión es ser un referente en la implementación de soluciones tecnológicas en el ámbito académico, transformando la manera en que se gestionan las asesorías y mejorando la experiencia educativa de los estudiantes. Buscamos innovar continuamente para adaptarnos a las necesidades cambiantes de la comunidad universitaria.',
                           ),
@@ -488,6 +493,17 @@ class _ConocenosState extends State<Conocenos> {
   }
 }
 
+class navegacioLogin extends StatelessWidget {
+  const navegacioLogin({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset('assets/images/logo_uas.png', height: 60);
+  }
+}
+
 //contenedor con texto y titulo
 Widget contenedorTexto({
   required Key key,
@@ -585,9 +601,11 @@ Widget _tarjetita(String titulo, String contenido) {
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
 
-      width: 340,
-      height: 430,
-      padding: const EdgeInsets.all(30),
+    width: 350,
+     height: 320,
+     
+
+     padding: const EdgeInsets.all(20),
 
       decoration: BoxDecoration(
         color: const Color.fromARGB(255, 232, 232, 232),
@@ -599,30 +617,82 @@ Widget _tarjetita(String titulo, String contenido) {
       ),
 
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           //Titulo de la tarjeta
           Text(
             titulo,
             textAlign: TextAlign.center,
-
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
 
-          const SizedBox(height: 30), //entre el titulo y texto
+          const SizedBox(height: 25), //entre el titulo y texto
 
-          Text(
-            contenido,
-            textAlign: TextAlign.justify,
-            style: const TextStyle(
-              fontSize: 15,
-              height: 1.5,
-              fontWeight: FontWeight.bold,
+          Expanded(
+          child: SingleChildScrollView(
+            child: Text(
+              contenido,
+              textAlign: TextAlign.justify,
+              style: const TextStyle(
+                fontSize: 15,
+                height: 1.5,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-          const SizedBox(height: 70),
+          ),
         ],
       ),
+    ),
+  );
+}
+
+//tarjeta de msion y vision
+
+Widget tarjetaMision(String titulo, String contenido){
+  return Container(
+    width: 500,
+    height: 390,
+
+    constraints: const BoxConstraints(minHeight: 320
+    ),
+
+    padding: const EdgeInsets.all(35),
+
+    decoration: BoxDecoration(
+      color: const Color.fromARGB(255, 232, 232, 232),
+      borderRadius: BorderRadius.circular(5),
+
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.1),
+          blurRadius: 4,
+        )
+      ]
+    ),
+
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          titulo,
+          style: const TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+const SizedBox(height: 25),
+
+        Text(
+          contenido,
+          textAlign: TextAlign.justify,
+          style: const TextStyle(
+            fontSize: 18,
+            height: 1.7,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
     ),
   );
 }
@@ -638,7 +708,7 @@ class SectionFooterTwo extends StatelessWidget {
       height: 280,
 
       decoration: BoxDecoration(
-        color: Color(0xFF0E0231),
+        color: Color(0xFF13004C),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(0),
           topRight: Radius.circular(0),
@@ -648,11 +718,14 @@ class SectionFooterTwo extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 55, right: 55, top: 40),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
                     'Contacto',
@@ -663,7 +736,7 @@ class SectionFooterTwo extends StatelessWidget {
                     ),
                   ),
 
-                  SizedBox(height: 20),
+                  SizedBox(height: 15),
 
                   const Text(
                     'Facultad de Informática Culiacán \n'
@@ -678,60 +751,53 @@ class SectionFooterTwo extends StatelessWidget {
                     style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
                   ),
 
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
 
                   Row(
                     children: [
                       CircleAvatar(
-                        radius: 18,
+                        radius: 15,
                         backgroundColor: const Color.fromARGB(
                           255,
                           255,
                           255,
                           255,
                         ),
-                        child: Icon(
-                          Icons.camera_alt,
-                          color: const Color.fromARGB(255, 255, 255, 255),
-                          size: 16,
-                        ),
+                        backgroundImage: AssetImage('assets/images/instagram.png'),
                       ),
 
-                      SizedBox(width: 15),
+                      SizedBox(width: 10),
 
                       CircleAvatar(
-                        radius: 18,
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          255,
-                          255,
-                          255,
-                        ),
-                        child: Icon(
-                          Icons.camera_alt,
-                          color: const Color.fromARGB(255, 255, 255, 255),
-                          size: 16,
-                        ),
-                      ),
-
-
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          '',
-                          width: 120,
-                          height: 120,
-                          fit: BoxFit.cover,
-                        ),
+                        radius: 15,
+                        backgroundColor: const Color.fromARGB(255, 155, 152, 152),
+                         backgroundImage: AssetImage('assets/images/facebook.png'),
                       ),
                     ],
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          width: 120,
+                          height: 120,
+                          color: Colors.grey,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.asset(
+                              '',
+                              width: 220,
+                              height: 220,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+              ),
     );
   }
 }
@@ -752,5 +818,28 @@ Widget logosDependencia(String ruta) {
       ],
     ),
     child: Image.asset(ruta),
+  );
+}
+
+//widget para la navegacion login
+Widget navegacioLoginTwo(BuildContext context) {
+  return  MouseRegion(
+    cursor: SystemMouseCursors.click,
+
+    child: GestureDetector(onTap: () {
+      Navigator.push(context,
+       MaterialPageRoute(builder: (context) => const LoginNuevo(),
+       ),
+       );
+    },
+
+    //la imagen y tamaño de la imagen (LOGO)
+    child: Image.asset('assets/images/logo_uas.png',
+    width: 90,
+    height: 90,
+    fit: BoxFit.contain,
+    ),
+    
+    ),
   );
 }

@@ -1,15 +1,23 @@
-import 'package:asesorias_fic/presentation/conocenos/conocenos.dart';
 import 'package:asesorias_fic/core/colores.dart';
+import 'package:asesorias_fic/presentation/conocenos/conocenos.dart';
 import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class LoginNuevo extends StatelessWidget {
-  const LoginNuevo({super.key});
+class InicioSesion extends StatelessWidget {
+  const InicioSesion({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final esMovil = MediaQuery.of(context).size.width < 500;
+
     return Scaffold(
+      appBar: AppBar(
+        flexibleSpace: SeccionArriba(esMovil: esMovil),
+        toolbarHeight: 70,
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
+      drawer: DraweInicio(),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -18,6 +26,117 @@ class LoginNuevo extends StatelessWidget {
           ),
         ),
         child: ScreenLogin(),
+      ),
+    );
+  }
+}
+
+//Dawer - infrmacion de asesorias y tutorias
+class DraweInicio extends StatelessWidget {
+  const DraweInicio({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.only(top: 20),
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(top: 20, bottom: 40),
+            child: Center(
+              child: Text(
+                "Informacion",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: const Color.fromARGB(100, 0, 0, 0),
+                ),
+              ),
+            ),
+          ),
+          Divider(),
+          SizedBox(height: 20),
+          ExpansionTile(
+            backgroundColor: Color.fromARGB(71, 36, 74, 145),
+            shape: Border.fromBorderSide(BorderSide.none),
+            title: Text("Asesoria"),
+            children: [
+              Padding(padding: EdgeInsets.all(16), child: Text("DAOU")),
+            ],
+          ),
+          ExpansionTile(
+            backgroundColor: Color.fromARGB(71, 36, 74, 145),
+            shape: Border.fromBorderSide(BorderSide.none),
+            title: Text("Tutoria"),
+            children: [
+              Padding(padding: EdgeInsets.all(16), child: Text("DAOU")),
+            ],
+          ),
+          ExpansionTile(
+            backgroundColor: Color.fromARGB(71, 36, 74, 145),
+            shape: Border.fromBorderSide(BorderSide.none),
+            title: Text("Asesor Par"),
+            children: [
+              Padding(padding: EdgeInsets.all(16), child: Text("DAOU")),
+            ],
+          ),
+          ExpansionTile(
+            backgroundColor: Color.fromARGB(71, 36, 74, 145),
+            shape: Border.fromBorderSide(BorderSide.none),
+            title: Text("Asesor Diciplinar"),
+            children: [
+              Padding(padding: EdgeInsets.all(16), child: Text("DAOU")),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+//AppBar - container con titulo y logo uas
+class SeccionArriba extends StatelessWidget {
+  final bool esMovil;
+
+  const SeccionArriba({super.key, required this.esMovil});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Color(0xFF244B91),
+      width: double.infinity,
+      height: esMovil ? 84 : 70,
+      padding: EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: esMovil ? 35 : 90,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Image.asset(
+            'assets/images/logo_uas.png',
+            width: esMovil ? 40 : 50,
+            fit: BoxFit.cover,
+          ),
+          Column(
+            children: [
+              Text(
+                "Tutorias FIC",
+                style: TextStyle(
+                  fontSize: esMovil ? 17 : 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                "Facultad de Informática Culiacán",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: esMovil ? 14 : 15,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -33,7 +152,6 @@ class ScreenLogin extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SeccionArriba(esMovil: esMovil),
           SeccionLogin(esMovil: esMovil),
           SeccionFooter(esMovil: esMovil),
         ],
@@ -42,6 +160,7 @@ class ScreenLogin extends StatelessWidget {
   }
 }
 
+//Contenedor del fprmulario de login
 class SeccionLogin extends StatelessWidget {
   final bool esMovil;
 
@@ -89,6 +208,7 @@ class SeccionLogin extends StatelessWidget {
   }
 }
 
+//formulario y validadcion del login
 class Formulario extends StatefulWidget {
   const Formulario({super.key});
 
@@ -140,6 +260,7 @@ class _FormularioState extends State<Formulario> {
   }
 }
 
+//Boton de formulario - INGRESAR junto cn logica de verificacion y mensaje de confirmacion
 class BotonIngresar extends StatelessWidget {
   final TextEditingController cuentaController;
   final TextEditingController nipController;
@@ -158,9 +279,9 @@ class BotonIngresar extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: UasColores.uasAmarillo,
-        textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        textStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         foregroundColor: Colors.white,
-        minimumSize: const Size(170, 50),
+        minimumSize: const Size(160, 45),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
 
@@ -200,6 +321,7 @@ class BotonIngresar extends StatelessWidget {
   }
 }
 
+//Estilo de los campos del formulario - Cuenta y Nip - Estilo de error
 class InputEstilo extends StatelessWidget {
   final String labelTexto;
   final IconData icon;
@@ -224,7 +346,7 @@ class InputEstilo extends StatelessWidget {
           child: Icon(icon, color: colorIcon, size: 18),
         ),
         filled: true,
-        fillColor: Color(0xFFD9D9D9),
+        fillColor: Color.fromARGB(255, 240, 240, 240),
         hintText: labelTexto,
         hintStyle: TextStyle(color: Color(0xFFA8A7A7)),
         floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -277,7 +399,6 @@ class InputEstilo extends StatelessWidget {
 }
 
 //Widget para el logo del formualrio
-
 class ImagenLogo extends StatelessWidget {
   const ImagenLogo({super.key, required this.esMovil});
 
@@ -291,55 +412,7 @@ class ImagenLogo extends StatelessWidget {
   }
 }
 
-class SeccionArriba extends StatelessWidget {
-  final bool esMovil;
-
-  const SeccionArriba({super.key, required this.esMovil});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Color(0xFF244B91),
-      width: double.infinity,
-      height: esMovil ? 84 : 70,
-      padding: EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: esMovil ? 35 : 90,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Drawer(),
-          Image.asset(
-            'assets/images/logo_uas.png',
-            width: esMovil ? 40 : 50,
-            fit: BoxFit.cover,
-          ),
-          Column(
-            children: [
-              Text(
-                "Tutorias FIC",
-                style: TextStyle(
-                  fontSize: esMovil ? 17 : 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                "Facultad de Informática Culiacán",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: esMovil ? 14 : 15,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
+//Seccion de abajo - Contacto - Colaboradores - Logos
 class SeccionFooter extends StatelessWidget {
   final bool esMovil;
 
@@ -351,7 +424,7 @@ class SeccionFooter extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(esMovil ? 25 : 65),
       decoration: const BoxDecoration(
-        color: Color(0xFF0E0231),
+        color: Color(0xFF244B91),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -379,6 +452,7 @@ class SeccionFooter extends StatelessWidget {
   }
 }
 
+//Copyright de la facultad - vinculo a la pagina oficial de la FIC
 class InfoCopy extends StatefulWidget {
   const InfoCopy({super.key});
 
@@ -427,6 +501,7 @@ class _InfoCopyState extends State<InfoCopy> {
   }
 }
 
+//Inofmracion de contacto - correo - vinculo a pagina concocenos - vinculo a politicas
 class InfoContacto extends StatelessWidget {
   const InfoContacto({super.key});
 
@@ -482,6 +557,7 @@ class InfoContacto extends StatelessWidget {
   }
 }
 
+//Correo y logica para abrir el correo predeterminado
 class Correo extends StatefulWidget {
   const Correo({super.key});
 
@@ -524,6 +600,7 @@ class _CorreoState extends State<Correo> {
   }
 }
 
+//Inofrmacion de colaboradores
 class InfoColaboradores extends StatelessWidget {
   const InfoColaboradores({super.key});
 
@@ -553,6 +630,7 @@ class InfoColaboradores extends StatelessWidget {
   }
 }
 
+//Inofrmacion de desarrolladores
 class InfoDesarolladores extends StatelessWidget {
   const InfoDesarolladores({super.key});
 
@@ -598,6 +676,7 @@ class InfoDesarolladores extends StatelessWidget {
   }
 }
 
+//Logos del footer
 class ContenedorLogos extends StatelessWidget {
   const ContenedorLogos({super.key});
 

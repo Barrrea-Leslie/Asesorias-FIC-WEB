@@ -188,8 +188,8 @@ class SeccionLogin extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withValues(alpha: 0.3),
-                  spreadRadius: 2, // Expansión de la sombra
-                  blurRadius: 10, // Nivel de desenfoque
+                  spreadRadius: 4, // Expansión de la sombra
+                  blurRadius: 7, // Nivel de desenfoque
                   offset: Offset(0, 0), // Posición de la sombra (X, Y)
                 ),
               ],
@@ -236,6 +236,7 @@ class _FormularioState extends State<Formulario> {
       child: Column(
         children: [
           InputEstilo(
+            ocultar: false,
             labelTexto: 'No. Cuenta',
             icon: Icons.person,
             colorIcon: Appcolores.azulUas,
@@ -243,7 +244,8 @@ class _FormularioState extends State<Formulario> {
           ),
           SizedBox(height: 27),
           InputEstilo(
-            labelTexto: 'NiP',
+            ocultar: true,
+            labelTexto: 'NIP',
             icon: Icons.lock,
             colorIcon: Appcolores.amarilloUas,
             campoController: nip,
@@ -327,6 +329,7 @@ class InputEstilo extends StatelessWidget {
   final IconData icon;
   final Color colorIcon;
   final TextEditingController campoController;
+  final bool ocultar;
 
   const InputEstilo({
     super.key,
@@ -334,11 +337,13 @@ class InputEstilo extends StatelessWidget {
     required this.icon,
     required this.colorIcon,
     required this.campoController,
+    required this.ocultar,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: ocultar,
       controller: campoController,
       decoration: InputDecoration(
         prefixIcon: Padding(

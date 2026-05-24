@@ -1,4 +1,5 @@
 import 'package:asesorias_fic/core/colores.dart';
+import 'package:asesorias_fic/presentation/loginScreens/inicio_sesion.dart';
 import 'package:asesorias_fic/presentation/loginScreens/login_nuevo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -838,7 +839,7 @@ Widget navegacioLoginTwo(BuildContext context) {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const LoginNuevo()),
+          MaterialPageRoute(builder: (context) => const InicioSesion()),
         );
       },
 

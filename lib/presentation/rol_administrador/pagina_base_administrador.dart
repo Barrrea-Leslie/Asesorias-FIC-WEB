@@ -4,6 +4,7 @@ import 'package:asesorias_fic/presentation/rol_administrador/asesorPar/asesores_
 import 'package:asesorias_fic/presentation/rol_administrador/asesoriasEnCurso/asesorias_en_curso.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/catalogos.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/estudiantes/estudiantes.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/estudiantes/pantalla_estudiantes.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/perfil.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/reportes.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/solicitudes_pendientes.dart';
@@ -36,6 +37,7 @@ class _HomePageState extends State<HomePage> {
     Reportes(mostrarTitulo: !isMobile),
     AsesoresDiciplinares(mostrarTitulo: !isMobile),
     AsesoresPar(mostrarTitulo: !isMobile),
+    //PantallaEstudiantes(),
     Estudiantes(mostrarTitulo: !isMobile),
     Catalogos(),
     Perfil(),

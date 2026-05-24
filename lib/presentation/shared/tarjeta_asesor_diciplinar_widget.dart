@@ -92,30 +92,33 @@ class ListaAsesoresDiciplinares extends StatelessWidget {
             child: SizedBox(
               width: anchoTarjeta,
               height: alturaTarjeta,
-              child: Card(
-                color: Appcolores.azulUas,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 25),
-                  child: Row(
-                    children: [
-                      Image.asset('assets/images/foto_icon.png', width: 60),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: Text(
-                          asesor.nombre,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+              child: MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: Card(
+                  color: Appcolores.azulUas,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 25, right: 25),
+                    child: Row(
+                      children: [
+                        Image.asset('assets/images/foto_icon.png', width: 60),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: Text(
+                            asesor.nombre,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
 
-                      const SizedBox(width: 15),
-                    ],
+                        const SizedBox(width: 15),
+                      ],
+                    ),
                   ),
                 ),
               ),

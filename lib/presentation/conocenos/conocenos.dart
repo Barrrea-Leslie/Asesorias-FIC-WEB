@@ -43,23 +43,30 @@ class _ConocenosState extends State<Conocenos> {
             child: Container(
               height: 140,
               color: const Color.fromARGB(255, 0, 34, 106),
-              padding: EdgeInsets.symmetric(horizontal:  esMovil ? 20 : 100, vertical: 10),
+              padding: EdgeInsets.symmetric(
+                horizontal: esMovil ? 20 : 100,
+                vertical: 10,
+              ),
 
               child: Row(
                 children: [
                   navegacioLoginTwo(context),
 
-                  SizedBox(width: esMovil ? 10: 20),
+                  SizedBox(width: esMovil ? 10 : 20),
 
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: esMovil ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+                      crossAxisAlignment: esMovil
+                          ? CrossAxisAlignment.start
+                          : CrossAxisAlignment.center,
 
                       children: [
                         Text(
                           'Asesorias FIC',
-                          textAlign: esMovil ? TextAlign.start: TextAlign.center,
+                          textAlign: esMovil
+                              ? TextAlign.start
+                              : TextAlign.center,
                           style: TextStyle(
                             color: const Color.fromARGB(255, 245, 246, 247),
                             fontSize: esMovil ? 22 : 28,
@@ -67,7 +74,7 @@ class _ConocenosState extends State<Conocenos> {
                           ),
                         ),
 
-                         SizedBox(height: 5),
+                        SizedBox(height: 5),
 
                         Text(
                           'Facultad de informatica Culiacan',
@@ -85,8 +92,6 @@ class _ConocenosState extends State<Conocenos> {
             ),
           ),
 
-          
-
           //Menu Horizontal
           SliverAppBar(
             backgroundColor: Appcolores.amarilloUas,
@@ -103,14 +108,26 @@ class _ConocenosState extends State<Conocenos> {
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.symmetric(horizontal: esMovil ? 10 : 100),
                 children: [
-                  _itemMenu('Nuestro equipo',() => irASection(nuestroEquipooKey)),
-                  _itemMenu('Nuestro proyecto',() => irASection(nuestroProyectoKey)),
-                  _itemMenu('¿Quienes somos?',() => irASection(quienesSomosKey),),
+                  _itemMenu(
+                    'Nuestro equipo',
+                    () => irASection(nuestroEquipooKey),
+                  ),
+                  _itemMenu(
+                    'Nuestro proyecto',
+                    () => irASection(nuestroProyectoKey),
+                  ),
+                  _itemMenu(
+                    '¿Quienes somos?',
+                    () => irASection(quienesSomosKey),
+                  ),
                   _itemMenu('¿Como surgio?', () => irASection(comoSurgioKey)),
                   _itemMenu('Objetivos', () => irASection(objetivosKey)),
                   _itemMenu('Mision y Vision', () => irASection(misionVKey)),
                   _itemMenu('Vinculacion', () => irASection(vinculacionKey)),
-                  _itemMenu('Agradeciniento', () => irASection(agradecimientosKey)),
+                  _itemMenu(
+                    'Agradeciniento',
+                    () => irASection(agradecimientosKey),
+                  ),
                   _itemMenu('Contacto', () => irASection(contactoKey)),
                 ],
               ),
@@ -279,9 +296,6 @@ class _ConocenosState extends State<Conocenos> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-
-                     
-
                       Wrap(
                         spacing: 40,
                         runSpacing: 40,
@@ -300,7 +314,7 @@ class _ConocenosState extends State<Conocenos> {
                       ),
                     ],
                   ),
-                ),  
+                ),
 
                 SizedBox(height: 70),
 
@@ -314,9 +328,7 @@ class _ConocenosState extends State<Conocenos> {
                       vertical: 60,
                       horizontal: 30,
                     ),
-                  
-                    
-                  
+
                     child: Column(
                       children: [
                         const Text(
@@ -327,95 +339,97 @@ class _ConocenosState extends State<Conocenos> {
                           ),
                         ),
                         const SizedBox(height: 40),
-                  
+
                         Wrap(
                           spacing: 40,
                           runSpacing: 40,
                           alignment: WrapAlignment.center,
-                  
+
                           children: [
                             logosDependencia(
                               'assets/images/dependencias/logofic.png',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/lidatfic.png',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/bienestar.png',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/biblioteca.png',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/serviciosocial.png',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/adiuas.png',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/sau.png',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/dgvri.png',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/piefad.png',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/culturauaslogo.png',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/direccionartistica.png',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/psicologia.png',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/medicina.png',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/dgep.jpeg',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/logo_dsgc.png',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/logo_prodep.jpeg',
                             ),
-                  
-                            logosDependencia('assets/images/dependencias/radio_uas.png'),
-                  
+
+                            logosDependencia(
+                              'assets/images/dependencias/radio_uas.png',
+                            ),
+
                             logosDependencia(
                               'assets/images/dependencias/ciencias.jpg',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/ccu.jpeg',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/logo_odontologia.png',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/EMPRENDEUAS.png',
                             ),
-                  
+
                             logosDependencia(
                               'assets/images/dependencias/logo_dges.png',
                             ),
@@ -425,15 +439,11 @@ class _ConocenosState extends State<Conocenos> {
                     ),
                   ),
                 ),
-        
+
                 SectionFooterTwo(key: contactoKey),
               ],
             ),
           ),
-
-          
-
-          
 
           /* Container(
             width: double.infinity,
@@ -494,9 +504,7 @@ class _ConocenosState extends State<Conocenos> {
 }
 
 class navegacioLogin extends StatelessWidget {
-  const navegacioLogin({
-    super.key,
-  });
+  const navegacioLogin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -601,11 +609,10 @@ Widget _tarjetita(String titulo, String contenido) {
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
 
-    width: 350,
-     height: 320,
-     
+      width: 350,
+      height: 320,
 
-     padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
 
       decoration: BoxDecoration(
         color: const Color.fromARGB(255, 232, 232, 232),
@@ -629,17 +636,17 @@ Widget _tarjetita(String titulo, String contenido) {
           const SizedBox(height: 25), //entre el titulo y texto
 
           Expanded(
-          child: SingleChildScrollView(
-            child: Text(
-              contenido,
-              textAlign: TextAlign.justify,
-              style: const TextStyle(
-                fontSize: 15,
-                height: 1.5,
-                fontWeight: FontWeight.bold,
+            child: SingleChildScrollView(
+              child: Text(
+                contenido,
+                textAlign: TextAlign.justify,
+                style: const TextStyle(
+                  fontSize: 15,
+                  height: 1.5,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
           ),
         ],
       ),
@@ -649,13 +656,12 @@ Widget _tarjetita(String titulo, String contenido) {
 
 //tarjeta de msion y vision
 
-Widget tarjetaMision(String titulo, String contenido){
+Widget tarjetaMision(String titulo, String contenido) {
   return Container(
     width: 500,
     height: 390,
 
-    constraints: const BoxConstraints(minHeight: 320
-    ),
+    constraints: const BoxConstraints(minHeight: 320),
 
     padding: const EdgeInsets.all(35),
 
@@ -664,11 +670,8 @@ Widget tarjetaMision(String titulo, String contenido){
       borderRadius: BorderRadius.circular(5),
 
       boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.1),
-          blurRadius: 4,
-        )
-      ]
+        BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4),
+      ],
     ),
 
     child: Column(
@@ -676,12 +679,9 @@ Widget tarjetaMision(String titulo, String contenido){
       children: [
         Text(
           titulo,
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-const SizedBox(height: 25),
+        const SizedBox(height: 25),
 
         Text(
           contenido,
@@ -721,7 +721,6 @@ class SectionFooterTwo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -763,41 +762,50 @@ class SectionFooterTwo extends StatelessWidget {
                           255,
                           255,
                         ),
-                        backgroundImage: AssetImage('assets/images/instagram.png'),
+                        backgroundImage: AssetImage(
+                          'assets/images/instagram.png',
+                        ),
                       ),
 
                       SizedBox(width: 10),
 
                       CircleAvatar(
                         radius: 15,
-                        backgroundColor: const Color.fromARGB(255, 155, 152, 152),
-                         backgroundImage: AssetImage('assets/images/facebook.png'),
+                        backgroundColor: const Color.fromARGB(
+                          255,
+                          155,
+                          152,
+                          152,
+                        ),
+                        backgroundImage: AssetImage(
+                          'assets/images/facebook.png',
+                        ),
                       ),
                     ],
                   ),
                 ],
               ),
             ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Container(
-                          width: 120,
-                          height: 120,
-                          color: Colors.grey,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              '',
-                              width: 220,
-                              height: 220,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                width: 120,
+                height: 120,
+                color: Colors.grey,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    '',
+                    width: 220,
+                    height: 220,
+                    fit: BoxFit.cover,
                   ),
+                ),
               ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -823,23 +831,24 @@ Widget logosDependencia(String ruta) {
 
 //widget para la navegacion login
 Widget navegacioLoginTwo(BuildContext context) {
-  return  MouseRegion(
+  return MouseRegion(
     cursor: SystemMouseCursors.click,
 
-    child: GestureDetector(onTap: () {
-      Navigator.push(context,
-       MaterialPageRoute(builder: (context) => const LoginNuevo(),
-       ),
-       );
-    },
+    child: GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginNuevo()),
+        );
+      },
 
-    //la imagen y tamaño de la imagen (LOGO)
-    child: Image.asset('assets/images/logo_uas.png',
-    width: 90,
-    height: 90,
-    fit: BoxFit.contain,
-    ),
-    
+      //la imagen y tamaño de la imagen (LOGO)
+      child: Image.asset(
+        'assets/images/logo_uas.png',
+        width: 90,
+        height: 90,
+        fit: BoxFit.contain,
+      ),
     ),
   );
 }

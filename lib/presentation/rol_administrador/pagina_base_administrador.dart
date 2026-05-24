@@ -2,7 +2,9 @@ import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesorDiciplinar/asesores_diciplinares.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesorPar/asesores_par.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesoriasEnCurso/asesorias_en_curso.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/catalogos.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/estudiantes/estudiantes.dart';
+import 'package:asesorias_fic/presentation/rol_administrador/perfil.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/reportes.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/solicitudes_pendientes.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +26,8 @@ class _HomePageState extends State<HomePage> {
     'Asesores Disciplinares',
     'Asesores Par',
     'Estudiantes',
+    "Catalogos",
+    "Perfil",
   ];
 
   List<Widget> _buildPages(bool isMobile) => [
@@ -33,10 +37,12 @@ class _HomePageState extends State<HomePage> {
     AsesoresDiciplinares(mostrarTitulo: !isMobile),
     AsesoresPar(mostrarTitulo: !isMobile),
     Estudiantes(mostrarTitulo: !isMobile),
+    Catalogos(),
+    Perfil(),
   ];
 
   void _onItemSelected(BuildContext context, int index) {
-    if (index == 6) {
+    if (index == 8) {
       Navigator.of(context).popUntil((route) => route.isFirst);
       showDialog(context: context, builder: (_) => AlertaCerrarSesion());
     } else {
@@ -197,8 +203,10 @@ class _SideMenuContent extends StatelessWidget {
         _menuItem(Icons.people, 'Asesores Disciplinares', 3),
         _menuItem(Icons.group, 'Asesores Par', 4),
         _menuItem(Icons.school, 'Estudiantes', 5),
+        _menuItem(Icons.book, 'Catalogos', 6),
+        _menuItem(Icons.person, 'Perfil', 7),
         const Spacer(),
-        _menuItem(Icons.logout, 'Cerrar sesión', 6),
+        _menuItem(Icons.logout, 'Cerrar sesión', 8),
         const SizedBox(height: 10),
       ],
     );

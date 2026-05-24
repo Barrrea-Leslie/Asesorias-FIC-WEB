@@ -624,6 +624,7 @@ class InfoColaboradores extends StatelessWidget {
             "MGTI. Oscar Mejia Quintero",
             style: TextStyle(color: Colors.white),
           ),
+          Text("Evelia Inzunza García", style: TextStyle(color: Colors.white)),
         ],
       ),
     );

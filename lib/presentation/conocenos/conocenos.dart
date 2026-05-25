@@ -4,6 +4,7 @@ import 'package:asesorias_fic/presentation/loginScreens/login_nuevo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Conocenos extends StatefulWidget {
   const Conocenos({super.key});
@@ -746,40 +747,64 @@ class SectionFooterTwo extends StatelessWidget {
                       height: 1.5,
                     ),
                   ),
-                  const Text(
-                    'sitema@correo.com',
-                    style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+
+                  GestureDetector(
+                    onTap: () {
+                      _abrirPagina('mailto:sitema@correo.com');
+                    },
+
+                    child: const Text(
+                      'sitema@correo.com',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
                   ),
 
                   const SizedBox(height: 10),
 
                   Row(
                     children: [
-                      CircleAvatar(
-                        radius: 15,
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          255,
-                          255,
-                          255,
-                        ),
-                        backgroundImage: AssetImage(
-                          'assets/images/instagram.png',
+                      GestureDetector(
+                        onTap: () {
+                          _abrirPagina(
+                            'https://www.instagram.com/facultadinformaticaculiacan/',
+                          );
+                        },
+
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            255,
+                            255,
+                            255,
+                          ),
+                          backgroundImage: AssetImage(
+                            'assets/images/instagram.png',
+                          ),
                         ),
                       ),
 
                       SizedBox(width: 10),
 
-                      CircleAvatar(
-                        radius: 15,
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          155,
-                          152,
-                          152,
-                        ),
-                        backgroundImage: AssetImage(
-                          'assets/images/facebook.png',
+                      GestureDetector(
+                        onTap: () {
+                          _abrirPagina('https://www.facebook.com/FICuliacan/');
+                        },
+
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            255,
+                            255,
+                            255,
+                          ),
+                          backgroundImage: AssetImage(
+                            'assets/images/facebook.png',
+                          ),
                         ),
                       ),
                     ],
@@ -808,6 +833,18 @@ class SectionFooterTwo extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+//funcion
+
+Future<void> _abrirPagina(String link) async {
+  final Uri uri = Uri.parse(link);
+
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  } else {
+    throw 'No se pudo abrir $link';
   }
 }
 

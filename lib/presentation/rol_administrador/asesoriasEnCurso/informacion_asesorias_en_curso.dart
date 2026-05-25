@@ -3,7 +3,9 @@ import 'package:asesorias_fic/data/models/asesorias_model.dart';
 import 'package:asesorias_fic/data/models/estudiantes_model.dart';
 import 'package:asesorias_fic/data/services/estudiantes_service.dart';
 import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+
 
 class InformacionAsesoriaEnCurso extends StatefulWidget {
   final Asesorias asesoria; // Recibe la asesoría directamente
@@ -14,6 +16,8 @@ class InformacionAsesoriaEnCurso extends StatefulWidget {
 }
 
 class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso> {
+
+  List<Map<String, dynamic>> evidencias = [];
   late Future<List<Estudiantes>> _estudiantesFuture;
 
   late TextEditingController _nombreController;
@@ -21,7 +25,7 @@ class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso>
   late TextEditingController _sesionesController;
   late TextEditingController _observacionesController;
   late TextEditingController _fechaInicioController;
-  late TextEditingController _fechaFinalController;
+  //late TextEditingController _fechaFinalController;
   
 
   String? _selectedGrupo;
@@ -46,7 +50,7 @@ class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso>
     _sesionesController.dispose();
     _observacionesController.dispose();
     _fechaInicioController.dispose();
-    _fechaFinalController.dispose();
+   // _fechaFinalController.dispose();
     super.dispose();
   }
 
@@ -58,7 +62,7 @@ class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso>
     _sesionesController = TextEditingController(text: "1");
     _observacionesController = TextEditingController(text: "");
     _fechaInicioController = TextEditingController(text: asesoria.fechaInicio);
-    _fechaFinalController = TextEditingController(text: asesoria.fechaFin);
+    //_fechaFinalController = TextEditingController(text: asesoria.fechaFin);
 
     _selectedGrupo = estudiante.grupo;
     _selectedMateria = asesoria.materia;
@@ -117,7 +121,7 @@ class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso>
                   Flexible(
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                      child: isMobile ? _buildMobileLayout() : _buildDesktopLayout(),
+                      child: _buildContenido(),
                     ),
                   ),
                   const Divider(height: 1),
@@ -138,7 +142,34 @@ class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso>
     );
   }
 
-  Widget _buildDesktopLayout() {
+/*   //CONTENIDO NUEVO
+  Widget _buildContenido(){
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 700),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          _buildCampoTextoLectura(
+            'Estudiante', 
+            _nombreController
+            ),
+
+            _buildCampoTextoLectura(
+              label, 
+              controller)
+        ],
+      ),
+      );
+  } */
+
+
+
+
+
+
+
+ /*  Widget _buildDesktopLayout() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -147,9 +178,9 @@ class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso>
         Expanded(child: _buildColumnaDerecha()),
       ],
     );
-  }
+  } */
 
-  Widget _buildMobileLayout() {
+ /*  Widget _buildMobileLayout() {
     return Column(
       children: [
         _buildColumnaIzquierda(),
@@ -157,30 +188,84 @@ class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso>
         _buildColumnaDerecha(),
       ],
     );
-  }
+  } */
 
-  Widget _buildColumnaIzquierda() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildCampoTexto('Nombre del Estudiante', _nombreController),
-        _buildCampoTexto('Licenciatura', _licenciaturaController),
-        _buildCampoDropdown(
-            'Grado y Grupo',
-            _selectedGrupo,
-            ['1-1', '1-2', '2-1', '2-2', '3-1', '3-2', '4-1', '4-2'],
-            (val) => setState(() => _selectedGrupo = val)),
-        _buildCampoDropdown(
-            'Materia',
-            _selectedMateria,
-            ['Programación', 'Base de Datos', 'Matemáticas Discretas', 'Sistemas Operativos'],
-            (val) => setState(() => _selectedMateria = val)),
-        _buildCampoObservaciones(_observacionesController),
-      ],
+  Widget _buildContenido() {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 700),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildCampoTextoLectura('Nombre del Estudiante', _nombreController),
+
+          //NOMBRE DEL ASESOR
+          _buildCampoTextoLectura('Nombre Asesor',
+          TextEditingController(text:'Nombre del asesor'),
+           ),
+
+           _buildCampoTextoLectura(
+            'Licenciatura del Estudiante', _licenciaturaController,
+            ),
+
+          
+          _buildCampoDropdownLectura(
+              'Grado y Grupo',
+              _selectedGrupo,
+              ['1-1', '1-2', '2-1', '2-2', '3-1', '3-2', '4-1', '4-2'],
+              (val) => setState(() => _selectedGrupo = val)),
+
+
+          _buildCampoDropdownLectura(
+              'Materia',
+              _selectedMateria,
+              ['Programación', 'Base de Datos', 'Matemáticas Discretas', 'Sistemas Operativos'],
+              (val) => setState(() => _selectedMateria = val)),
+
+              _buildCampoDropdownLectura(
+                'Horario',
+                _selectedHorario,
+                [
+                 ' 7:00 - 8:00',
+                 ' 13:00 - 14:00',
+                 ' 18:00 - 19:00',
+                ],
+                (val) => setState(()  => _selectedHorario = val),
+                  ),
+
+                  //MODALIDAD
+                   _buildCampoDropdownLectura(
+              'Modalidad',
+              _selectedModalidad,
+              ['Presencial', 'Virtual'],
+              (val) => setState(() => _selectedModalidad = val)),
+
+      //FECHA DE INICIO
+      _buildCampoTextoLectura(
+            'Fecha de Inicio', _fechaInicioController,
+            ),
+
+            //RAZON DE ASESORIAS
+              _buildCampoDropdownLectura(
+              'Razón de Asesoria',
+              _selectedRazon,
+              ['Dudas', 'Reprobado', 'Reforzamiento'],
+              (val) => setState(() => _selectedRazon = val)),
+
+              //SECIONES TOMADAS
+              _buildCampoNumero(
+                'Sesiones Tomadas', _sesionesController),
+
+                //OBSERVACIONES
+              _buildCampoObservaciones(_observacionesController),
+
+              //EVIDENCIAS
+            //  _buildSeccionEvidencias(),
+        ],
+      ),
     );
   }
 
-  Widget _buildColumnaDerecha() {
+  /* Widget _buildColumnaDerecha() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -213,7 +298,7 @@ class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso>
         ),
       ],
     );
-  }
+  } */
 
   Widget _buildBotonAplicar(BuildContext context) {
     return ElevatedButton(
@@ -233,18 +318,27 @@ class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso>
   }
 
   // --- WIDGETS AUXILIARES (Sin cambios de diseño) ---
-  Widget _buildCampoTexto(String label, TextEditingController controller) {
+  Widget _buildCampoTextoLectura(String label, TextEditingController controller) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
-        TextFormField(controller: controller),
+
+        TextFormField(controller: controller,
+        readOnly: true,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+            filled:true,
+            fillColor: Color(0xfff5f5f5),
+          )
+        ),
+        
         const SizedBox(height: 15),
       ],
     );
   }
 
-  Widget _buildCampoDropdown(String label, String? currentVal, List<String> opciones, Function(String?) onChanged) {
+  Widget _buildCampoDropdownLectura(String label, String? currentVal, List<String> opciones, Function(String?) onChanged) {
     if (currentVal != null && !opciones.contains(currentVal)) {
       opciones.insert(0, currentVal);
     }
@@ -258,7 +352,7 @@ class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso>
           isDense: true,
           decoration: const InputDecoration(border: OutlineInputBorder()),
           items: opciones.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-          onChanged: onChanged,
+          onChanged: null,
         ),
         const SizedBox(height: 15),
       ],
@@ -346,5 +440,111 @@ class _InformacionAsesoriaEnCursoState extends State<InformacionAsesoriaEnCurso>
       ],
     );
   }
+  
+ /* Widget _buildSeccionEvidencias() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+
+        TextButton.icon(
+          onPressed: _selectedArchivo,
+          icon: const Icon(Icons.cloud_upload),
+          label: const Text('Adjuntar Evidencia (Foto/PDF)',
+          ),
+          style: TextButton.styleFrom(
+            foregroundColor: Appcolores.azulUas,
+          ),
+        ),
+        const SizedBox(height: 10),
+
+        ...evidencias.map((archivo){
+          final bool esPdf = archivo['extension'].toString().toLowerCase() == 'pdf';
+
+          return Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(10),
+            ),
+
+            child: Row(
+              children: [
+
+                Icon(esPdf ? Icons.picture_as_pdf : Icons.image,
+                color: esPdf ? Colors.red : Colors.blue,
+                size: 30,
+                ),
+
+                const SizedBox(width: 10),
+
+                Expanded(
+                  child: InkWell(
+                    onTap: () async {
+                      await OpenFile.open(archivo['path'],
+                      );
+                    },
+
+                    child: Text(archivo['name'],
+                    style: const TextStyle(fontWeight: FontWeight.bold,
+                    ),
+                    ),
+
+                  ),
+                  ),
+
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        evidencias.remove(archivo);
+                      });
+                    },
+
+                    child: const Text('Eliminar',
+                    style: TextStyle(color: Colors.red),
+                    ),
+                    
+                    ),
+
+
+
+
+              ],
+
+
+
+            ),
+          );
+        })
+      ],
+    );
+  }
+//metodo para seleccionar un archivo
+ Future<void> _selectedArchivo() async{
+  FilePickerResult? result =
+   await FilePicker.platform.pickFiles(
+    allowMultiple: true,
+    type: FileType.custom,
+    allowedExtensions: [
+      'jpg',
+      'jpeg',
+      'png',
+      'pdf',
+    ],
+  );
+
+  if(result != null) {
+    setState(() {
+      for( var file in result.files) {
+        evidencias.add({
+          'name' : file.name,
+          'path' : file.path,
+          'extension' : file.extension,
+        });
+      }
+    });
+  }
+ }*/
 }
 
+ 

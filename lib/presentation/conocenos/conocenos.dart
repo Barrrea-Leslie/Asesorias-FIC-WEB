@@ -48,7 +48,7 @@ class _ConocenosState extends State<Conocenos> {
               minHeight:esMovil ? 110 : 140,
               ),
               
-              color: const Color(0xFF0856b6),
+              color: UasColores.azulOficial,
               padding: EdgeInsets.symmetric(
                 horizontal: esMovil ? 16 : 60,
                 vertical:esMovil ? 15 : 10,

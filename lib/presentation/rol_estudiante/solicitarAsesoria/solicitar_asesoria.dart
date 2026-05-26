@@ -8,9 +8,7 @@ import 'package:flutter/material.dart';
 
 class SolicitarAsesoria extends StatefulWidget {
   const SolicitarAsesoria({super.key, this.mostrarTitulo = false});
-
   final bool mostrarTitulo;
-
   @override
   State<SolicitarAsesoria> createState() => _SolicitarAsesoriaState();
 }
@@ -20,13 +18,11 @@ class _SolicitarAsesoriaState extends State<SolicitarAsesoria> {
   Map<String, String?> filtrosActivos = {};
   List<dynamic> todosLosAsesores = [];
   bool cargando = true;
-
   void _abrirFiltros() async {
     final resultado = await showDialog<Map<String, String?>>(
       context: context,
       builder: (context) => const FiltrosAsesoria(),
     );
-
     if (resultado != null) {
       setState(() {
         filtrosActivos = resultado;
@@ -60,7 +56,6 @@ class _SolicitarAsesoriaState extends State<SolicitarAsesoria> {
     if (cargando) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth < 500) {
@@ -92,7 +87,6 @@ class PantallaResponsiva extends StatelessWidget {
   final VoidCallback onTapFiltro;
   final List<dynamic> todosLosAsesores;
   final ValueChanged<String> onChanged;
-
   const PantallaResponsiva({
     super.key,
     required this.query,
@@ -101,7 +95,6 @@ class PantallaResponsiva extends StatelessWidget {
     required this.todosLosAsesores,
     required this.onChanged,
   });
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,7 +119,6 @@ class PantallaResponsiva extends StatelessWidget {
                   decoration: _buscadorDecoration(),
                 ),
               ),
-
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -136,8 +128,7 @@ class PantallaResponsiva extends StatelessWidget {
                   ),
                 ),
               ),
-
-              Footer(todosLosAsesores: todosLosAsesores),
+             // Footer(todosLosAsesores: todosLosAsesores),
             ],
           ),
         ),
@@ -153,7 +144,6 @@ class PantallaGrande extends StatelessWidget {
   final List<dynamic> todosLosAsesores;
   final ValueChanged<String> onChanged;
   final bool mostrarTitulo;
-
   const PantallaGrande({
     super.key,
     required this.query,
@@ -163,7 +153,6 @@ class PantallaGrande extends StatelessWidget {
     required this.onChanged,
     this.mostrarTitulo = false,
   });
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -182,7 +171,6 @@ class PantallaGrande extends StatelessWidget {
                   children: [
                     if (mostrarTitulo)
                       SeccionArribaPantallaGrande(onChanged: onChanged),
-
                     if (!mostrarTitulo)
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -194,24 +182,73 @@ class PantallaGrande extends StatelessWidget {
                           decoration: _buscadorDecoration(),
                         ),
                       ),
-
                     const SizedBox(height: 20),
 
-                    GestureDetector(
-                      onTap: onTapFiltro,
-                      child: const Padding(
-                        padding: EdgeInsets.only(left: 60.0, bottom: 20),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Filtro",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 60),
+                      child: Row(
+                        children: [
+                          //FILTRO
+                          GestureDetector(
+                            onTap: onTapFiltro,
+                            child: const Row(
+                              children: [
+                                Text(
+                                  "Filtro",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(width: 5),
+                                Icon(Icons.filter_alt),
+                              ],
                             ),
-                            Icon(Icons.filter_alt),
-                          ],
-                        ),
+                          ),
+
+                          const SizedBox(width: 20),
+
+                          SizedBox(
+                            width: 220,
+                            child: TextField(
+                              onChanged: onChanged,
+                              decoration: _buscadorDecoration(),
+                            ),
+                          ),
+
+                          const SizedBox(width: 20),
+
+                          //boton
+                          ElevatedButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => CrearSolicitud(
+                                  todosLosAsesores: todosLosAsesores,
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Appcolores.verdeClaro,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 25,
+                                vertical: 18,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: const Text(
+                              "Crear Solicitud",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+
+                    const SizedBox(height: 15),
 
                     Expanded(
                       child: SingleChildScrollView(
@@ -222,7 +259,7 @@ class PantallaGrande extends StatelessWidget {
                       ),
                     ),
 
-                    Footer(todosLosAsesores: todosLosAsesores),
+                    //Footer(todosLosAsesores: todosLosAsesores),
                   ],
                 ),
               ),
@@ -236,9 +273,7 @@ class PantallaGrande extends StatelessWidget {
 
 class SeccionArribaPantallaGrande extends StatelessWidget {
   final ValueChanged<String> onChanged;
-
   const SeccionArribaPantallaGrande({super.key, required this.onChanged});
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -250,13 +285,13 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
             "Solicitar Asesorias",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
           ),
-          SizedBox(
+          /*  SizedBox(
             width: 220,
             child: TextField(
               onChanged: onChanged,
               decoration: _buscadorDecoration(),
             ),
-          ),
+          ), */
         ],
       ),
     );
@@ -281,11 +316,9 @@ InputDecoration _buscadorDecoration() {
   );
 }
 
-class Footer extends StatelessWidget {
+/* class Footer extends StatelessWidget {
   final List<dynamic> todosLosAsesores;
-
   const Footer({super.key, required this.todosLosAsesores});
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -293,8 +326,8 @@ class Footer extends StatelessWidget {
       padding: const EdgeInsets.all(30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          ElevatedButton(
+       // children: [
+          /* ElevatedButton(
             onPressed: () {
               showDialog(
                 context: context,
@@ -314,9 +347,10 @@ class Footer extends StatelessWidget {
               "Crear Solicitud",
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
-          ),
-        ],
+          ), */
+       // ],
       ),
     );
   }
 }
+ */

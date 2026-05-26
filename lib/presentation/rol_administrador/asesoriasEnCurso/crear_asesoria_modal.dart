@@ -17,19 +17,27 @@ class CrearAsesoriaPage extends StatefulWidget {
 
 class _CrearAsesoriaPageState extends State<CrearAsesoriaPage> {
   final AsesoriasRepository _repository = AsesoriasRepository();
-  
+
   late Future<List<Estudiantes>> _estudiantesFuture;
-  List<dynamic> _todosLosAsesores = []; 
+  List<dynamic> _todosLosAsesores = [];
   List<String> _materiasDisponibles = [
-    'Introducción a la programacion', 'Base de Datos', 'Ingeniería de Software', 'Redes', 'Web', 'Programacion'
+    'Introducción a la programacion',
+    'Base de Datos',
+    'Ingeniería de Software',
+    'Redes',
+    'Web',
+    'Programacion',
   ];
-  List<String> _horariosDisponibles = ['07:00 - 08:00', '13:00 - 14:00', '18:00 - 19:00'];
+  List<String> _horariosDisponibles = [
+    '07:00 - 08:00',
+    '13:00 - 14:00',
+    '18:00 - 19:00',
+  ];
 
   final TextEditingController _fechaInicioController = TextEditingController();
-  final TextEditingController _fechaFinalController = TextEditingController();
-  
+
   Estudiantes? _estudianteSeleccionado;
-  dynamic _asesorSeleccionado; 
+  dynamic _asesorSeleccionado;
   String? _selectedMateria;
   String? _selectedModalidad;
   String? _selectedHorario;
@@ -56,8 +64,10 @@ class _CrearAsesoriaPageState extends State<CrearAsesoriaPage> {
       if (asesor != null) {
         _materiasDisponibles = List<String>.from(asesor.materiasAsesora);
         _horariosDisponibles = List<String>.from(asesor.horariosAsesora);
-        if (!_materiasDisponibles.contains(_selectedMateria)) _selectedMateria = null;
-        if (!_horariosDisponibles.contains(_selectedHorario)) _selectedHorario = null;
+        if (!_materiasDisponibles.contains(_selectedMateria))
+          _selectedMateria = null;
+        if (!_horariosDisponibles.contains(_selectedHorario))
+          _selectedHorario = null;
       }
     });
   }
@@ -68,7 +78,7 @@ class _CrearAsesoriaPageState extends State<CrearAsesoriaPage> {
       if (materia != null && _asesorSeleccionado == null) {
         try {
           final asesorAuto = _todosLosAsesores.firstWhere(
-            (a) => a.materiasAsesora.contains(materia)
+            (a) => a.materiasAsesora.contains(materia),
           );
           _asesorSeleccionado = asesorAuto;
           _horariosDisponibles = List<String>.from(asesorAuto.horariosAsesora);
@@ -80,7 +90,12 @@ class _CrearAsesoriaPageState extends State<CrearAsesoriaPage> {
   }
 
   void _intentarGuardar() async {
-    if (_estudianteSeleccionado == null || _selectedMateria == null || _selectedModalidad == null || _selectedHorario == null || _selectedRazon == null) {
+    if (_estudianteSeleccionado == null ||
+        _selectedMateria == null ||
+        _selectedModalidad == null ||
+        _selectedHorario == null ||
+        _selectedRazon == null ||
+        _fechaInicioController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Todos los campos son obligatorios")),
       );
@@ -88,22 +103,25 @@ class _CrearAsesoriaPageState extends State<CrearAsesoriaPage> {
     }
 
     final nueva = Asesorias(
-      id: 0, 
+      id: 0,
       idEstudiante: _estudianteSeleccionado!.id,
       materia: _selectedMateria!,
       fechaInicio: _fechaInicioController.text,
-      fechaFin: _fechaFinalController.text,
+      fechaFin: "",
       horario: _selectedHorario ?? "",
       modalidad: _selectedModalidad ?? "",
       razon: _selectedRazon ?? "",
       esAsesor: 0,
-      observaciones: "", 
+      observaciones: "",
     );
 
     final exito = await _repository.crearAsesoria(nueva);
 
     if (exito && mounted) {
-      MensajeConfirmacion.mostrarMensaje(context, "Asesoría creada correctamente");
+      MensajeConfirmacion.mostrarMensaje(
+        context,
+        "Asesoría creada correctamente",
+      );
       Navigator.pop(context);
     }
   }
@@ -125,10 +143,12 @@ class _CrearAsesoriaPageState extends State<CrearAsesoriaPage> {
                   const Text(
                     'Registrar Nueva Asesoría',
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontSize: 20),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
                   ),
+
                   IconButton(
                     icon: const Icon(Icons.close, color: Colors.black),
                     onPressed: () => Navigator.pop(context),
@@ -143,25 +163,30 @@ class _CrearAsesoriaPageState extends State<CrearAsesoriaPage> {
               child: FutureBuilder<List<Estudiantes>>(
                 future: _estudiantesFuture,
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
+                  if (!snapshot.hasData)
+                    return const Center(child: CircularProgressIndicator());
                   final listaEstudiantes = snapshot.data!;
 
                   return SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width < 700
+                          ? 15
+                          : 30,
+                      vertical: 30,
+                    ),
                     child: Center(
                       child: Container(
+                        width: double.infinity,
                         constraints: const BoxConstraints(maxWidth: 1000),
-                        child: LayoutBuilder(builder: (context, constraints) {
-                          bool isMobile = constraints.maxWidth < 700;
-                          return _buildFormContent(listaEstudiantes, isMobile: isMobile);
-                        }),
+
+                        child: _buildFormContent(listaEstudiantes),
                       ),
                     ),
                   );
                 },
               ),
             ),
-            
+
             // --- BOTÓN INFERIOR ---
             const Divider(height: 1),
             _buildBottomBar(),
@@ -171,57 +196,133 @@ class _CrearAsesoriaPageState extends State<CrearAsesoriaPage> {
     );
   }
 
-  Widget _buildFormContent(List<Estudiantes> estudiantes, {required bool isMobile}) {
+  Widget _buildFormContent(List<Estudiantes> estudiantes) {
     final columna1 = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        //SELECCIONAR ALUMNO
         _buildLabel("Seleccionar Alumno"),
-        DropdownButtonFormField<Estudiantes>(
-          decoration: const InputDecoration(border: OutlineInputBorder()),
-          items: estudiantes.map((e) => DropdownMenuItem(value: e, child: Text(e.nombre))).toList(),
-          onChanged: (val) => setState(() => _estudianteSeleccionado = val),
+
+        Autocomplete<Estudiantes>(
+          displayStringForOption: (e) => e.nombre,
+          optionsBuilder: (TextEditingValue textEditingValue) {
+            if (textEditingValue.text.isEmpty) {
+              return estudiantes;
+            }
+            return estudiantes.where(
+              (e) => e.nombre.toLowerCase().contains(
+                textEditingValue.text.toLowerCase(),
+              ),
+            );
+          },
+          onSelected: (Estudiantes seleccion) {
+            setState(() {
+              _estudianteSeleccionado = seleccion;
+            });
+          },
+
+          fieldViewBuilder:
+              (context, controller, focusNode, onEditingComplete) {
+                return TextFormField(
+                  controller: controller,
+                  focusNode: focusNode,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Buscar alumno",
+                  ),
+                );
+              },
         ),
+
         const SizedBox(height: 20),
-        _buildCampoLectura("Licenciatura", _estudianteSeleccionado?.licenciatura ?? "---"),
-        _buildCampoLectura("Grado y Grupo", _estudianteSeleccionado?.grupo ?? "---"),
-        
+
+        //SEELCCIONAR ASESOR
         _buildLabel("Seleccionar Asesor"),
-        DropdownButtonFormField<dynamic>(
-          value: _asesorSeleccionado,
-          decoration: const InputDecoration(border: OutlineInputBorder(), hintText: "Opcional (Filtra materias)"),
-          items: _todosLosAsesores.map((a) => DropdownMenuItem(value: a, child: Text(a.nombre))).toList(),
-          onChanged: _onAsesorChanged,
+
+        Autocomplete<Object>(
+          displayStringForOption: (option) {
+            final asesor = option as dynamic;
+            return asesor.nombre;
+          },
+
+          optionsBuilder: (TextEditingValue textEditingValue) {
+            if (textEditingValue.text.isEmpty) {
+              return _todosLosAsesores.cast<Object>();
+            }
+
+            return _todosLosAsesores.where((asesor) {
+              return asesor.nombre.toLowerCase().contains(
+                textEditingValue.text.toLowerCase(),
+              );
+            }).cast<Object>();
+          },
+
+          onSelected: (Object asesor) {
+            _onAsesorChanged(asesor);
+          },
+
+          fieldViewBuilder:
+              (context, controller, focusNode, onEditingComplete) {
+                return TextFormField(
+                  controller: controller,
+                  focusNode: focusNode,
+
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Buscar asesor",
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 18,
+                    ),
+                  ),
+                );
+              },
         ),
+
         const SizedBox(height: 20),
+
+        //SELECCIONAR MATERIA
+        _buildCampoDropdown(
+          'Materia',
+
+          _selectedMateria,
+          _materiasDisponibles,
+          _onMateriaChanged,
+        ),
+
+        //SELECCIONAR HORARIO
+        _buildCampoDropdown(
+          'Horario',
+          _selectedHorario,
+          _horariosDisponibles,
+          (val) => setState(() => _selectedHorario = val),
+        ),
+
+        //MODALIDAD
+        _buildCampoDropdown(
+          'Modalidad',
+          _selectedModalidad,
+          ['Presencial', 'Virtual'],
+          (val) => setState(() => _selectedModalidad = val),
+        ),
+
+        //fecha inicio
+        _buildLabel('Fecha de inicio'),
+
+        _buildCampoFecha('Seleccionar fecha', _fechaInicioController),
+
+        //RAZON
+        _buildCampoDropdown('Razón', _selectedRazon, [
+          'Dudas',
+          'Reprobada',
+          'Reforzamiento',
+        ], (val) => setState(() => _selectedRazon = val)),
       ],
     );
-
-    final columna2 = Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildCampoDropdown('Materia', _selectedMateria, _materiasDisponibles, _onMateriaChanged),
-        _buildCampoDropdown('Modalidad', _selectedModalidad, ['Presencial', 'Virtual'], (val) => setState(() => _selectedModalidad = val)),
-        _buildCampoDropdown('Horario', _selectedHorario, _horariosDisponibles, (val) => setState(() => _selectedHorario = val)),
-        _buildLabel("Periodo"),
-        Row(
-          children: [
-            _buildCampoFecha('Inicio', _fechaInicioController),
-            const SizedBox(width: 10),
-            _buildCampoFecha('Fin', _fechaFinalController),
-          ],
-        ),
-        const SizedBox(height: 20),
-        _buildCampoDropdown('Razón', _selectedRazon, ['Dudas', 'Reprobada', 'Reforzamiento'], (val) => setState(() => _selectedRazon = val)),
-      ],
+      children: [columna1],
     );
-
-    return isMobile 
-      ? Column(children: [columna1, columna2]) 
-      : Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Expanded(child: columna1),
-          const SizedBox(width: 50),
-          Expanded(child: columna2),
-        ]);
   }
 
   Widget _buildLabel(String texto) => Padding(
@@ -229,27 +330,12 @@ class _CrearAsesoriaPageState extends State<CrearAsesoriaPage> {
     child: Text(texto, style: const TextStyle(fontWeight: FontWeight.bold)),
   );
 
-  Widget _buildCampoLectura(String label, String valor) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildLabel(label),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            border: Border.all(color: Colors.grey[300]!),
-            borderRadius: BorderRadius.circular(5)
-          ),
-          child: Text(valor, style: const TextStyle(color: Colors.black54)),
-        ),
-        const SizedBox(height: 20),
-      ],
-    );
-  }
-
-  Widget _buildCampoDropdown(String label, String? currentVal, List<String> opciones, Function(String?) onChanged) {
+  Widget _buildCampoDropdown(
+    String label,
+    String? currentVal,
+    List<String> opciones,
+    Function(String?) onChanged,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -258,7 +344,9 @@ class _CrearAsesoriaPageState extends State<CrearAsesoriaPage> {
           value: currentVal,
           isExpanded: true,
           decoration: const InputDecoration(border: OutlineInputBorder()),
-          items: opciones.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          items: opciones
+              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+              .toList(),
           onChanged: onChanged,
         ),
         const SizedBox(height: 20),
@@ -267,27 +355,28 @@ class _CrearAsesoriaPageState extends State<CrearAsesoriaPage> {
   }
 
   Widget _buildCampoFecha(String label, TextEditingController controller) {
-    return Expanded(
-      child: TextFormField(
-        controller: controller,
-        readOnly: true,
-        decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.calendar_today, size: 18),
-          border: const OutlineInputBorder(),
-          hintText: label,
-        ),
-        onTap: () async {
-          DateTime? picked = await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime.now(),
-            lastDate: DateTime(2027),
-          );
-          if (picked != null) {
-            setState(() => controller.text = "${picked.day}/${picked.month}/${picked.year}");
-          }
-        },
+    return TextFormField(
+      controller: controller,
+      readOnly: true,
+      decoration: InputDecoration(
+        prefixIcon: const Icon(Icons.calendar_today, size: 18),
+        border: const OutlineInputBorder(),
+        hintText: label,
       ),
+      onTap: () async {
+        DateTime? picked = await showDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime.now(),
+          lastDate: DateTime(2027),
+        );
+        if (picked != null) {
+          setState(
+            () => controller.text =
+                "${picked.day}/${picked.month}/${picked.year}",
+          );
+        }
+      },
     );
   }
 
@@ -301,10 +390,18 @@ class _CrearAsesoriaPageState extends State<CrearAsesoriaPage> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Appcolores.azulUas,
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 18),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             onPressed: _intentarGuardar,
-            child: const Text('CONFIRMAR REGISTRO', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            child: const Text(
+              'CONFIRMAR REGISTRO',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),

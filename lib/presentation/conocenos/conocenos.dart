@@ -1,9 +1,7 @@
 import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/presentation/loginScreens/inicio_sesion.dart';
-import 'package:asesorias_fic/presentation/loginScreens/login_nuevo.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Conocenos extends StatefulWidget {
   const Conocenos({super.key});
@@ -43,7 +41,7 @@ class _ConocenosState extends State<Conocenos> {
           SliverToBoxAdapter(
             child: Container(
               height: 140,
-              color: const Color.fromARGB(255, 0, 34, 106),
+              color: const Color(0xFF0856b6),
               padding: EdgeInsets.symmetric(
                 horizontal: esMovil ? 20 : 100,
                 vertical: 10,
@@ -95,7 +93,7 @@ class _ConocenosState extends State<Conocenos> {
 
           //Menu Horizontal
           SliverAppBar(
-            backgroundColor: Appcolores.amarilloUas,
+            backgroundColor: Color(0xFFc49e0d),
             pinned: true,
             floating: false,
             toolbarHeight: 60,
@@ -197,8 +195,8 @@ class _ConocenosState extends State<Conocenos> {
                     children: [
                       _tarjetita(
                         'GERENTES DE PROYECTO',
+                        'Evelia Inzunza García\n'
                         'MC. Alejandro Yahir Sicairos Ochoa\n'
-                            'C. Axel Manuel Aguilar Perez MGTI.\n'
                             'Oscar Mejía Quintero\n'
                             'Jose Angel Astorga Mejia',
                       ),
@@ -605,53 +603,71 @@ Widget _itemMenu(String text, VoidCallback onTap) {
 Widget _tarjetita(String titulo, String contenido) {
   return MouseRegion(
     cursor: SystemMouseCursors.click,
-
     child: AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
+      duration: const Duration(
+        milliseconds: 300),
+        curve: Curves.easeInOut,
 
-      width: 350,
-      height: 320,
+        width: 350,
+        height: 320,
 
-      padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
 
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 232, 232, 232),
-        borderRadius: BorderRadius.circular(5),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 20, 109, 217),
+          borderRadius: BorderRadius.circular(10),
 
-        boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4),
-        ],
-      ),
+          
 
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 8,
+              offset: const Offset(0,4),
+            )
+          ],
+        ),
+
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          //Titulo de la tarjeta
+            // Título
           Text(
             titulo,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+            ),
           ),
+           const SizedBox(height: 15),
 
-          const SizedBox(height: 25), //entre el titulo y texto
 
-          Expanded(
-            child: SingleChildScrollView(
+//contenido
+           Expanded(child: Center(
+            
               child: Text(
                 contenido,
-                textAlign: TextAlign.justify,
-                style: const TextStyle(
-                  fontSize: 15,
-                  height: 1.5,
-                  fontWeight: FontWeight.bold,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  height: 1.2,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
-          ),
+           ),
+           
+            
         ],
-      ),
-    ),
+        
+          )
+          
+
+        ),
+        
+        
   );
 }
 
@@ -667,11 +683,11 @@ Widget tarjetaMision(String titulo, String contenido) {
     padding: const EdgeInsets.all(35),
 
     decoration: BoxDecoration(
-      color: const Color.fromARGB(255, 232, 232, 232),
+      color: const Color(0xFF08338f),
       borderRadius: BorderRadius.circular(5),
 
       boxShadow: [
-        BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4),
+        BoxShadow(color: Colors.black.withOpacity(0.8), blurRadius: 4),
       ],
     ),
 
@@ -680,7 +696,10 @@ Widget tarjetaMision(String titulo, String contenido) {
       children: [
         Text(
           titulo,
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold,
+           color: Color.fromARGB(255, 229, 223, 223),
+          ),
+          
         ),
         const SizedBox(height: 25),
 
@@ -691,6 +710,7 @@ Widget tarjetaMision(String titulo, String contenido) {
             fontSize: 18,
             height: 1.7,
             fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 229, 223, 223),
           ),
         ),
       ],
@@ -709,7 +729,7 @@ class SectionFooterTwo extends StatelessWidget {
       height: 280,
 
       decoration: BoxDecoration(
-        color: Color(0xFF13004C),
+        color: Color(0xFF08338f),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(0),
           topRight: Radius.circular(0),
@@ -746,40 +766,64 @@ class SectionFooterTwo extends StatelessWidget {
                       height: 1.5,
                     ),
                   ),
-                  const Text(
-                    'sitema@correo.com',
-                    style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+
+                  GestureDetector(
+                    onTap: () {
+                      _abrirPagina('mailto:sitema@correo.com');
+                    },
+
+                    child: const Text(
+                      'sitema@correo.com',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
                   ),
 
                   const SizedBox(height: 10),
 
                   Row(
                     children: [
-                      CircleAvatar(
-                        radius: 15,
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          255,
-                          255,
-                          255,
-                        ),
-                        backgroundImage: AssetImage(
-                          'assets/images/instagram.png',
+                      GestureDetector(
+                        onTap: () {
+                          _abrirPagina(
+                            'https://www.instagram.com/facultadinformaticaculiacan/',
+                          );
+                        },
+
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            255,
+                            255,
+                            255,
+                          ),
+                          backgroundImage: AssetImage(
+                            'assets/images/instagram.png',
+                          ),
                         ),
                       ),
 
                       SizedBox(width: 10),
 
-                      CircleAvatar(
-                        radius: 15,
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          155,
-                          152,
-                          152,
-                        ),
-                        backgroundImage: AssetImage(
-                          'assets/images/facebook.png',
+                      GestureDetector(
+                        onTap: () {
+                          _abrirPagina('https://www.facebook.com/FICuliacan/');
+                        },
+
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            255,
+                            255,
+                            255,
+                          ),
+                          backgroundImage: AssetImage(
+                            'assets/images/facebook.png',
+                          ),
                         ),
                       ),
                     ],
@@ -808,6 +852,18 @@ class SectionFooterTwo extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+//funcion
+
+Future<void> _abrirPagina(String link) async {
+  final Uri uri = Uri.parse(link);
+
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  } else {
+    throw 'No se pudo abrir $link';
   }
 }
 

@@ -14,4 +14,5 @@ class UasColores {
   static const Color uasAzul = Color(0xFF003595);
   static const Color uasAmarillo = Color(0xFFC59525);
   static const Color azulVariableFuerte = Color(0xFF002470);
+  static const Color azulOficial = Color(0xFF244B91);
 }

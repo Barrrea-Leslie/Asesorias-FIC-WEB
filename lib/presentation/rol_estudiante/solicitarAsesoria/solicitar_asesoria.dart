@@ -128,7 +128,7 @@ class PantallaResponsiva extends StatelessWidget {
                   ),
                 ),
               ),
-              Footer(todosLosAsesores: todosLosAsesores),
+             // Footer(todosLosAsesores: todosLosAsesores),
             ],
           ),
         ),
@@ -316,7 +316,7 @@ InputDecoration _buscadorDecoration() {
   );
 }
 
-class Footer extends StatelessWidget {
+/* class Footer extends StatelessWidget {
   final List<dynamic> todosLosAsesores;
   const Footer({super.key, required this.todosLosAsesores});
   @override
@@ -326,7 +326,7 @@ class Footer extends StatelessWidget {
       padding: const EdgeInsets.all(30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: [
+       // children: [
           /* ElevatedButton(
             onPressed: () {
               showDialog(
@@ -348,8 +348,9 @@ class Footer extends StatelessWidget {
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
           ), */
-        ],
+       // ],
       ),
     );
   }
 }
+ */

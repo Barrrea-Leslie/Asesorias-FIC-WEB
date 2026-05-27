@@ -1,7 +1,10 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/loginScreens/inicio_sesion.dart';
+import 'package:asesorias_fic/presentation/conocenos/dependencias_conocenos.dart';
+import 'package:asesorias_fic/presentation/conocenos/info_conocenos.dart';
+import 'package:asesorias_fic/presentation/conocenos/menu_conocenos.dart';
+import 'package:asesorias_fic/presentation/conocenos/tarjetas_conocenos.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'footer_conocenos.dart';
 
 class Conocenos extends StatefulWidget {
   const Conocenos({super.key});
@@ -31,7 +34,6 @@ class _ConocenosState extends State<Conocenos> {
 
   @override
   Widget build(BuildContext context) {
-    
     final width = MediaQuery.of(context).size.width;
 
     final bool esMovil = width < 700;
@@ -43,15 +45,12 @@ class _ConocenosState extends State<Conocenos> {
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: Container(
+              constraints: BoxConstraints(minHeight: esMovil ? 110 : 140),
 
-              constraints: BoxConstraints(
-              minHeight:esMovil ? 110 : 140,
-              ),
-              
               color: UasColores.azulOficial,
               padding: EdgeInsets.symmetric(
                 horizontal: esMovil ? 16 : 60,
-                vertical:esMovil ? 15 : 10,
+                vertical: esMovil ? 15 : 10,
               ),
 
               child: Row(
@@ -85,7 +84,7 @@ class _ConocenosState extends State<Conocenos> {
                         Text(
                           'Facultad de informatica Culiacan',
                           style: TextStyle(
-                            color: Appcolores.gris,
+                            color: const Color.fromARGB(255, 228, 232, 238),
                             fontSize: esMovil ? 13 : 22,
                             fontWeight: FontWeight.normal,
                           ),
@@ -114,27 +113,27 @@ class _ConocenosState extends State<Conocenos> {
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.symmetric(horizontal: esMovil ? 5 : 40),
                 children: [
-                  _itemMenu(
+                  itemMenu(
                     'Nuestro equipo',
                     () => irASection(nuestroEquipooKey),
                   ),
-                  _itemMenu(
+                  itemMenu(
                     'Nuestro proyecto',
                     () => irASection(nuestroProyectoKey),
                   ),
-                  _itemMenu(
+                  itemMenu(
                     '¿Quienes somos?',
                     () => irASection(quienesSomosKey),
                   ),
-                  _itemMenu('¿Como surgio?', () => irASection(comoSurgioKey)),
-                  _itemMenu('Objetivos', () => irASection(objetivosKey)),
-                  _itemMenu('Mision y Vision', () => irASection(misionVKey)),
-                  _itemMenu('Vinculacion', () => irASection(vinculacionKey)),
-                  _itemMenu(
+                  itemMenu('¿Como surgio?', () => irASection(comoSurgioKey)),
+                  itemMenu('Objetivos', () => irASection(objetivosKey)),
+                  itemMenu('Mision y Vision', () => irASection(misionVKey)),
+                  itemMenu('Vinculacion', () => irASection(vinculacionKey)),
+                  itemMenu(
                     'Agradeciniento',
                     () => irASection(agradecimientosKey),
                   ),
-                  _itemMenu('Contacto', () => irASection(contactoKey)),
+                  itemMenu('Contacto', () => irASection(contactoKey)),
                 ],
               ),
             ),
@@ -168,7 +167,7 @@ class _ConocenosState extends State<Conocenos> {
                   key: nuestroEquipooKey,
                   width: double.infinity,
                   color: Color(0xFFC59525).withOpacity(0.15),
-                  padding:  EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: esMovil ? 20 : 80,
                     vertical: esMovil ? 40 : 70,
                   ),
@@ -200,15 +199,15 @@ class _ConocenosState extends State<Conocenos> {
                     alignment: WrapAlignment.center,
                     runAlignment: WrapAlignment.center,
                     children: [
-                      _tarjetita(
+                      tarjetita(
                         'GERENTES DE PROYECTO',
                         'Evelia Inzunza García\n'
-                        'MC. Alejandro Yahir Sicairos Ochoa\n'
+                            'MC. Alejandro Yahir Sicairos Ochoa\n'
                             'Oscar Mejía Quintero\n'
                             'Jose Angel Astorga Mejia',
                       ),
 
-                      _tarjetita(
+                      tarjetita(
                         'GERENTES DE DESARROLLO',
                         'Jose Angel Astorga Mejia\n'
                             'Leslie Mayram Barrera Rodriguez\n'
@@ -218,9 +217,9 @@ class _ConocenosState extends State<Conocenos> {
                             'Jenifer Guadalupe Tizoc Lopez',
                       ),
 
-                      _tarjetita('ESPECIALISTAS SEO', ''),
-                      _tarjetita('ANALISTAS DE DESARROLLO Y CALIDAD', ''),
-                      _tarjetita('DISEÑADOR UI/UX', ''),
+                      tarjetita('ESPECIALISTAS SEO', ''),
+                      tarjetita('ANALISTAS DE DESARROLLO Y CALIDAD', ''),
+                      tarjetita('DISEÑADOR UI/UX', ''),
                     ],
                   ),
                 ),
@@ -229,7 +228,6 @@ class _ConocenosState extends State<Conocenos> {
                 //TERCER CONTENEDOR
                 contenedorTexto(
                   key: nuestroProyectoKey,
-                  color: const Color(0xffb6c3db),
 
                   titulo: 'Nuestro proyecto',
                   contenido:
@@ -244,8 +242,6 @@ class _ConocenosState extends State<Conocenos> {
                 //Quienes somos
                 contenedorTexto(
                   key: quienesSomosKey,
-                  color: const Color(0xffb6c3db),
-
                   titulo: '¿Quienes somos?',
                   contenido:
                       'Somos el Laboratorio de Innovación, Desarrollo Académico y Tecnológico de la Facultad de Informática Culiacán, un espacio dedicado a la creación de soluciones tecnológicas que impacten positivamente los procesos académicos y administrativos dentro de la universidad.\n\n'
@@ -258,7 +254,6 @@ class _ConocenosState extends State<Conocenos> {
                 //como surgio
                 contenedorTexto(
                   key: comoSurgioKey,
-                  color: const Color(0xffb6c3db),
 
                   titulo: '¿Como surgio?',
                   contenido:
@@ -270,7 +265,6 @@ class _ConocenosState extends State<Conocenos> {
                 //objetivos
                 contenedorTexto(
                   key: objetivosKey,
-                  color: const Color(0xffb6c3db),
 
                   titulo: 'Objetivos',
                   contenido: '',
@@ -281,9 +275,8 @@ class _ConocenosState extends State<Conocenos> {
                 contenedorTexto(
                   key: agradecimientosKey,
 
-                  color: const Color(0xffb6c3db),
-
                   titulo: 'Alcance',
+
                   contenido:
                       'Gestión de asesorías: Permitir a los estudiantes solicitar asesorías de manera sencilla y a los asesores gestionar sus horarios y citas.\n\n'
                       'Interacción eficiente: Facilitar la comunicación entre estudiantes, asesores y administradores a través de una plataforma centralizada. \n\n'
@@ -445,64 +438,11 @@ class _ConocenosState extends State<Conocenos> {
                     ),
                   ),
                 ),
-
+                //SECCION DE FOOTER
                 SectionFooterTwo(key: contactoKey),
               ],
             ),
           ),
-
-          /* Container(
-            width: double.infinity,
-            color: Appcolores.azulFuerte,
-            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-
-              children: [
-                //Texto inferior
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-
-                  children: [
-                    const Text(
-                      'Contacto',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    const Text(
-                      'Facultad de informatica Culiacan\n\n'
-                      'C. Josefa Ortiz de Domínguez S/N, Cd Universitaria, CIUDAD UNIVERSITARIA, 80013 Culiacán',
-                      style: TextStyle(color: Colors.white, 
-                      fontSize: 16),
-                    ),
-
-                    const SizedBox(height: 8),
-                    const Text(
-                      'sitema@correo.com',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                    const SizedBox(height: 20),
-
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 16,
-                          backgroundColor: Colors.pink,
-                          child: Icon()
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ), */
         ],
       ),
     );
@@ -516,166 +456,6 @@ class navegacioLogin extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image.asset('assets/images/logo_uas.png', height: 60);
   }
-}
-
-//contenedor con texto y titulo
-Widget contenedorTexto({
-  required Key key,
-  required String titulo,
-  required String contenido,
-  Color? color,
-}) {
-  return LayoutBuilder(
-    builder: (context, constraints) {
-      bool esMovil = constraints.maxWidth < 700;
-
-      return Padding(
-        padding: EdgeInsets.symmetric(horizontal: esMovil ? 20 : 190),
-
-        child: Container(
-          key: key,
-          width: double.infinity,
-
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(5),
-
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.12),
-                blurRadius: 12,
-                offset: const Offset(0, 15),
-              ),
-            ],
-          ),
-
-          padding: EdgeInsets.symmetric(
-            horizontal: esMovil ? 20 : 60,
-            vertical: esMovil ? 35 : 60,
-          ),
-
-          child: Center(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: esMovil ? double.infinity : 900,
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    titulo,
-                    style: TextStyle(
-                      fontSize: esMovil ? 22 : 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-
-                  SizedBox(height: esMovil ? 30 : 50),
-
-                  Text(
-                    contenido,
-                    textAlign: TextAlign.justify,
-                    style: TextStyle(
-                      fontSize: esMovil ? 16 : 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      height: 1.5,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
-    },
-  );
-}
-
-//Widgets del menu horizontal
-Widget _itemMenu(String text, VoidCallback onTap) {
-  return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 10),
-    child: TextButton(
-      onPressed: onTap,
-      child: Text(
-        text,
-        style: TextStyle(color: Appcolores.gris, fontWeight: FontWeight.bold),
-      ),
-    ),
-  );
-}
-
-//widget para tarjeta
-Widget _tarjetita(String titulo, String contenido) {
-  return MouseRegion(
-    cursor: SystemMouseCursors.click,
-    child: AnimatedContainer(
-      duration: const Duration(
-        milliseconds: 300),
-        curve: Curves.easeInOut,
-
-        width: 350,
-        height: 320,
-
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
-
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 20, 109, 217),
-          borderRadius: BorderRadius.circular(10),
-
-          
-
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 8,
-              offset: const Offset(0,4),
-            )
-          ],
-        ),
-
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-            // Título
-          Text(
-            titulo,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-            ),
-          ),
-           const SizedBox(height: 15),
-
-
-//contenido
-           Expanded(child: Center(
-            
-              child: Text(
-                contenido,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  height: 1.2,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-           ),
-           
-            
-        ],
-        
-          )
-          
-
-        ),
-        
-        
-  );
 }
 
 //tarjeta de msion y vision
@@ -703,10 +483,11 @@ Widget tarjetaMision(String titulo, String contenido) {
       children: [
         Text(
           titulo,
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold,
-           color: Color.fromARGB(255, 229, 223, 223),
+          style: const TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 229, 223, 223),
           ),
-          
         ),
         const SizedBox(height: 25),
 
@@ -721,204 +502,6 @@ Widget tarjetaMision(String titulo, String contenido) {
           ),
         ),
       ],
-    ),
-  );
-}
-
-//parte de abajo de la pagina FOOTER
-class SectionFooterTwo extends StatelessWidget {
-  const SectionFooterTwo({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-
-final esMovil = MediaQuery.of(context).size.width < 700;
-
-    return Container(
-
-    
-
-      width: double.infinity,
-      constraints: BoxConstraints(minHeight: esMovil ? 450 : 280),
-
-      decoration: BoxDecoration(
-        color: Color(0xFF08338f),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(0),
-          topRight: Radius.circular(0),
-        ),
-      ),
-
-      child: Padding(
-        padding: const EdgeInsets.only(left: 55, right: 55, top: 40),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Contacto',
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  SizedBox(height: 15),
-
-                  const Text(
-                    'Facultad de Informática Culiacán \n'
-                    'C. Josefa Ortiz de Domínguez S/N, Cd Universitaria, CIUDAD UNIVERSITARIA, 80013 Culiacán\n',
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      height: 1.5,
-                    ),
-                  ),
-
-                  GestureDetector(
-                    onTap: () {
-                      _abrirPagina('mailto:sitema@correo.com');
-                    },
-
-                    child: const Text(
-                      'sitema@correo.com',
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          _abrirPagina(
-                            'https://www.instagram.com/facultadinformaticaculiacan/',
-                          );
-                        },
-
-                        child: CircleAvatar(
-                          radius: 15,
-                          backgroundColor: const Color.fromARGB(
-                            255,
-                            255,
-                            255,
-                            255,
-                          ),
-                          backgroundImage: AssetImage(
-                            'assets/images/instagram.png',
-                          ),
-                        ),
-                      ),
-
-                      SizedBox(width: 10),
-
-                      GestureDetector(
-                        onTap: () {
-                          _abrirPagina('https://www.facebook.com/FICuliacan/');
-                        },
-
-                        child: CircleAvatar(
-                          radius: 15,
-                          backgroundColor: const Color.fromARGB(
-                            255,
-                            255,
-                            255,
-                            255,
-                          ),
-                          backgroundImage: AssetImage(
-                            'assets/images/facebook.png',
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Container(
-                width: 120,
-                height: 120,
-                color: Colors.grey,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    '',
-                    width: 220,
-                    height: 220,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-//funcion
-
-Future<void> _abrirPagina(String link) async {
-  final Uri uri = Uri.parse(link);
-
-  if (await canLaunchUrl(uri)) {
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
-  } else {
-    throw 'No se pudo abrir $link';
-  }
-}
-
-//Dependencia
-Widget logosDependencia(String ruta) {
-  return Container(
-    width: 90,
-    height: 70,
-    padding: EdgeInsets.all(10),
-
-    decoration: BoxDecoration(
-      color: const Color.fromARGB(255, 255, 255, 255),
-      borderRadius: BorderRadius.circular(8),
-
-      boxShadow: [
-        BoxShadow(color: Colors.black.withOpacity(0.6), blurRadius: 5),
-      ],
-    ),
-    child: Image.asset(ruta),
-  );
-}
-
-//widget para la navegacion login
-Widget navegacioLoginTwo(BuildContext context) {
-  return MouseRegion(
-    cursor: SystemMouseCursors.click,
-
-    child: GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const InicioSesion()),
-        );
-      },
-
-      //la imagen y tamaño de la imagen (LOGO)
-      child: Image.asset(
-        'assets/images/logo_uas.png',
-        width: 90,
-        height: 90,
-        fit: BoxFit.contain,
-      ),
     ),
   );
 }

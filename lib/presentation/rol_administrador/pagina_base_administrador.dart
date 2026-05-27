@@ -5,7 +5,7 @@ import 'package:asesorias_fic/presentation/rol_administrador/asesoriasEnCurso/as
 import 'package:asesorias_fic/presentation/rol_administrador/catalogos.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/estudiantes/estudiantes.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/estudiantes/pantalla_estudiantes.dart';
-import 'package:asesorias_fic/presentation/rol_administrador/perfil.dart';
+import 'package:asesorias_fic/presentation/rol_asesor/perfil.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/reportes.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/solicitudes_pendientes.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +28,6 @@ class _HomePageState extends State<HomePage> {
     'Asesores Par',
     'Estudiantes',
     "Catalogos",
-    "Perfil",
   ];
 
   List<Widget> _buildPages(bool isMobile) => [
@@ -39,12 +38,11 @@ class _HomePageState extends State<HomePage> {
     AsesoresPar(mostrarTitulo: !isMobile),
     //PantallaEstudiantes(),
     Estudiantes(mostrarTitulo: !isMobile),
-    Catalogos(),
-    Perfil(),
+    Catalogos(mostrarTitulo: !isMobile,),
   ];
 
   void _onItemSelected(BuildContext context, int index) {
-    if (index == 8) {
+    if (index == 7) {
       Navigator.of(context).popUntil((route) => route.isFirst);
       showDialog(context: context, builder: (_) => AlertaCerrarSesion());
     } else {
@@ -75,7 +73,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Appcolores.azulUas,
+        backgroundColor: UasColores.azulOficial,
         title: Text(
           _titles[_selectedIndex],
           style: const TextStyle(
@@ -95,7 +93,7 @@ class _HomePageState extends State<HomePage> {
       drawer: Builder(
         builder: (context) => Drawer(
           width: 260,
-          backgroundColor: Appcolores.azulUas,
+          backgroundColor: UasColores.azulOficial,
           child: SafeArea(
             child: _SideMenuContent(
               selectedIndex: _selectedIndex,
@@ -110,13 +108,13 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildDesktop(List<Widget> pages) {
     return Scaffold(
-      backgroundColor: Appcolores.azulUas,
+      backgroundColor: UasColores.azulOficial,
       body: Row(
         children: [
           Builder(
             builder: (context) => Container(
               width: 260,
-              color: Appcolores.azulUas,
+              color: UasColores.azulOficial,
               child: _SideMenuContent(
                 selectedIndex: _selectedIndex,
                 onItemSelected: (index) => _onItemSelected(context, index),
@@ -172,7 +170,7 @@ class AlertaCerrarSesion extends StatelessWidget {
             textStyle: const TextStyle(fontWeight: FontWeight.bold),
           ),
           onPressed: () =>
-              Navigator.pushReplacementNamed(context, '/loginNuevo'),
+              Navigator.pushReplacementNamed(context, '/inicioSesion'),
           child: const Text("Aceptar"),
         ),
       ],
@@ -206,10 +204,9 @@ class _SideMenuContent extends StatelessWidget {
         _menuItem(Icons.group, 'Asesores Par', 4),
         _menuItem(Icons.school, 'Estudiantes', 5),
         _menuItem(Icons.book, 'Catalogos', 6),
-        _menuItem(Icons.person, 'Perfil', 7),
         const Spacer(),
-        _menuItem(Icons.logout, 'Cerrar sesión', 8),
-        const SizedBox(height: 10),
+        _menuItem(Icons.logout, 'Cerrar sesión', 7),
+        const SizedBox(height: 12),
       ],
     );
   }

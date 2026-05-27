@@ -110,7 +110,7 @@ class ListaTarjetasHistorial extends StatelessWidget {
                 width: anchoTarjeta,
                 height: alturaTarjeta,
                 child: Card(
-                  color: Appcolores.azulUas,
+                  color: UasColores.azulOficial,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),

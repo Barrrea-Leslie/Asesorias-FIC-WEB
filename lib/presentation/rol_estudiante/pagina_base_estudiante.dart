@@ -61,7 +61,7 @@ class _PaginaBaseEstudianteState extends State<PaginaBaseEstudiante> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Appcolores.azulUas,
+        backgroundColor: UasColores.azulOficial,
         title: Text(
           _titles[_selectedIndex],
           style: const TextStyle(
@@ -81,7 +81,7 @@ class _PaginaBaseEstudianteState extends State<PaginaBaseEstudiante> {
       drawer: Builder(
         builder: (context) => Drawer(
           width: 260,
-          backgroundColor: Appcolores.azulUas,
+          backgroundColor: UasColores.azulOficial,
           child: SafeArea(
             child: _SideMenuContent(
               selectedIndex: _selectedIndex,
@@ -96,13 +96,13 @@ class _PaginaBaseEstudianteState extends State<PaginaBaseEstudiante> {
 
   Widget _buildDesktop(List<Widget> pages) {
     return Scaffold(
-      backgroundColor: Appcolores.azulUas,
+      backgroundColor: UasColores.azulOficial,
       body: Row(
         children: [
           Builder(
             builder: (context) => Container(
               width: 260,
-              color: Appcolores.azulUas,
+              color: UasColores.azulOficial,
               child: _SideMenuContent(
                 selectedIndex: _selectedIndex,
                 onItemSelected: (index) => _onItemSelected(context, index),
@@ -158,7 +158,7 @@ class AlertaCerrarSesion extends StatelessWidget {
             textStyle: const TextStyle(fontWeight: FontWeight.bold),
           ),
           onPressed: () =>
-              Navigator.pushReplacementNamed(context, '/loginNuevo'),
+              Navigator.pushReplacementNamed(context, '/inicioSesion'),
           child: const Text("Aceptar"),
         ),
       ],

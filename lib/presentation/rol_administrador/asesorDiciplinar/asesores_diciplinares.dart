@@ -50,7 +50,7 @@ class PantallaResponsiva extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Appcolores.azulUas,
+      backgroundColor: UasColores.azulOficial,
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Container(
@@ -105,7 +105,7 @@ class PantallaGrande extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Appcolores.azulUas,
+      backgroundColor: UasColores.azulOficial,
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(

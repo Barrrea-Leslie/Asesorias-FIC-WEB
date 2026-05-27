@@ -95,7 +95,7 @@ class ListaAsesoresDiciplinares extends StatelessWidget {
               child: MouseRegion(
                 cursor: SystemMouseCursors.click,
                 child: Card(
-                  color: Appcolores.azulUas,
+                  color: UasColores.azulOficial,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),

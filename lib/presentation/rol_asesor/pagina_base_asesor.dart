@@ -1,4 +1,5 @@
 import 'package:asesorias_fic/core/colores.dart';
+import 'package:asesorias_fic/presentation/rol_asesor/perfil.dart';
 import 'package:asesorias_fic/presentation/rol_asesor/asesoriasEnCurso/asesorias_en_curso_asesor.dart';
 import 'package:asesorias_fic/presentation/rol_asesor/historialDeAsesorias/historial_asesorias_asesor.dart';
 import 'package:asesorias_fic/presentation/rol_asesor/solicitudesPendientes/solicitudes_pendientes_asesor.dart';
@@ -18,16 +19,18 @@ class _PaginaBaseAsesorState extends State<PaginaBaseAsesor> {
     SolicitudesPendientesAsesor(mostrarTitulo: !isMobile),
     AsesoriasEnCursoAsesor(mostrarTitulo: !isMobile),
     HistorialAsesoriasAsesor(mostrarTitulo: !isMobile),
+    Perfil(mostrarTitulo: !isMobile),
   ];
 
   final List<String> _titles = [
     'Solicitudes Pendientes',
     'Asesorías en Curso',
     'Historial de Asesorías',
+    'Perfil',
   ];
 
   void _onItemSelected(BuildContext context, int index) {
-    if (index == 3) {
+    if (index == 4) {
       Navigator.of(context).popUntil((route) => route.isFirst);
       showDialog(context: context, builder: (_) => AlertaCerrarSesion());
     } else {
@@ -58,7 +61,7 @@ class _PaginaBaseAsesorState extends State<PaginaBaseAsesor> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Appcolores.azulUas,
+        backgroundColor: UasColores.azulOficial,
         title: Text(
           _titles[_selectedIndex],
           style: const TextStyle(
@@ -78,7 +81,7 @@ class _PaginaBaseAsesorState extends State<PaginaBaseAsesor> {
       drawer: Builder(
         builder: (context) => Drawer(
           width: 260,
-          backgroundColor: Appcolores.azulUas,
+          backgroundColor: UasColores.azulOficial,
           child: SafeArea(
             child: _SideMenuContent(
               selectedIndex: _selectedIndex,
@@ -93,13 +96,13 @@ class _PaginaBaseAsesorState extends State<PaginaBaseAsesor> {
 
   Widget _buildDesktop(List<Widget> pages) {
     return Scaffold(
-      backgroundColor: Appcolores.azulUas,
+      backgroundColor: UasColores.azulOficial,
       body: Row(
         children: [
           Builder(
             builder: (context) => Container(
               width: 260,
-              color: Appcolores.azulUas,
+              color: UasColores.azulOficial,
               child: _SideMenuContent(
                 selectedIndex: _selectedIndex,
                 onItemSelected: (index) => _onItemSelected(context, index),
@@ -155,7 +158,7 @@ class AlertaCerrarSesion extends StatelessWidget {
             textStyle: const TextStyle(fontWeight: FontWeight.bold),
           ),
           onPressed: () =>
-              Navigator.pushReplacementNamed(context, '/loginNuevo'),
+              Navigator.pushReplacementNamed(context, '/inicioSesion'),
           child: const Text("Aceptar"),
         ),
       ],
@@ -186,8 +189,10 @@ class _SideMenuContent extends StatelessWidget {
         _menuItem(Icons.assignment, 'Asesorias en curso', 1),
         _menuItem(Icons.history, 'Historial de asesorias', 2),
         const Spacer(),
-        _menuItem(Icons.logout, 'Cerrar sesión', 3),
-        const SizedBox(height: 10),
+        _menuItem(Icons.person, 'Perfil', 3),
+
+        _menuItem(Icons.logout, 'Cerrar sesión', 4),
+        const SizedBox(height: 15),
       ],
     );
   }

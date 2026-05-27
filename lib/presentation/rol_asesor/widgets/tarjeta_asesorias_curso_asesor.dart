@@ -93,7 +93,7 @@ class ListaAsesorias extends StatelessWidget {
                 width: ancho,
 
                 child: Card(
-                  color: Appcolores.azulUas,
+                  color: UasColores.azulOficial,
                   child: Padding(
                     padding: const EdgeInsets.only(
                       top: 30,

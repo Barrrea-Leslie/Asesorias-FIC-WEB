@@ -85,7 +85,7 @@ class ListaSolicitudesEnRevision extends StatelessWidget {
                 width: anchoTarjeta,
                 height: alturaTarjeta,
                 child: Card(
-                  color: Appcolores.azulUas,
+                  color: UasColores.azulOficial,
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
@@ -238,7 +238,7 @@ class _AlertaMensajeSolicitudRechazada extends StatelessWidget {
         ElevatedButton(
           style: TextButton.styleFrom(
             foregroundColor: Colors.white,
-            backgroundColor: Appcolores.azulUas,
+            backgroundColor: UasColores.azulOficial,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
             ),
@@ -361,7 +361,7 @@ class _AlertaInformacionSolicitud extends StatelessWidget {
         ElevatedButton(
           style: TextButton.styleFrom(
             foregroundColor: Colors.white,
-            backgroundColor: Appcolores.azulUas,
+            backgroundColor: UasColores.azulOficial,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
             ),

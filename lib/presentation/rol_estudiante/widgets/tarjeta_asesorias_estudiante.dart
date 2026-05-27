@@ -102,7 +102,7 @@ class ListaTarjetasSolicitar extends StatelessWidget {
                 width: anchoTarjeta,
 
                 child: Card(
-                  color: Appcolores.azulUas,
+                  color: UasColores.azulOficial,
 
                   child: Padding(
                     padding: const EdgeInsets.only(

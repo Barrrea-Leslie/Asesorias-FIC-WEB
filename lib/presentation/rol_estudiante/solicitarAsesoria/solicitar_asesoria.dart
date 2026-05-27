@@ -98,7 +98,7 @@ class PantallaResponsiva extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Appcolores.azulUas,
+      backgroundColor: UasColores.azulOficial,
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Container(
@@ -128,7 +128,7 @@ class PantallaResponsiva extends StatelessWidget {
                   ),
                 ),
               ),
-             // Footer(todosLosAsesores: todosLosAsesores),
+              // Footer(todosLosAsesores: todosLosAsesores),
             ],
           ),
         ),
@@ -156,7 +156,7 @@ class PantallaGrande extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Appcolores.azulUas,
+      backgroundColor: UasColores.azulOficial,
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
@@ -310,7 +310,7 @@ InputDecoration _buscadorDecoration() {
       borderRadius: BorderRadius.circular(10),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Appcolores.azulUas),
+      borderSide: const BorderSide(color: UasColores.azulOficial),
       borderRadius: BorderRadius.circular(10),
     ),
   );

@@ -72,7 +72,7 @@ class ListaSolicitudes extends StatelessWidget {
                 width: ancho,
 
                 child: Card(
-                  color: Appcolores.azulUas,
+                  color: UasColores.azulOficial,
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Column(

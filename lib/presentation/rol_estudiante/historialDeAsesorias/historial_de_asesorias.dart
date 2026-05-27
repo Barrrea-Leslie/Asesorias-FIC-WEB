@@ -69,7 +69,7 @@ class PantallaResponsiva extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Appcolores.azulUas,
+      backgroundColor: UasColores.azulOficial,
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Container(
@@ -136,7 +136,7 @@ class PantallaGrande extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Appcolores.azulUas,
+      backgroundColor: UasColores.azulOficial,
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Container(
@@ -274,7 +274,7 @@ InputDecoration _buscadorDecoration() {
       borderRadius: BorderRadius.circular(10),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Appcolores.azulUas),
+      borderSide: const BorderSide(color: UasColores.azulOficial),
       borderRadius: BorderRadius.circular(10),
     ),
   );

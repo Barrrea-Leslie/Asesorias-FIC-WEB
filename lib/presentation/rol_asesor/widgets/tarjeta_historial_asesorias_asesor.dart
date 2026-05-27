@@ -80,9 +80,8 @@ class ListaHistorial extends StatelessWidget {
 
               return SizedBox(
                 width: 360,
-                // Altura reducida ya que tiene menos botones
                 child: Card(
-                  color: Appcolores.azulUas,
+                  color: UasColores.azulOficial,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
@@ -119,7 +118,6 @@ class ListaHistorial extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // Botón Información (Estilo amarillo/dorado según tu imagen)
                             ElevatedButton(
                               onPressed: () {
                                 showDialog(
@@ -140,7 +138,6 @@ class ListaHistorial extends StatelessWidget {
                               child: Text("Informacion"),
                             ),
                             const SizedBox(width: 15),
-                            // Botón Chat (Estilo blanco según tu imagen)
                             BotonChatHistorial(nombreAsesor: nombreAlumno),
                           ],
                         ),

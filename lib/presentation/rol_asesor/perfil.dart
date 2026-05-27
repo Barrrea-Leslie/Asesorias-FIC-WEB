@@ -1,9 +1,8 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/shared/tarjeta_solicitud_widget.dart';
 import 'package:flutter/material.dart';
 
-class SolicitudesPendientes extends StatelessWidget {
-  const SolicitudesPendientes({super.key, this.mostrarTitulo = false});
+class Perfil extends StatelessWidget {
+  const Perfil({super.key, required this.mostrarTitulo});
 
   final bool mostrarTitulo;
 
@@ -35,17 +34,7 @@ class PantallaResponsiva extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Column(
-            children: [
-              const SizedBox(height: 40),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(children: [TarjetaSolicitudWidget()]),
-                ),
-              ),
-              FooterCrearAlumno(),
-            ],
-          ),
+          child: const Center(child: Text('Perfil')),
         ),
       ),
     );
@@ -77,13 +66,7 @@ class PantallaGrande extends StatelessWidget {
 
                     const SizedBox(height: 60),
 
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(children: [TarjetaSolicitudWidget()]),
-                      ),
-                    ),
-
-                    FooterCrearAlumno(),
+                    const Expanded(child: Center(child: Text('Sin Perfil'))),
                   ],
                 ),
               ),
@@ -109,28 +92,12 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text(
-              "Solicitudes Pendientes",
+              "Perfil",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
             ),
             const SizedBox(width: 15),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class FooterCrearAlumno extends StatelessWidget {
-  const FooterCrearAlumno({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(30),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
       ),
     );
   }

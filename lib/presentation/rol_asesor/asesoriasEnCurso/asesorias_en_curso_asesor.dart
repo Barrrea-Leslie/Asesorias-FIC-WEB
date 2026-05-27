@@ -51,9 +51,9 @@ class PantallaResponsiva extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Appcolores.azulUas, // <- fondo azul
+      backgroundColor: UasColores.azulOficial,
       body: Padding(
-        padding: const EdgeInsets.all(10.0), // <- espacio para ver el borde
+        padding: const EdgeInsets.all(10.0),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -61,7 +61,6 @@ class PantallaResponsiva extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // Buscador
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
@@ -93,7 +92,7 @@ class PantallaResponsiva extends StatelessWidget {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
-                            color: Appcolores.azulUas,
+                            color: UasColores.azulOficial,
                           ),
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -135,7 +134,7 @@ class PantallaGrande extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Appcolores.azulUas,
+      backgroundColor: UasColores.azulOficial,
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
@@ -200,7 +199,7 @@ class PantallaGrande extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Appcolores.azulUas),
+          borderSide: const BorderSide(color: UasColores.azulOficial),
           borderRadius: BorderRadius.circular(10),
         ),
       ),
@@ -282,7 +281,7 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Appcolores.azulUas),
+        borderSide: const BorderSide(color: UasColores.azulOficial),
         borderRadius: BorderRadius.circular(10),
       ),
     );

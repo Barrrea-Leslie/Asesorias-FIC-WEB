@@ -119,7 +119,7 @@ class ListaEstudiantesWeb extends StatelessWidget {
                   child: MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: Card(
-                      color: Appcolores.azulUas,
+                      color: UasColores.azulOficial,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 25, right: 25),
                         child: Row(

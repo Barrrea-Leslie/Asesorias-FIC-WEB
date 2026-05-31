@@ -3,6 +3,7 @@ import 'package:asesorias_fic/presentation/conocenos/dependencias_conocenos.dart
 import 'package:asesorias_fic/presentation/conocenos/info_conocenos.dart';
 import 'package:asesorias_fic/presentation/conocenos/menu_conocenos.dart';
 import 'package:asesorias_fic/presentation/conocenos/tarjetas_conocenos.dart';
+import 'package:asesorias_fic/presentation/loginScreens/inicio_sesion.dart';
 import 'package:flutter/material.dart';
 import 'footer_conocenos.dart';
 
@@ -50,14 +51,14 @@ class _ConocenosState extends State<Conocenos> {
               color: UasColores.azulOficial,
               padding: EdgeInsets.symmetric(
                 horizontal: esMovil ? 16 : 60,
-                vertical: esMovil ? 15 : 10,
+                vertical: esMovil ? 8 : 10,
               ),
 
               child: Row(
                 children: [
                   navegacioLoginTwo(context),
 
-                  SizedBox(width: esMovil ? 10 : 20),
+                  SizedBox(width: esMovil ? 20 : 20),
 
                   Expanded(
                     child: Column(
@@ -449,14 +450,33 @@ class _ConocenosState extends State<Conocenos> {
   }
 }
 
-class navegacioLogin extends StatelessWidget {
-  const navegacioLogin({super.key});
+//widget para la navegacion login
+Widget navegacioLoginTwo(BuildContext context) {
+  final esMovil = MediaQuery.of(context).size.width < 700;
 
-  @override
-  Widget build(BuildContext context) {
-    return Image.asset('assets/images/logo_uas.png', height: 60);
-  }
+
+  return MouseRegion(
+    cursor: SystemMouseCursors.click,
+
+    child: GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const InicioSesion()),
+        );
+      },
+
+      //la imagen y tamaño de la imagen (LOGO)
+      child: Image.asset(
+        'assets/images/logo_uas.png',
+        width: esMovil ? 55: 90,
+        height: esMovil ? 55 : 90,
+        fit: BoxFit.contain,
+      ),
+    ),
+  );
 }
+
 
 //tarjeta de msion y vision
 

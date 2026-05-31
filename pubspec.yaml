@@ -37,6 +37,10 @@ dependencies:
 
   window_manager: ^0.5.1
 
+  flutter_map: ^8.3.0
+
+  latlong2: ^0.9.1
+
   
   
 

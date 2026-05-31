@@ -1,4 +1,3 @@
-import 'package:asesorias_fic/presentation/loginScreens/inicio_sesion.dart';
 import 'package:flutter/material.dart';
 
 
@@ -21,26 +20,3 @@ Widget logosDependencia(String ruta) {
   );
 }
 
-//widget para la navegacion login
-Widget navegacioLoginTwo(BuildContext context) {
-  return MouseRegion(
-    cursor: SystemMouseCursors.click,
-
-    child: GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const InicioSesion()),
-        );
-      },
-
-      //la imagen y tamaño de la imagen (LOGO)
-      child: Image.asset(
-        'assets/images/logo_uas.png',
-        width: 90,
-        height: 90,
-        fit: BoxFit.contain,
-      ),
-    ),
-  );
-}

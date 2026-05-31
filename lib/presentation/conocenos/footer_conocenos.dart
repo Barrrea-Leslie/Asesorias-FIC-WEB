@@ -1,3 +1,4 @@
+import 'package:asesorias_fic/presentation/conocenos/map_fic.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -113,24 +114,8 @@ class SectionFooterTwo extends StatelessWidget {
 
                   const SizedBox(height: 30),
 
-                  Container(
-                    width: 180,
-                    height: 120,
-
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-
-                      child: Image.asset(
-                        'https://www.google.com/maps/place/Facultad+de+Inform%C3%A1tica/@24.8230124,-107.3822916,17z/data=!4m14!1m7!3m6!1s0x86bcd9f94c837fad:0xfa9e708bbd4d8e9!2sFacultad+de+Inform%C3%A1tica!8m2!3d24.8230127!4d-107.3801052!16s%2Fg%2F1tgb7sy1!3m5!1s0x86bcd9f94c837fad:0xfa9e708bbd4d8e9!8m2!3d24.8230127!4d-107.3801052!16s%2Fg%2F1tgb7sy1?entry=ttu&g_ep=EgoyMDI2MDUyNS4wIKXMDSoASAFQAw%3D%3D',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                  //------------  AQUI ESTA EL MAPA  *-------------
+                  const MapaFacultad(),
                 ],
               )
             : Row(
@@ -223,32 +208,8 @@ class SectionFooterTwo extends StatelessWidget {
                       ],
                     ),
                   ),
-
-                  //IMAGEN DEL MAPA
-                  Container(
-                    width: esMovil ? double.infinity : 380,
-                    height: 180,
-
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-
-                      child: Image.asset(
-                        'https://www.google.com/maps/place/Facultad+de+Inform%C3%A1tica/@24.8230124,-107.3822916,17z/data=!4m14!1m7!3m6!1s0x86bcd9f94c837fad:0xfa9e708bbd4d8e9!2sFacultad+de+Inform%C3%A1tica!8m2!3d24.8230127!4d-107.3801052!16s%2Fg%2F1tgb7sy1!3m5!1s0x86bcd9f94c837fad:0xfa9e708bbd4d8e9!8m2!3d24.8230127!4d-107.3801052!16s%2Fg%2F1tgb7sy1?entry=ttu&g_ep=EgoyMDI2MDUyNS4wIKXMDSoASAFQAw%3D%3D',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                  //----------------------   AQUI ESTA EL MAPA   --------------------------
+                  const MapaFacultad(),
                 ],
               ),
       ),

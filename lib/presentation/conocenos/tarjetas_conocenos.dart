@@ -15,16 +15,16 @@ Widget tarjetita(String titulo, String contenido) {
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
 
         decoration: BoxDecoration(
-          color: const Color(0xFFE7E7E7).withOpacity(0.1),
-          borderRadius: BorderRadius.circular(10),
+          color: Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(15),
 
           
 
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withOpacity(0.0),
               blurRadius: 8,
-              offset: const Offset(0,4),
+              offset: const Offset(0,1),
             )
           ],
         ),

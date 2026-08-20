@@ -1,19 +1,27 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/tutorias/shared/mydrawer.dart';
 import 'package:asesorias_fic/presentation/tutorias/shared/tarjeta_solicitud_widget.dart';
 import 'package:flutter/material.dart';
 
-class SolicitudesPenidentesScreen extends StatelessWidget {
-  const SolicitudesPenidentesScreen({super.key});
+class SolicitudesPendientesAsesor extends StatefulWidget {
+  const SolicitudesPendientesAsesor({super.key, this.mostrarTitulo = false});
 
+  final bool mostrarTitulo;
+
+  @override
+  State<SolicitudesPendientesAsesor> createState() =>
+      _SolicitudesPendientesAsesorState();
+}
+
+class _SolicitudesPendientesAsesorState
+    extends State<SolicitudesPendientesAsesor> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth < 1000) {
+        if (constraints.maxWidth < 500) {
           return PantallaResponsiva();
         } else {
-          return PantallaGrande();
+          return PantallaGrande(mostrarTitulo: widget.mostrarTitulo);
         }
       },
     );
@@ -26,75 +34,12 @@ class PantallaResponsiva extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 155, 56, 56),
+      backgroundColor: UasColores.azulOficial,
 
-      appBar: AppBar(
-        leading: Builder(
-          builder: (context) => IconButton(
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-            icon: Icon(Icons.menu, size: 30.0),
-          ),
-        ),
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        title: Text(
-          'Solicitudes Pendientes',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
-
-      drawer: Mydrawer(rutaActual: '/solicitudesPendintes'),
-
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(height: 60),
-
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(children: [TarjetaSolicitudWidget()]),
-              ),
-            ),
-
-            FooterCrearAlumno(),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-//widget para pantalla completa
-
-class PantallaGrande extends StatelessWidget {
-  const PantallaGrande({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Appcolores.azulUas,
-
-      /* appBar: AppBar(
-        
-        leading: Builder(builder: (context) => IconButton(
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-          icon: Icon(Icons.menu, size: 30.0,))),
-        backgroundColor: Appcolores.azulUas,
-        title: Text('Alumnos', style: TextStyle(fontWeight: FontWeight.bold)),
-    
-        ), */
-
-      //drawer: Mydrawer(rutaActual: DiregirEstudiantes()),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
-            //menu
-            Mydrawer(rutaActual: '/solicitudesPendientes'),
-
             //contenido
             Expanded(
               child: Container(
@@ -105,7 +50,51 @@ class PantallaGrande extends StatelessWidget {
 
                 child: Column(
                   children: [
-                    SeccionArribaPantallaGrande(),
+                    SizedBox(height: 40),
+
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(children: [TarjetaSolicitudWidget()]),
+                      ),
+                    ),
+
+                    FooterCrearAlumno(),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PantallaGrande extends StatelessWidget {
+  const PantallaGrande({super.key, this.mostrarTitulo = false});
+
+  final bool mostrarTitulo;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: UasColores.azulOficial,
+
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          children: [
+            //contenido
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+
+                child: Column(
+                  children: [
+                    if (mostrarTitulo) SeccionArribaPantallaGrande(),
 
                     SizedBox(height: 60),
 

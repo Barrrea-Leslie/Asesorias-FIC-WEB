@@ -166,7 +166,7 @@ class _ConocenosState extends State<Conocenos> {
                 Container(
                   key: nuestroEquipooKey,
                   width: double.infinity,
-                  color: Color(0xFFC59525).withOpacity(0.15),
+                  color: const Color.fromARGB(48, 197, 149, 37),
                   padding: EdgeInsets.symmetric(
                     horizontal: esMovil ? 20 : 80,
                     vertical: esMovil ? 40 : 70,

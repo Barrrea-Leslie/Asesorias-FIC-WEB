@@ -1,14 +1,14 @@
 import 'package:asesorias_fic/core/colores.dart';
+import 'package:asesorias_fic/data/services/auth_service.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesorDiciplinar/asesores_diciplinares.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesorPar/asesores_par.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/asesoriasEnCurso/asesorias_en_curso.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/catalogos.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/estudiantes/estudiantes.dart';
-import 'package:asesorias_fic/presentation/rol_administrador/estudiantes/pantalla_estudiantes.dart';
-import 'package:asesorias_fic/presentation/rol_asesor/perfil.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/reportes.dart';
 import 'package:asesorias_fic/presentation/rol_administrador/solicitudes_pendientes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,6 +19,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  bool _estaVerificando = true; //variable para mostrar pantalla en blanco mientras vemos lo del token
+
+  //Instancia del storage
+  final _storage = const FlutterSecureStorage(
+    webOptions: WebOptions(dbName: 'AsesoriasFIC', publicKey: 'SecretKeyFIC'),
+  );
 
   final List<String> _titles = [
     'Asesorías',
@@ -29,6 +35,31 @@ class _HomePageState extends State<HomePage> {
     'Estudiantes',
     "Catalogos",
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _verificarToken(); // se ejecuta la funcion del candado
+  }
+
+  Future<void> _verificarToken() async {
+    String? token = await _storage.read(key: "jwt_token");
+
+    if (token == null) {
+      print("regresando a login");
+      if (mounted) {
+        // limpiar historial
+        Navigator.pushNamedAndRemoveUntil(context, '/inicioSesion', (route) => false);
+      }
+    } else {
+      print("Bienvenido al Panel de tutorias");
+      if (mounted) {
+        setState(() {
+          _estaVerificando = false; //se verifico todo
+        });
+      }
+    }
+  }
 
   List<Widget> _buildPages(bool isMobile) => [
     AsesoriasEnCurso(mostrarTitulo: !isMobile),
@@ -43,7 +74,6 @@ class _HomePageState extends State<HomePage> {
 
   void _onItemSelected(BuildContext context, int index) {
     if (index == 7) {
-      Navigator.of(context).popUntil((route) => route.isFirst);
       showDialog(context: context, builder: (_) => AlertaCerrarSesion());
     } else {
       setState(() => _selectedIndex = index);
@@ -55,6 +85,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (_estaVerificando) {
+      return const Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: CircularProgressIndicator(color: UasColores.azulOficial),
+        ),
+      );
+    }
+
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final bool isMobile = constraints.maxWidth < 800;
@@ -138,6 +178,7 @@ class AlertaCerrarSesion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authService = AuthService();
     return AlertDialog(
       title: const Text("Confirmacion"),
       content: const Text("Esta seguro de cerrar sesion?"),
@@ -169,8 +210,11 @@ class AlertaCerrarSesion extends StatelessWidget {
             ),
             textStyle: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          onPressed: () =>
-              Navigator.pushReplacementNamed(context, '/inicioSesion'),
+          onPressed: () async {
+            await authService.logout();
+              Navigator.pushNamedAndRemoveUntil(context, '/inicioSesion', (route) => false);
+          },
+              
           child: const Text("Aceptar"),
         ),
       ],

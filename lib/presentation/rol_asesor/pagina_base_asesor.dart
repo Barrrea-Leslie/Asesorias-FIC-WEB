@@ -1,7 +1,8 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/rol_asesor/perfil.dart';
+import 'package:asesorias_fic/data/services/auth_service.dart';
 import 'package:asesorias_fic/presentation/rol_asesor/asesoriasEnCurso/asesorias_en_curso_asesor.dart';
 import 'package:asesorias_fic/presentation/rol_asesor/historialDeAsesorias/historial_asesorias_asesor.dart';
+import 'package:asesorias_fic/presentation/rol_asesor/perfil.dart';
 import 'package:asesorias_fic/presentation/rol_asesor/solicitudesPendientes/solicitudes_pendientes_asesor.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,6 @@ class _PaginaBaseAsesorState extends State<PaginaBaseAsesor> {
 
   void _onItemSelected(BuildContext context, int index) {
     if (index == 4) {
-      Navigator.of(context).popUntil((route) => route.isFirst);
       showDialog(context: context, builder: (_) => AlertaCerrarSesion());
     } else {
       setState(() => _selectedIndex = index);
@@ -126,6 +126,7 @@ class AlertaCerrarSesion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authService = AuthService();
     return AlertDialog(
       title: const Text("Confirmacion"),
       content: const Text("Esta seguro de cerrar sesion?"),
@@ -157,8 +158,16 @@ class AlertaCerrarSesion extends StatelessWidget {
             ),
             textStyle: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          onPressed: () =>
-              Navigator.pushReplacementNamed(context, '/inicioSesion'),
+          onPressed: () async {
+            await authService.logout();
+
+            if(context.mounted){
+               Navigator.pushNamedAndRemoveUntil(context, '/inicioSesion', (route) => false);
+            }
+           
+
+          },
+             
           child: const Text("Aceptar"),
         ),
       ],

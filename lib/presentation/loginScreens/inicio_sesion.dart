@@ -1,31 +1,80 @@
 import 'package:asesorias_fic/core/colores.dart';
+import 'package:asesorias_fic/data/services/auth_service.dart';
 import 'package:asesorias_fic/presentation/conocenos/conocenos.dart';
 import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class InicioSesion extends StatelessWidget {
+
+class InicioSesion extends StatefulWidget {
   const InicioSesion({super.key});
 
   @override
+  State<InicioSesion> createState() => _InicioSesionState();
+}
+
+class _InicioSesionState extends State<InicioSesion> {
+  bool _estaVerificando = true; // Controla la pantalla de carga inicial
+
+  // Instancia 
+  final _storage = const FlutterSecureStorage(
+    webOptions: WebOptions(dbName: 'AsesoriasFIC', publicKey: 'SecretKeyFIC'),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _revisarSesionActiva(); // se revisa si hay sesion activa al montar
+  }
+
+  Future<void> _revisarSesionActiva() async {
+    String? token = await _storage.read(key: "jwt_token");
+
+    if (token != null) {
+      print("sesion activa ");
+      if (mounted) {
+        
+        Navigator.pushReplacementNamed(context, '/paginaBaseAdministrador');
+      }
+    } else {
+      if (mounted) {
+        setState(() {
+          _estaVerificando = false; // No hay sesión, apagamos la carga para mostrar el formulario
+        });
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // ⏳ Mientras la app lee el localStorage, no pintamos los inputs para evitar parpadeos feos
+    if (_estaVerificando) {
+      return const Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: CircularProgressIndicator(color: UasColores.azulOficial),
+        ),
+      );
+    }
+
     final esMovil = MediaQuery.of(context).size.width < 500;
 
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: SeccionArriba(esMovil: esMovil),
         toolbarHeight: 70,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
-      drawer: DraweInicio(),
+      drawer: const DraweInicio(),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/fondo_inicio.jpeg"),
             fit: BoxFit.cover,
           ),
         ),
-        child: ScreenLogin(),
+        child: const ScreenLogin(),
       ),
     );
   }
@@ -39,23 +88,23 @@ class DraweInicio extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-        padding: EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(top: 20),
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 20, bottom: 40),
+          const Padding(
+            padding: EdgeInsets.only(top: 20, bottom: 40),
             child: Center(
               child: Text(
                 "Informacion",
                 style: TextStyle(
                   fontSize: 20,
-                  color: const Color.fromARGB(100, 0, 0, 0),
+                  color: Color.fromARGB(100, 0, 0, 0),
                 ),
               ),
             ),
           ),
-          Divider(),
-          SizedBox(height: 20),
-          ExpansionTile(
+          const Divider(),
+          const SizedBox(height: 20),
+          const ExpansionTile(
             backgroundColor: Color.fromARGB(71, 36, 74, 145),
             shape: Border.fromBorderSide(BorderSide.none),
             title: Text("Asesoria"),
@@ -63,7 +112,7 @@ class DraweInicio extends StatelessWidget {
               Padding(padding: EdgeInsets.all(16), child: Text("DAOU")),
             ],
           ),
-          ExpansionTile(
+          const ExpansionTile(
             backgroundColor: Color.fromARGB(71, 36, 74, 145),
             shape: Border.fromBorderSide(BorderSide.none),
             title: Text("Tutoria"),
@@ -71,7 +120,7 @@ class DraweInicio extends StatelessWidget {
               Padding(padding: EdgeInsets.all(16), child: Text("DAOU")),
             ],
           ),
-          ExpansionTile(
+          const ExpansionTile(
             backgroundColor: Color.fromARGB(71, 36, 74, 145),
             shape: Border.fromBorderSide(BorderSide.none),
             title: Text("Asesor Par"),
@@ -79,7 +128,7 @@ class DraweInicio extends StatelessWidget {
               Padding(padding: EdgeInsets.all(16), child: Text("DAOU")),
             ],
           ),
-          ExpansionTile(
+          const ExpansionTile(
             backgroundColor: Color.fromARGB(71, 36, 74, 145),
             shape: Border.fromBorderSide(BorderSide.none),
             title: Text("Asesor Diciplinar"),
@@ -102,7 +151,7 @@ class SeccionArriba extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF244B91),
+      color: const Color(0xFF244B91),
       width: double.infinity,
       height: esMovil ? 84 : 70,
       padding: EdgeInsets.symmetric(
@@ -172,8 +221,8 @@ class SeccionLogin extends StatelessWidget {
       width: double.infinity,
       height: esMovil ? 800 : 690,
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: esMovil ? 80 : 80,
+        padding: const EdgeInsets.symmetric(
+          vertical: 80,
           horizontal: 20,
         ),
         child: Center(
@@ -188,9 +237,9 @@ class SeccionLogin extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withValues(alpha: 0.3),
-                  spreadRadius: 4, // Expansión de la sombra
-                  blurRadius: 7, // Nivel de desenfoque
-                  offset: Offset(0, 0), // Posición de la sombra (X, Y)
+                  spreadRadius: 4, 
+                  blurRadius: 7, 
+                  offset: const Offset(0, 0), 
                 ),
               ],
             ),
@@ -198,7 +247,7 @@ class SeccionLogin extends StatelessWidget {
               children: [
                 ImagenLogo(esMovil: esMovil),
                 SizedBox(height: esMovil ? 35 : 80),
-                Formulario(),
+                const Formulario(),
               ],
             ),
           ),
@@ -242,7 +291,7 @@ class _FormularioState extends State<Formulario> {
             colorIcon: Appcolores.azulUas,
             campoController: cuenta,
           ),
-          SizedBox(height: 27),
+          const SizedBox(height: 27),
           InputEstilo(
             ocultar: true,
             labelTexto: 'NIP',
@@ -250,7 +299,7 @@ class _FormularioState extends State<Formulario> {
             colorIcon: Appcolores.amarilloUas,
             campoController: nip,
           ),
-          SizedBox(height: 35),
+          const SizedBox(height: 35),
           BotonIngresar(
             formKey: _formKey,
             cuentaController: cuenta,
@@ -262,64 +311,96 @@ class _FormularioState extends State<Formulario> {
   }
 }
 
-//Boton de formulario - INGRESAR junto cn logica de verificacion y mensaje de confirmacion
-class BotonIngresar extends StatelessWidget {
+// Boton de formulario - INGRESAR conectado al Backend Real con JWT
+class BotonIngresar extends StatefulWidget {
   final TextEditingController cuentaController;
   final TextEditingController nipController;
+  final GlobalKey<FormState> formKey;
 
   const BotonIngresar({
     super.key,
-    required GlobalKey<FormState> formKey,
+    required this.formKey,
     required this.cuentaController,
     required this.nipController,
-  }) : _formKey = formKey;
+  });
 
-  final GlobalKey<FormState> _formKey;
+  @override
+  State<BotonIngresar> createState() => _BotonIngresarState();
+}
+
+class _BotonIngresarState extends State<BotonIngresar> {
+  final AuthService _authService = AuthService();
+  bool _cargando = false; 
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: UasColores.uasAmarillo,
-        textStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-        foregroundColor: Colors.white,
-        minimumSize: const Size(160, 45),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      ),
+    return _cargando
+        ? const CircularProgressIndicator() 
+        : ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: UasColores.uasAmarillo,
+              textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              foregroundColor: Colors.white,
+              minimumSize: const Size(160, 45),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+            onPressed: () async {
+              if (!widget.formKey.currentState!.validate()) return;
 
-      onPressed: () {
-        String inputCuenta = cuentaController.text;
-        String inputNip = nipController.text;
+              setState(() => _cargando = true); 
 
-        if (_formKey.currentState!.validate() &&
-            inputCuenta == '12345' &&
-            inputNip == '1234') {
-          Navigator.pushReplacementNamed(context, '/paginaBaseAdministrador');
+              final resultado = await _authService.login(
+                widget.cuentaController.text, 
+                widget.nipController.text,
+              );
 
-          MensajeConfirmacion.mostrarMensaje(
-            context,
-            "Se inicio sesion correctamente...",
+              setState(() => _cargando = false); 
+
+              if (resultado['success']) {
+                MensajeConfirmacion.mostrarMensaje(
+                  context,
+                  "Se inició sesión correctamente...",
+                );
+
+                
+                final datosUsuario = await _authService.abrirToken();
+
+                if (datosUsuario != null) {
+                  print("---datos del usuario---");
+                  print("id: ${datosUsuario.id}");
+                  print("rol: ${datosUsuario.idRol}");
+                  print("usuario: ${datosUsuario.usuario}");
+                  print("nombre usuario: ${datosUsuario.nombreCompleto}");
+                }
+
+                if (mounted) {
+                 
+                  if (datosUsuario?.idRol == 1 || datosUsuario?.idRol == 2) {
+                    print("Redirigiendo a Administrador...");
+                    Navigator.pushReplacementNamed(context, '/panelAdmin');
+                  } 
+                 
+                  else if (datosUsuario?.idRol == 3 || datosUsuario?.idRol == 5) {
+                    print("Redirigiendo a Asesor...");
+                    Navigator.pushReplacementNamed(context, '/panelAsesor');
+                  } 
+                  else if(datosUsuario?.idRol == 4){
+                   Navigator.pushReplacementNamed(context, '/panelEstudiante');
+                  }
+                }
+              } else {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Text(resultado['message']),
+                    ),
+                  );
+                }
+              }
+            },
+            child: const Text('INGRESAR'),
           );
-        } else if (_formKey.currentState!.validate() &&
-            inputCuenta == '12347' &&
-            inputNip == '1236') {
-          Navigator.pushReplacementNamed(context, '/paginaBaseEstudiantes');
-          MensajeConfirmacion.mostrarMensaje(
-            context,
-            "Se inicio sesion correctamente...",
-          );
-        } else if (_formKey.currentState!.validate() &&
-            inputCuenta == '12348' &&
-            inputNip == '1237') {
-          Navigator.pushReplacementNamed(context, '/paginaBaseAsesores');
-          MensajeConfirmacion.mostrarMensaje(
-            context,
-            "Se inicio sesion correctamente...",
-          );
-        }
-      },
-      child: Text('INGRESAR'),
-    );
   }
 }
 
@@ -351,48 +432,44 @@ class InputEstilo extends StatelessWidget {
           child: Icon(icon, color: colorIcon, size: 18),
         ),
         filled: true,
-        fillColor: Color.fromARGB(255, 240, 240, 240),
+        fillColor: const Color.fromARGB(255, 240, 240, 240),
         hintText: labelTexto,
-        hintStyle: TextStyle(color: Color(0xFFA8A7A7)),
+        hintStyle: const TextStyle(color: Color(0xFFA8A7A7)),
         floatingLabelBehavior: FloatingLabelBehavior.never,
 
-        //Sin enfocar
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: const Color.fromARGB(255, 199, 198, 198),
+          borderSide: const BorderSide(
+            color: Color.fromARGB(255, 199, 198, 198),
             width: 1,
           ),
           borderRadius: BorderRadius.circular(5),
         ),
 
-        //Enfocando algun input
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: const Color.fromARGB(255, 165, 165, 165),
+          borderSide: const BorderSide(
+            color: Color.fromARGB(255, 165, 165, 165),
             width: 1,
           ),
           borderRadius: BorderRadius.circular(5),
         ),
 
-        //Cuando se cometa algun error en algun input al presionar ingresar
         errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: const Color.fromARGB(255, 239, 91, 91),
+          borderSide: const BorderSide(
+            color: Color.fromARGB(255, 239, 91, 91),
             width: 1,
           ),
           borderRadius: BorderRadius.circular(5),
         ),
 
         focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: const Color.fromARGB(255, 239, 91, 91),
+          borderSide: const BorderSide(
+            color: Color.fromARGB(255, 239, 91, 91),
             width: 1,
           ),
           borderRadius: BorderRadius.circular(5),
         ),
       ),
 
-      //Mensaje por si algun campo esta vacio al dar en ingreasr
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Porfavor llene este campo';
@@ -440,16 +517,16 @@ class SeccionFooter extends StatelessWidget {
         spacing: esMovil ? 20 : 50,
         runSpacing: 25,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 25, top: 20),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 25, top: 20),
             child: ContenedorLogos(),
           ),
-          InfoDesarolladores(),
-          InfoColaboradores(),
-          InfoContacto(),
+          const InfoDesarolladores(),
+          const InfoColaboradores(),
+          const InfoContacto(),
           Padding(
             padding: EdgeInsets.only(bottom: esMovil ? 40 : 0),
-            child: InfoCopy(),
+            child: const InfoCopy(),
           ),
         ],
       ),
@@ -517,13 +594,13 @@ class InfoContacto extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "Contacto:",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 13),
-          Correo(),
-          SizedBox(height: 13),
+          const SizedBox(height: 13),
+          const Correo(),
+          const SizedBox(height: 13),
           TextButton.icon(
             onPressed: () {
               Navigator.push(
@@ -531,30 +608,30 @@ class InfoContacto extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const Conocenos()),
               );
             },
-            label: Text(
+            label: const Text(
               "Conocenos",
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            icon: Icon(Icons.open_in_new, color: Colors.white, size: 14),
+            icon: const Icon(Icons.open_in_new, color: Colors.white, size: 14),
           ),
           TextButton.icon(
             onPressed: () {
               Navigator.pushNamed(
                 context,
                 '/politicasPrivacidad',
-              ); //Todaavia no agregada
+              ); 
             },
-            label: Text(
+            label: const Text(
               "Politicas de privacidad",
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            icon: Icon(Icons.open_in_new, color: Colors.white, size: 14),
+            icon: const Icon(Icons.open_in_new, color: Colors.white, size: 14),
           ),
         ],
       ),
@@ -611,7 +688,7 @@ class InfoColaboradores extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return const SizedBox(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -629,7 +706,9 @@ class InfoColaboradores extends StatelessWidget {
             "MGTI. Oscar Mejia Quintero",
             style: TextStyle(color: Colors.white),
           ),
-          Text("Evelia Inzunza García", style: TextStyle(color: Colors.white)),
+          Text("MC. Evelia Inzunza García", style: TextStyle(color: Colors.white)),
+          Text("Dr. Zeus del Valle Castillo Nájera", style: TextStyle(color: Colors.white)),
+           Text("Dr. Jose de Jesús Uriarte Adrian", style: TextStyle(color: Colors.white))
         ],
       ),
     );
@@ -642,7 +721,7 @@ class InfoDesarolladores extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return const SizedBox(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -696,12 +775,12 @@ class ContenedorLogos extends StatelessWidget {
             'assets/images/dependencias/logofic.png',
             width: MediaQuery.of(context).size.width < 500 ? 45 : 70,
           ),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           Image.asset(
             'assets/images/dependencias/lidatfic.png',
             width: MediaQuery.of(context).size.width < 500 ? 45 : 68,
           ),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           Image.asset(
             'assets/images/dependencias/bienestar.png',
             width: MediaQuery.of(context).size.width < 500 ? 45 : 88,

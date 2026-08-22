@@ -1,7 +1,7 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/tutorias/rol_administrador/asesorDiciplinar/crear_asesor_disiplinar.dart';
-import 'package:asesorias_fic/presentation/tutorias/shared/mydrawer.dart';
-import 'package:asesorias_fic/presentation/tutorias/shared/tarjeta_asesor_par_widget.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/rol_administrador/asesorDiciplinar/crear_asesor_disiplinar.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/shared/mydrawer.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/shared/tarjeta_asesor_par_widget.dart';
 import 'package:flutter/material.dart';
 
 class AsesoresParScreen extends StatelessWidget {

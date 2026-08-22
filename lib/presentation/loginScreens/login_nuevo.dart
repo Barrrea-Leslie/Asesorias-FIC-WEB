@@ -1,6 +1,6 @@
 import 'package:asesorias_fic/presentation/conocenos/conocenos.dart';
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/tutorias/shared/widgets/mensaje_confirmacion.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/shared/widgets/mensaje_confirmacion.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 

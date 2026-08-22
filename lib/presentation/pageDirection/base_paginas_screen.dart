@@ -1,4 +1,4 @@
-import 'package:asesorias_fic/presentation/tutorias/shared/mydrawer.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/shared/mydrawer.dart';
 import 'package:flutter/material.dart';
 
 class BasePaginasScreen extends StatelessWidget {

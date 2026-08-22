@@ -1,8 +1,8 @@
 import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/data/models/estudiantes_model.dart';
 import 'package:asesorias_fic/data/services/estudiantes_service.dart';
-import 'package:asesorias_fic/presentation/tutorias/shared/mydrawer.dart';
-import 'package:asesorias_fic/presentation/tutorias/shared/tarjeta_estudiante_widget.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/shared/mydrawer.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/shared/tarjeta_estudiante_widget.dart';
 import 'package:flutter/material.dart';
 
 class EstudiantesScreen extends StatelessWidget {

@@ -8,18 +8,19 @@ import 'package:asesorias_fic/presentation/pageDirection/asesorias_en_curso_scre
 import 'package:asesorias_fic/presentation/pageDirection/estudiantes_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/reportes_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/solicitudes_penidentes_screen.dart';
-import 'package:asesorias_fic/presentation/tutorias/rol_administrador/asesorDiciplinar/crear_asesor_disiplinar.dart';
-import 'package:asesorias_fic/presentation/tutorias/rol_administrador/asesorPar/crear_asesor_par.dart';
-import 'package:asesorias_fic/presentation/tutorias/rol_administrador/asesorPar/informacion_asesor_par.dart';
-import 'package:asesorias_fic/presentation/tutorias/rol_administrador/pagina_base_administrador.dart';
-import 'package:asesorias_fic/presentation/tutorias/rol_asesor/pagina_base_asesor.dart';
-import 'package:asesorias_fic/presentation/tutorias/rol_estudiante/pagina_base_estudiante.dart';
-import 'package:asesorias_fic/presentation/tutorias/rol_estudiante/solicitarAsesoria/filtros_asesoria.dart';
-import 'package:asesorias_fic/presentation/tutorias/rol_estudiante/solicitarAsesoria/informacion_asesores.dart';
+import 'package:asesorias_fic/presentation/selectorSistemas/selector_sistemas_screen.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/rol_administrador/asesorDiciplinar/crear_asesor_disiplinar.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/rol_administrador/asesorPar/crear_asesor_par.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/rol_administrador/asesorPar/informacion_asesor_par.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/rol_administrador/pagina_base_administrador.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/rol_asesor/pagina_base_asesor.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/rol_estudiante/pagina_base_estudiante.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/rol_estudiante/solicitarAsesoria/filtros_asesoria.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/rol_estudiante/solicitarAsesoria/informacion_asesores.dart';
 import 'package:flutter/widgets.dart';
 
 class AppRoutes {
-  static const initialRoute = '/inicioSesion';
+  static const initialRoute = '/selectorSistema';
 
   static Map<String, WidgetBuilder> routes = {
 
@@ -57,7 +58,14 @@ class AppRoutes {
     //Direcciones del rol de asesores
     '/paginaBaseAsesores': (context) => const PaginaBaseAsesor(),
 
-    //Primer login - no es el actual
-    '/login': (context) => const LoginScreen(),
+    '/loginNuevo': (context) => const LoginNuevo(),
+
+    //Direccion de conocenos
+    '/paginaConocenos': (conttext) => const Conocenos(),
+
+    '/inicioSesion': (context) => const InicioSesion(),
+  
+    '/selectorSistema': (context) => const SelectorSistemasScreen(),
+
   };
 }

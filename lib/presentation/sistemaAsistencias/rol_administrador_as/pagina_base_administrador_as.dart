@@ -183,7 +183,7 @@ class _SideMenuContent extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         _menuItem(Icons.pending_actions, 'Asistencia', 0),
-        _menuItem(Icons.assignment, 'Uusuarios', 1),
+        _menuItem(Icons.assignment, 'Usuarios', 1),
         _menuItem(Icons.history, 'Reportes', 2),
 
         _menuItem(Icons.person, 'Reglas', 3),

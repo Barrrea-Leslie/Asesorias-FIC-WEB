@@ -8,23 +8,23 @@ class SectionFooterTwo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final esMovil = MediaQuery.of(context).size.width < 700;
+    final isMovil = MediaQuery.of(context).size.width < 700;
 
     return Container(
       width: double.infinity,
-      constraints: BoxConstraints(minHeight: esMovil ? 450 : 280),
+      constraints: BoxConstraints(minHeight: isMovil ? 450 : 280),
 
       decoration: BoxDecoration(color: Color(0xFF08338f)),
 
       child: Padding(
         padding: EdgeInsets.only(
-          left: esMovil ? 20 : 55,
-          right: esMovil ? 20 : 55,
+          left: isMovil ? 20 : 55,
+          right: isMovil ? 20 : 55,
           top: 40,
           bottom: 40,
         ),
 
-        child: esMovil
+        child: isMovil
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,0 +1,290 @@
+import 'package:asesorias_fic/core/colores.dart';
+import 'package:asesorias_fic/presentation/tutorias/rol_administrador/asesorDiciplinar/carga_nuevo_asesor_dic.dart';
+import 'package:asesorias_fic/presentation/tutorias/rol_administrador/asesorDiciplinar/crear_asesor_disiplinar.dart';
+import 'package:asesorias_fic/presentation/tutorias/shared/tarjeta_asesor_diciplinar_widget.dart';
+import 'package:flutter/material.dart';
+
+class AsesoresDiciplinares extends StatefulWidget {
+  const AsesoresDiciplinares({super.key, this.mostrarTitulo = false});
+
+  final bool mostrarTitulo;
+
+  @override
+  State<AsesoresDiciplinares> createState() => _AsesoresDiciplinaresState();
+}
+
+class _AsesoresDiciplinaresState extends State<AsesoresDiciplinares> {
+  String query = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < 500) {
+          return PantallaResponsiva(
+            query: query,
+            onChanged: (value) => setState(() => query = value),
+          );
+        } else {
+          return PantallaGrande(
+            query: query,
+            onChanged: (value) => setState(() => query = value),
+            mostrarTitulo: widget.mostrarTitulo,
+          );
+        }
+      },
+    );
+  }
+}
+
+class PantallaResponsiva extends StatelessWidget {
+  final String query;
+  final ValueChanged<String> onChanged;
+
+  const PantallaResponsiva({
+    super.key,
+    required this.query,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: UasColores.azulOficial,
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+                child: Center(
+                  child: SizedBox(
+                    child: TextField(
+                      onChanged: onChanged,
+                      decoration: _buscadorDecoration('Buscar Asesor'),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [TarjetaAsesorDiciplinarWidget(query: query)],
+                  ),
+                ),
+              ),
+              const FooterCrearAlumno(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PantallaGrande extends StatelessWidget {
+  final String query;
+  final ValueChanged<String> onChanged;
+  final bool mostrarTitulo;
+
+  const PantallaGrande({
+    super.key,
+    required this.query,
+    required this.onChanged,
+    this.mostrarTitulo = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: UasColores.azulOficial,
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    if (mostrarTitulo)
+                      SeccionArribaPantallaGrande(onChanged: onChanged),
+
+                    if (!mostrarTitulo)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        child: TextField(
+                          onChanged: onChanged,
+                          decoration: _buscadorDecoration('Buscar Asesor'),
+                        ),
+                      ),
+
+                    const SizedBox(height: 40),
+
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            TarjetaAsesorDiciplinarWidget(query: query),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const FooterCrearAlumno(),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+InputDecoration _buscadorDecoration(String hint) {
+  return InputDecoration(
+    hintText: hint,
+    hintStyle: const TextStyle(fontSize: 15, color: Color(0xFFb4b4b4)),
+    prefixIcon: const Icon(Icons.search, color: Color(0xFFb4b4b4), size: 18),
+    filled: true,
+    fillColor: const Color(0xFFf2f3f5),
+    enabledBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.transparent),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Appcolores.azulUas),
+      borderRadius: BorderRadius.circular(10),
+    ),
+  );
+}
+
+class SeccionArribaPantallaGrande extends StatelessWidget {
+  final ValueChanged<String> onChanged;
+
+  const SeccionArribaPantallaGrande({super.key, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool esCompacto = constraints.maxWidth < 840;
+
+        return SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 60.0, top: 20, right: 60.0),
+            child: esCompacto
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Asesores Disciplinares",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 23,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        child: TextField(
+                          onChanged: onChanged,
+                          decoration: _buscadorDecoration('Buscar Asesor'),
+                        ),
+                      ),
+                    ],
+                  )
+                : Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Asesores Disciplinares",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 23,
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      SizedBox(
+                        width: 220,
+                        child: TextField(
+                          onChanged: onChanged,
+                          decoration: _buscadorDecoration('Buscar Asesor'),
+                        ),
+                      ),
+                    ],
+                  ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class FooterCrearAlumno extends StatelessWidget {
+  const FooterCrearAlumno({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(30),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    insetPadding: EdgeInsets.zero,
+                    backgroundColor: Colors.white,
+
+                    content: Container(
+                      width: 400,
+                      height: 300,
+                      color: Colors.white,
+                      child: const CargaNuevoAsesorDic(),
+                    ),
+                  );
+                },
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Appcolores.verdeClaro,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            child: const Text("Crear Asesor", style: TextStyle(fontSize: 15)),
+          ),
+        ],
+      ),
+    );
+  }
+}

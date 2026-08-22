@@ -24,7 +24,12 @@ class AppRoutes {
   static const initialRoute = '/selectorSistema';
 
   static Map<String, WidgetBuilder> routes = {
-    '/login': (context) => const LoginScreen(),
+
+    //Login actual - actualizado
+    '/inicioSesion': (context) => const InicioSesion(),
+
+    //Direccion de conocenos
+    '/paginaConocenos': (conttext) => const Conocenos(),
 
     //Direcciones del rol de administrador
     '/asesoriasEnCurso': (context) => const AsesoriasEnCursoScreen(),

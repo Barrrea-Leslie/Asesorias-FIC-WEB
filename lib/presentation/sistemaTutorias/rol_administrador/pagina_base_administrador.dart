@@ -30,15 +30,15 @@ class _HomePageState extends State<HomePage> {
     "Catalogos",
   ];
 
-  List<Widget> _buildPages(bool isMobile) => [
-    AsesoriasEnCurso(mostrarTitulo: !isMobile),
-    SolicitudesPendientes(mostrarTitulo: !isMobile),
-    Reportes(mostrarTitulo: !isMobile),
-    AsesoresDiciplinares(mostrarTitulo: !isMobile),
-    AsesoresPar(mostrarTitulo: !isMobile),
+  List<Widget> _buildPages(bool esMovil) => [
+    AsesoriasEnCurso(mostrarTitulo: !esMovil),
+    SolicitudesPendientes(mostrarTitulo: !esMovil),
+    Reportes(mostrarTitulo: !esMovil),
+    AsesoresDiciplinares(mostrarTitulo: !esMovil),
+    AsesoresPar(mostrarTitulo: !esMovil),
     //PantallaEstudiantes(),
-    Estudiantes(mostrarTitulo: !isMobile),
-    Catalogos(mostrarTitulo: !isMobile,),
+    Estudiantes(mostrarTitulo: !esMovil),
+    Catalogos(mostrarTitulo: !esMovil,),
   ];
 
   void _onItemSelected(BuildContext context, int index) {
@@ -57,10 +57,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final bool isMobile = constraints.maxWidth < 800;
-        final pages = _buildPages(isMobile);
+        final bool esMovil = constraints.maxWidth < 800;
+        final pages = _buildPages(esMovil);
 
-        if (isMobile) {
+        if (esMovil) {
           return _buildMobile(pages);
         } else {
           return _buildDesktop(pages);

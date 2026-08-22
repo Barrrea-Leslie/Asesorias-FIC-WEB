@@ -9,6 +9,7 @@ import 'package:asesorias_fic/presentation/pageDirection/estudiantes_screen.dart
 import 'package:asesorias_fic/presentation/pageDirection/reportes_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/solicitudes_penidentes_screen.dart';
 import 'package:asesorias_fic/presentation/selectorSistemas/selector_sistemas_screen.dart';
+import 'package:asesorias_fic/presentation/sistemaAsistencias/rol_administrador_as/pagina_base_administrador_as.dart';
 import 'package:asesorias_fic/presentation/sistemaTutorias/rol_administrador/asesorDiciplinar/crear_asesor_disiplinar.dart';
 import 'package:asesorias_fic/presentation/sistemaTutorias/rol_administrador/asesorPar/crear_asesor_par.dart';
 import 'package:asesorias_fic/presentation/sistemaTutorias/rol_administrador/asesorPar/informacion_asesor_par.dart';
@@ -59,8 +60,13 @@ class AppRoutes {
     '/paginaConocenos': (conttext) => const Conocenos(),
 
     '/inicioSesion': (context) => const InicioSesion(),
-  
+
+    //Selector de modulos de cada sistema
     '/selectorSistema': (context) => const SelectorSistemasScreen(),
 
+    //Rutas del sistema de Asistencias/Chechacor
+
+    //Paagina base del adminstrador del sistema de asistencia
+    '/paginaBaseAdministradorAs': (context) => const PaginaBaseAdministradorAs(),
   };
 }

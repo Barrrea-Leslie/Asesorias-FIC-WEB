@@ -294,7 +294,7 @@ class BotonIngresar extends StatelessWidget {
         if (_formKey.currentState!.validate() &&
             inputCuenta == '12345' &&
             inputNip == '1234') {
-          Navigator.pushReplacementNamed(context, '/paginaBaseAdministrador');
+          Navigator.pushReplacementNamed(context, '/selectorSistema');
 
           MensajeConfirmacion.mostrarMensaje(
             context,

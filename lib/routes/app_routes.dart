@@ -6,10 +6,10 @@ import 'package:asesorias_fic/presentation/pageDirection/asesores_diciplinares_s
 import 'package:asesorias_fic/presentation/pageDirection/asesores_par_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesorias_en_curso_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/estudiantes_screen.dart';
-import 'package:asesorias_fic/presentation/pageDirection/reportes_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/solicitudes_penidentes_screen.dart';
 import 'package:asesorias_fic/presentation/selectorSistemas/selector_sistemas_screen.dart';
 import 'package:asesorias_fic/presentation/sistemaAsistencias/rol_administrador_as/pagina_base_administrador_as.dart';
+import 'package:asesorias_fic/presentation/sistemaAsistencias/rol_administrador_as/reportes/reportes_screen.dart';
 import 'package:asesorias_fic/presentation/sistemaTutorias/rol_administrador/asesorDiciplinar/crear_asesor_disiplinar.dart';
 import 'package:asesorias_fic/presentation/sistemaTutorias/rol_administrador/asesorPar/crear_asesor_par.dart';
 import 'package:asesorias_fic/presentation/sistemaTutorias/rol_administrador/asesorPar/informacion_asesor_par.dart';
@@ -24,7 +24,6 @@ class AppRoutes {
   static const initialRoute = '/selectorSistema';
 
   static Map<String, WidgetBuilder> routes = {
-
     //Login actual - actualizado
     '/inicioSesion': (context) => const InicioSesion(),
 
@@ -72,6 +71,7 @@ class AppRoutes {
     //Rutas del sistema de Asistencias/Chechacor
 
     //Paagina base del adminstrador del sistema de asistencia
-    '/paginaBaseAdministradorAs': (context) => const PaginaBaseAdministradorAs(),
+    '/paginaBaseAdministradorAs': (context) =>
+        const PaginaBaseAdministradorAs(),
   };
 }

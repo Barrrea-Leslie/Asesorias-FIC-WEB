@@ -31,20 +31,27 @@ class _ConocenosState extends State<Conocenos> {
 
   @override
   Widget build(BuildContext context) {
-    final tamanoPantalla = MediaQuery.of(context).size.width;
+    
+    final width = MediaQuery.of(context).size.width;
 
-    final bool esMovil = tamanoPantalla < 700;
+    final bool esMovil = width < 700;
+    final bool esTablet = width >= 700 && width < 1100;
+    final bool esDesktop = width >= 1100;
 
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: Container(
-              height: 140,
-              color: const Color(0xFF0856b6),
+
+              constraints: BoxConstraints(
+              minHeight:esMovil ? 110 : 140,
+              ),
+              
+              color: UasColores.azulOficial,
               padding: EdgeInsets.symmetric(
-                horizontal: esMovil ? 20 : 100,
-                vertical: 10,
+                horizontal: esMovil ? 16 : 60,
+                vertical:esMovil ? 15 : 10,
               ),
 
               child: Row(
@@ -105,7 +112,7 @@ class _ConocenosState extends State<Conocenos> {
               width: double.infinity,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: esMovil ? 10 : 100),
+                padding: EdgeInsets.symmetric(horizontal: esMovil ? 5 : 40),
                 children: [
                   _itemMenu(
                     'Nuestro equipo',
@@ -161,9 +168,9 @@ class _ConocenosState extends State<Conocenos> {
                   key: nuestroEquipooKey,
                   width: double.infinity,
                   color: Color(0xFFC59525).withOpacity(0.15),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 120,
-                    vertical: 70,
+                  padding:  EdgeInsets.symmetric(
+                    horizontal: esMovil ? 20 : 80,
+                    vertical: esMovil ? 40 : 70,
                   ),
 
                   child: Center(
@@ -724,9 +731,15 @@ class SectionFooterTwo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+final esMovil = MediaQuery.of(context).size.width < 700;
+
     return Container(
+
+    
+
       width: double.infinity,
-      height: 280,
+      constraints: BoxConstraints(minHeight: esMovil ? 450 : 280),
 
       decoration: BoxDecoration(
         color: Color(0xFF08338f),

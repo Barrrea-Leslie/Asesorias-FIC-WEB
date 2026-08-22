@@ -8,8 +8,6 @@ Widget contenedorTexto({
   required String titulo,
   required String contenido,
   Color? color,
-
-  
   
 }) {
   return LayoutBuilder(

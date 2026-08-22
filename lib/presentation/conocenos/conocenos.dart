@@ -1,9 +1,11 @@
 import 'package:asesorias_fic/core/colores.dart';
 import 'package:asesorias_fic/presentation/conocenos/dependencias_conocenos.dart';
-import 'package:asesorias_fic/presentation/conocenos/info_conocenos.dart';
+import 'package:asesorias_fic/presentation/conocenos/containerInfoBody.dart';
 import 'package:asesorias_fic/presentation/conocenos/menu_conocenos.dart';
+import 'package:asesorias_fic/presentation/conocenos/responsive_conocenos.dart';
 import 'package:asesorias_fic/presentation/conocenos/tarjetas_conocenos.dart';
 import 'package:asesorias_fic/presentation/loginScreens/inicio_sesion.dart';
+import 'tarjetaMisionVision.dart';
 import 'package:flutter/material.dart';
 import 'footer_conocenos.dart';
 
@@ -35,47 +37,61 @@ class _ConocenosState extends State<Conocenos> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-
-    final bool esMovil = width < 700;
-    final bool esTablet = width >= 700 && width < 1100;
-    final bool esDesktop = width >= 1100;
+    //widgets responsivos
+    final  isMovil =  ResponsiveConocenos.isMobile(context);
+    final  isTablet = ResponsiveConocenos.isTablet(context);
+    final  isDesktop = ResponsiveConocenos.isDesktop(context);
 
     return Scaffold(
       body: CustomScrollView(
+       
+        
         slivers: <Widget>[
+          ////////////  ENCABEZADO //////////////
           SliverToBoxAdapter(
-            child: Container(
-              constraints: BoxConstraints(minHeight: esMovil ? 110 : 140),
+            child:LayoutBuilder(
+              builder: (context, constraints){
+               final width = constraints.maxWidth;
+
+                final logoWidth = (width *0.12).clamp(70.0, 100.0);
+                final logoHeight =(width * 0.12).clamp(95.0, 120.0);
+                /* final titleSize = (width *0.045).clamp(25.0, 36.0);
+                final subtituleSize = (width *0.028).clamp(16.0, 22.0);
+                final espacio = (width *0.35).clamp(15.0, 30.0); */
+             
+            return Container(
+              width: double.infinity,
 
               color: UasColores.azulOficial,
               padding: EdgeInsets.symmetric(
-                horizontal: esMovil ? 16 : 60,
-                vertical: esMovil ? 8 : 10,
+                horizontal: ResponsiveConocenos.horizontalPadding(context),
+                vertical: isMovil ? 25 : 30,
+                
               ),
-
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  navegacioLoginTwo(context),
+                  navegacioLoginTwo(context, logoWidth, logoHeight),
 
-                  SizedBox(width: esMovil ? 20 : 20),
+                  SizedBox(width: 35),
 
-                  Expanded(
+                  Flexible(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: esMovil
+                      crossAxisAlignment: isMovil
                           ? CrossAxisAlignment.start
                           : CrossAxisAlignment.center,
 
                       children: [
                         Text(
                           'Asesorias FIC',
-                          textAlign: esMovil
+                          textAlign: isMovil
                               ? TextAlign.start
                               : TextAlign.center,
                           style: TextStyle(
                             color: const Color.fromARGB(255, 245, 246, 247),
-                            fontSize: esMovil ? 22 : 28,
+                            fontSize: ResponsiveConocenos.titleSize(context),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -86,7 +102,7 @@ class _ConocenosState extends State<Conocenos> {
                           'Facultad de informatica Culiacan',
                           style: TextStyle(
                             color: const Color.fromARGB(255, 228, 232, 238),
-                            fontSize: esMovil ? 13 : 22,
+                            fontSize: isMovil ? 13 : 22,
                             fontWeight: FontWeight.normal,
                           ),
                         ),
@@ -95,24 +111,40 @@ class _ConocenosState extends State<Conocenos> {
                   ),
                 ],
               ),
+            );
+               }
+               ),
             ),
-          ),
+          
+           
 
           //Menu Horizontal
-          SliverAppBar(
+          MenuConocenos(
+            nuestroEquipooKey: nuestroEquipooKey, 
+            nuestroProyectoKey: nuestroProyectoKey, 
+            quienesSomosKey: quienesSomosKey, 
+            comoSurgioKey: comoSurgioKey, 
+            objetivosKey: objetivosKey, 
+            misionVKey: misionVKey, 
+            vinculacionKey: vinculacionKey, 
+            agradecimientosKey: agradecimientosKey, 
+            contactoKey: contactoKey, 
+            irASection: irASection),
+
+         /*  SliverAppBar(
             backgroundColor: Color(0xFFc49e0d),
             pinned: true,
             floating: false,
             toolbarHeight: 60,
             automaticallyImplyLeading: false,
-            titleSpacing: 100,
+            titleSpacing: 0,
 
             title: SizedBox(
               height: 50,
               width: double.infinity,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: esMovil ? 5 : 40),
+                padding: EdgeInsets.symmetric(horizontal: isMovil ? 4 : 30),
                 children: [
                   itemMenu(
                     'Nuestro equipo',
@@ -138,26 +170,26 @@ class _ConocenosState extends State<Conocenos> {
                 ],
               ),
             ),
-          ),
+          ), */
 
           SliverToBoxAdapter(
             child: Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 70),
+                  padding:  EdgeInsets.symmetric(vertical: isMovil ? 40 : 50),
                   child: Column(
                     children: [
                       Text(
                         'Acerca de nosotros',
                         style: TextStyle(
-                          fontSize: 28,
+                          fontSize: ResponsiveConocenos.titleSize(context),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 10),
                       Text(
                         'Sistema de tutorias UAS',
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: ResponsiveConocenos.textSizeBody(context)),
                       ),
                     ],
                   ),
@@ -169,8 +201,8 @@ class _ConocenosState extends State<Conocenos> {
                   width: double.infinity,
                   color: Color(0xFFC59525).withOpacity(0.15),
                   padding: EdgeInsets.symmetric(
-                    horizontal: esMovil ? 20 : 80,
-                    vertical: esMovil ? 40 : 70,
+                    horizontal: isMovil ? 20 : 80,
+                    vertical: isMovil ? 40 : 70,
                   ),
 
                   child: Center(
@@ -287,10 +319,10 @@ class _ConocenosState extends State<Conocenos> {
 
                 SizedBox(height: 135),
 
-                //Mision y vision
+                /////////////////////////////   Mision y vision   /////////////////////////////
                 Container(
                   key: misionVKey,
-                  padding: EdgeInsets.symmetric(horizontal: esMovil ? 20 : 80),
+                  padding: EdgeInsets.symmetric(horizontal: ResponsiveConocenos.horizontalPadding(context)),
 
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -303,11 +335,13 @@ class _ConocenosState extends State<Conocenos> {
                         runAlignment: WrapAlignment.center,
                         children: [
                           tarjetaMision(
-                            'Mision',
+                            context,
+                            'Misión',
                             'Nuestra misión es proporcionar una plataforma digital que facilite la gestión de asesorías en la Facultad de Informática de Culiacán, promoviendo la interacción efectiva entre estudiantes y asesores y contribuyendo al desarrollo académico de los estudiantes mediante el acceso a recursos de asesoría de calidad.',
                           ),
                           tarjetaMision(
-                            'Vision',
+                            context,
+                            'Visión',
                             'Nuestra visión es ser un referente en la implementación de soluciones tecnológicas en el ámbito académico, transformando la manera en que se gestionan las asesorías y mejorando la experiencia educativa de los estudiantes. Buscamos innovar continuamente para adaptarnos a las necesidades cambiantes de la comunidad universitaria.',
                           ),
                         ],
@@ -316,129 +350,12 @@ class _ConocenosState extends State<Conocenos> {
                   ),
                 ),
 
-                SizedBox(height: 70),
+                /////////////////////////////////////////////////////////////////////////
 
-                //Depenencias
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 70),
-                  child: Container(
-                    key: vinculacionKey,
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 60,
-                      horizontal: 30,
-                    ),
+                SizedBox(height: 65),
+                ///////////////////////////   DEPENDENCIAS VINCULADAS  ///////////////////
+                seccionDependencias(key: vinculacionKey,),
 
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Dependencias Vinculadas',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 40),
-
-                        Wrap(
-                          spacing: 40,
-                          runSpacing: 40,
-                          alignment: WrapAlignment.center,
-
-                          children: [
-                            logosDependencia(
-                              'assets/images/dependencias/logofic.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/lidatfic.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/bienestar.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/biblioteca.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/serviciosocial.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/adiuas.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/sau.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/dgvri.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/piefad.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/culturauaslogo.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/direccionartistica.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/psicologia.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/medicina.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/dgep.jpeg',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/logo_dsgc.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/logo_prodep.jpeg',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/radio_uas.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/ciencias.jpg',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/ccu.jpeg',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/logo_odontologia.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/EMPRENDEUAS.png',
-                            ),
-
-                            logosDependencia(
-                              'assets/images/dependencias/logo_dges.png',
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
                 //SECCION DE FOOTER
                 SectionFooterTwo(key: contactoKey),
               ],
@@ -450,9 +367,9 @@ class _ConocenosState extends State<Conocenos> {
   }
 }
 
-//widget para la navegacion login
-Widget navegacioLoginTwo(BuildContext context) {
-  final esMovil = MediaQuery.of(context).size.width < 700;
+//widget para la navegacion login el logo
+Widget navegacioLoginTwo(BuildContext context, double width, double height) {
+  //final isMovil = ResponsiveConocenos.isMobile(context);
 
 
   return MouseRegion(
@@ -469,59 +386,12 @@ Widget navegacioLoginTwo(BuildContext context) {
       //la imagen y tamaño de la imagen (LOGO)
       child: Image.asset(
         'assets/images/logo_uas.png',
-        width: esMovil ? 55: 90,
-        height: esMovil ? 55 : 90,
+        width: width,
+        height: height,
+       // height: isMovil ? 55 : 100,
         fit: BoxFit.contain,
       ),
     ),
   );
 }
 
-
-//tarjeta de msion y vision
-
-Widget tarjetaMision(String titulo, String contenido) {
-  return Container(
-    width: 500,
-    height: 390,
-
-    constraints: const BoxConstraints(minHeight: 320),
-
-    padding: const EdgeInsets.all(35),
-
-    decoration: BoxDecoration(
-      color: const Color(0xFF08338f),
-      borderRadius: BorderRadius.circular(5),
-
-      boxShadow: [
-        BoxShadow(color: Colors.black.withOpacity(0.8), blurRadius: 4),
-      ],
-    ),
-
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          titulo,
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 229, 223, 223),
-          ),
-        ),
-        const SizedBox(height: 25),
-
-        Text(
-          contenido,
-          textAlign: TextAlign.justify,
-          style: const TextStyle(
-            fontSize: 18,
-            height: 1.7,
-            fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 229, 223, 223),
-          ),
-        ),
-      ],
-    ),
-  );
-}

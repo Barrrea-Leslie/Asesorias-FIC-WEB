@@ -31,12 +31,12 @@ class OpcionesSistemas extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 40),
+        SizedBox(height: 70),
         //Logo
         Center(
           child: Image.asset(
             'assets/images/Logo.png',
-            width: esMovil ? 200 : 210,
+            width: esMovil ? 150 : 210,
           ),
         ),
 
@@ -45,8 +45,8 @@ class OpcionesSistemas extends StatelessWidget {
         //contenedor de las opciones
         Center(
           child: Container(
-            width: 800,
-            height: 380,
+            width: esMovil ? 330 : 800,
+            height: esMovil ? 530 : 380,
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(color: Color(0xFFC2C2C2)),
@@ -58,47 +58,23 @@ class OpcionesSistemas extends StatelessWidget {
                 Text(
                   "Elija el modulo al que desee acceder",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 50),
-                Row(
+                Flex(
+                  direction: esMovil ? Axis.vertical : Axis.horizontal,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 250,
-                      height: 130,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        color: UasColores.azulOficial,
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Modulo de Tutorias",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 17,
-                          ),
-                        ),
-                      ),
+                    OpcionModulo(
+                      esMovil: esMovil,
+                      nombreOpcion: "Modulo de Tutorias",
+                      rutaOpcion: '/paginaBaseAdministrador',
                     ),
-                    SizedBox(width: 60),
-                    Container(
-                      width: 250,
-                      height: 130,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        color: UasColores.azulOficial,
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Modulo de Asistencias",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 17,
-                          ),
-                        ),
-                      ),
+                    SizedBox(width: esMovil ? 0 : 60, height: esMovil ? 50 : 0),
+                    OpcionModulo(
+                      esMovil: esMovil,
+                      nombreOpcion: "Modulo de Asistencias",
+                      rutaOpcion: '/paginaBaseAdministradorAs',
                     ),
                   ],
                 ),
@@ -107,6 +83,49 @@ class OpcionesSistemas extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class OpcionModulo extends StatelessWidget {
+  const OpcionModulo({
+    super.key,
+    required this.esMovil,
+    required this.nombreOpcion,
+    required this.rutaOpcion,
+  });
+
+  final bool esMovil;
+  final String nombreOpcion;
+  final String rutaOpcion;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.pushReplacementNamed(context, rutaOpcion);
+        },
+        child: Container(
+          width: esMovil ? 210 : 250,
+          height: esMovil ? 110 : 130,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            color: UasColores.azulOficial,
+          ),
+          child: Center(
+            child: Text(
+              nombreOpcion,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: esMovil ? 16 : 17,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

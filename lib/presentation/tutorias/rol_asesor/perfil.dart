@@ -1,0 +1,120 @@
+import 'package:asesorias_fic/core/colores.dart';
+import 'package:flutter/material.dart';
+
+class Perfil extends StatelessWidget {
+  const Perfil({super.key, required this.mostrarTitulo});
+
+  final bool mostrarTitulo;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < 500) {
+          return PantallaResponsiva();
+        } else {
+          return PantallaGrande(mostrarTitulo: mostrarTitulo);
+        }
+      },
+    );
+  }
+}
+
+class PantallaResponsiva extends StatelessWidget {
+  const PantallaResponsiva({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: UasColores.azulOficial,
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: const Center(child: Text('Perfil')),
+        ),
+      ),
+    );
+  }
+}
+
+class PantallaGrande extends StatelessWidget {
+  const PantallaGrande({super.key, this.mostrarTitulo = false});
+
+  final bool mostrarTitulo;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: UasColores.azulOficial,
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    if (mostrarTitulo) SeccionArribaPantallaGrande(),
+
+                    const SizedBox(height: 60),
+
+                    Container(
+                      width: 300,
+                      height: 500,
+
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2,), // Color y opacidad
+                            spreadRadius: 2, // Expansión de la sombra
+                            blurRadius: 8, // Difuminado de los bordes
+                            offset: Offset(4,4,), // Dirección de la sombra (eje x, y)
+                          ),
+                        ],
+                      ),
+                      child: Text("daou"),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SeccionArribaPantallaGrande extends StatelessWidget {
+  const SeccionArribaPantallaGrande({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 60.0, top: 20, right: 60.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              "Perfil",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+            ),
+            const SizedBox(width: 15),
+          ],
+        ),
+      ),
+    );
+  }
+}

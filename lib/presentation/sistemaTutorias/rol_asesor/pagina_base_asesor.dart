@@ -15,11 +15,11 @@ class PaginaBaseAsesor extends StatefulWidget {
 class _PaginaBaseAsesorState extends State<PaginaBaseAsesor> {
   int _selectedIndex = 0;
 
-  List<Widget> _buildPages(bool isMobile) => [
-    SolicitudesPendientesAsesor(mostrarTitulo: !isMobile),
-    AsesoriasEnCursoAsesor(mostrarTitulo: !isMobile),
-    HistorialAsesoriasAsesor(mostrarTitulo: !isMobile),
-    Perfil(mostrarTitulo: !isMobile),
+  List<Widget> _buildPages(bool esMovil) => [
+    SolicitudesPendientesAsesor(mostrarTitulo: !esMovil),
+    AsesoriasEnCursoAsesor(mostrarTitulo: !esMovil),
+    HistorialAsesoriasAsesor(mostrarTitulo: !esMovil),
+    Perfil(mostrarTitulo: !esMovil),
   ];
 
   final List<String> _titles = [
@@ -45,10 +45,10 @@ class _PaginaBaseAsesorState extends State<PaginaBaseAsesor> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final bool isMobile = constraints.maxWidth < 800;
-        final pages = _buildPages(isMobile);
+        final bool esMovil = constraints.maxWidth < 800;
+        final pages = _buildPages(esMovil);
 
-        if (isMobile) {
+        if (esMovil) {
           return _buildMobile(pages);
         } else {
           return _buildDesktop(pages);

@@ -1,6 +1,6 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/shared/mydrawer.dart';
-import 'package:asesorias_fic/presentation/shared/tarjeta_asesorias_widget.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/shared/mydrawer.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/shared/tarjeta_asesorias_widget.dart';
 import 'package:flutter/material.dart';
 
 class AsesoriasEnCursoScreen extends StatelessWidget {

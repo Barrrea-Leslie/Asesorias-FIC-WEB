@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/shared/widgets/mensaje_confirmacion.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/shared/widgets/mensaje_confirmacion.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {

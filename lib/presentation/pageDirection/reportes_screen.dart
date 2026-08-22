@@ -1,6 +1,6 @@
 
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/shared/mydrawer.dart';
+import 'package:asesorias_fic/presentation/sistemaTutorias/shared/mydrawer.dart';
 import 'package:flutter/material.dart';
 
 class ReportesScreen extends StatelessWidget {

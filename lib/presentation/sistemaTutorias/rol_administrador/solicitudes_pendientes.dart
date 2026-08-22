@@ -1,19 +1,20 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/presentation/sistemaTutorias/shared/mydrawer.dart';
 import 'package:asesorias_fic/presentation/sistemaTutorias/shared/tarjeta_solicitud_widget.dart';
 import 'package:flutter/material.dart';
 
-class SolicitudesPenidentesScreen extends StatelessWidget {
-  const SolicitudesPenidentesScreen({super.key});
+class SolicitudesPendientes extends StatelessWidget {
+  const SolicitudesPendientes({super.key, this.mostrarTitulo = false});
+
+  final bool mostrarTitulo;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth < 1000) {
+        if (constraints.maxWidth < 500) {
           return PantallaResponsiva();
         } else {
-          return PantallaGrande();
+          return PantallaGrande(mostrarTitulo: mostrarTitulo);
         }
       },
     );
@@ -26,88 +27,55 @@ class PantallaResponsiva extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 155, 56, 56),
-
-      appBar: AppBar(
-        leading: Builder(
-          builder: (context) => IconButton(
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-            icon: Icon(Icons.menu, size: 30.0),
+      backgroundColor: UasColores.azulOficial,
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
           ),
-        ),
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        title: Text(
-          'Solicitudes Pendientes',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
-
-      drawer: Mydrawer(rutaActual: '/solicitudesPendintes'),
-
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(height: 60),
-
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(children: [TarjetaSolicitudWidget()]),
+          child: Column(
+            children: [
+              const SizedBox(height: 40),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(children: [TarjetaSolicitudWidget()]),
+                ),
               ),
-            ),
-
-            FooterCrearAlumno(),
-          ],
+              FooterCrearAlumno(),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-//widget para pantalla completa
-
 class PantallaGrande extends StatelessWidget {
-  const PantallaGrande({super.key});
+  const PantallaGrande({super.key, this.mostrarTitulo = false});
+
+  final bool mostrarTitulo;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Appcolores.azulUas,
-
-      /* appBar: AppBar(
-        
-        leading: Builder(builder: (context) => IconButton(
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-          icon: Icon(Icons.menu, size: 30.0,))),
-        backgroundColor: Appcolores.azulUas,
-        title: Text('Alumnos', style: TextStyle(fontWeight: FontWeight.bold)),
-    
-        ), */
-
-      //drawer: Mydrawer(rutaActual: DiregirEstudiantes()),
+      backgroundColor: UasColores.azulOficial,
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
-            //menu
-            Mydrawer(rutaActual: '/solicitudesPendientes'),
-
-            //contenido
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
-
                 child: Column(
                   children: [
-                    SeccionArribaPantallaGrande(),
+                    if (mostrarTitulo) SeccionArribaPantallaGrande(),
 
-                    SizedBox(height: 60),
+                    const SizedBox(height: 60),
 
                     Expanded(
                       child: SingleChildScrollView(
@@ -134,18 +102,16 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-
       child: Padding(
         padding: const EdgeInsets.only(left: 60.0, top: 20, right: 60.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               "Solicitudes Pendientes",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
             ),
-
             const SizedBox(width: 15),
           ],
         ),
@@ -161,7 +127,7 @@ class FooterCrearAlumno extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(30),
+      padding: const EdgeInsets.all(30),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),

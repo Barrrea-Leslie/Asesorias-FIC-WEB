@@ -1,6 +1,8 @@
 import 'package:asesorias_fic/core/colores.dart';
-import 'package:asesorias_fic/data/services/asesores_diciplinares_service.dart';
-import 'package:asesorias_fic/data/services/asesores_par_service.dart';
+import 'package:asesorias_fic/data/models/asesores_vista_estudiante.dart';
+import 'package:asesorias_fic/data/models/catalogos_model.dart';
+import 'package:asesorias_fic/data/repositories/catalogos_repository.dart';
+import 'package:asesorias_fic/data/services/asesores_service.dart';
 import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/crear_solicitud.dart';
 import 'package:asesorias_fic/presentation/rol_estudiante/solicitarAsesoria/filtros_asesoria.dart';
 import 'package:asesorias_fic/presentation/rol_estudiante/widgets/tarjeta_solicitar_asesoria.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/material.dart';
 class SolicitarAsesoria extends StatefulWidget {
   const SolicitarAsesoria({super.key, this.mostrarTitulo = false});
   final bool mostrarTitulo;
+
   @override
   State<SolicitarAsesoria> createState() => _SolicitarAsesoriaState();
 }
@@ -16,38 +19,71 @@ class SolicitarAsesoria extends StatefulWidget {
 class _SolicitarAsesoriaState extends State<SolicitarAsesoria> {
   String query = '';
   Map<String, String?> filtrosActivos = {};
-  List<dynamic> todosLosAsesores = [];
+  List<asesores_vista_estudiante> todosLosAsesores = [];
+  CatalogosModel? catalogos;
   bool cargando = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _cargarDatosIniciales();
+  }
+
+  // Carga de asesores y catálogos en paralelo
+  Future<void> _cargarDatosIniciales() async {
+    try {
+      // 1. Ejecutamos ambas peticiones HTTP al mismo tiempo
+      final resultados = await Future.wait([
+        AsesoresService().obtenerAsesores(),
+        CatalogosRepository().getCatalogos(),
+      ]);
+
+      // 2. Extraemos los resultados asignando su tipo de dato correspondiente
+      final asesoresObtenidos = resultados[0] as List<asesores_vista_estudiante>;
+      final catalogosObtenidos = resultados[1] as CatalogosModel;
+
+      /*
+
+      // 3. Imprimimos en la consola de desarrollador para verificar la llegada de datos
+      print('==================================================');
+      print('✅ DATOS CARGADOS DESDE EL BACKEND');
+      print('Total de Asesores: ${asesoresObtenidos.length}');
+      print('--------------------------------------------------');
+      print('Razones de asesoría: ${catalogosObtenidos.razonAsesoria}');
+      print('Modalidades disponibles: ${catalogosObtenidos.modalidades}');
+      print('Total de materias en el catálogo: ${catalogosObtenidos.materias}');
+      print('Total de horarios en el catálogo: ${catalogosObtenidos.horarios}');
+      print('==================================================');
+
+      */
+
+      // 4. Guardamos los datos en el estado y desactivamos el indicador de carga
+      setState(() {
+        todosLosAsesores = asesoresObtenidos;
+        catalogos = catalogosObtenidos;
+        cargando = false;
+      });
+    } catch (e) {
+      // 5. En caso de error, mostramos el detalle en la consola
+      /*
+      print('==================================================');
+      print('❌ ERROR AL OBTENER DATOS DE LA API:');
+      print(e);
+      print('==================================================');
+      */
+      setState(() => cargando = false);
+    }
+  }
+
   void _abrirFiltros() async {
     final resultado = await showDialog<Map<String, String?>>(
       context: context,
-      builder: (context) => const FiltrosAsesoria(),
+      builder: (context) => FiltrosAsesoria(catalogos: catalogos),
     );
     if (resultado != null) {
       setState(() {
         filtrosActivos = resultado;
       });
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchAsesores();
-  }
-
-  Future<void> _fetchAsesores() async {
-    try {
-      final resultados = await Future.wait([
-        AsesoresParService().getAsesoresPar(),
-        AsesoresDiciplinaresService().getAsesoresDiciplinares(),
-      ]);
-      setState(() {
-        todosLosAsesores = [...resultados[0], ...resultados[1]];
-        cargando = false;
-      });
-    } catch (e) {
-      setState(() => cargando = false);
     }
   }
 
@@ -64,6 +100,7 @@ class _SolicitarAsesoriaState extends State<SolicitarAsesoria> {
             filtros: filtrosActivos,
             onTapFiltro: _abrirFiltros,
             todosLosAsesores: todosLosAsesores,
+            catalogos: catalogos,
             onChanged: (value) => setState(() => query = value),
           );
         } else {
@@ -72,6 +109,7 @@ class _SolicitarAsesoriaState extends State<SolicitarAsesoria> {
             filtros: filtrosActivos,
             onTapFiltro: _abrirFiltros,
             todosLosAsesores: todosLosAsesores,
+            catalogos: catalogos,
             mostrarTitulo: widget.mostrarTitulo,
             onChanged: (value) => setState(() => query = value),
           );
@@ -85,16 +123,20 @@ class PantallaResponsiva extends StatelessWidget {
   final String query;
   final Map<String, String?> filtros;
   final VoidCallback onTapFiltro;
-  final List<dynamic> todosLosAsesores;
+  final List<asesores_vista_estudiante> todosLosAsesores;
+  final CatalogosModel? catalogos;
   final ValueChanged<String> onChanged;
+
   const PantallaResponsiva({
     super.key,
     required this.query,
     required this.filtros,
     required this.onTapFiltro,
     required this.todosLosAsesores,
+    required this.catalogos,
     required this.onChanged,
   });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,27 +150,41 @@ class PantallaResponsiva extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // BUSCADOR (igual que asesor)
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 12,
                 ),
-                child: TextField(
-                  onChanged: onChanged,
-                  decoration: _buscadorDecoration(),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        onChanged: onChanged,
+                        decoration: _buscadorDecoration(),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    IconButton(
+                      icon: const Icon(Icons.filter_alt, color: UasColores.azulOficial),
+                      onPressed: onTapFiltro,
+                    ),
+                  ],
                 ),
               ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      TarjetaSolicitarAsesoria(query: query, filtros: filtros),
+                      TarjetaSolicitarAsesoria(
+                        query: query,
+                        filtros: filtros,
+                        todosLosAsesores: todosLosAsesores,
+                        catalogos: catalogos,
+                      ),
                     ],
                   ),
                 ),
               ),
-              // Footer(todosLosAsesores: todosLosAsesores),
             ],
           ),
         ),
@@ -141,18 +197,22 @@ class PantallaGrande extends StatelessWidget {
   final String query;
   final Map<String, String?> filtros;
   final VoidCallback onTapFiltro;
-  final List<dynamic> todosLosAsesores;
+  final List<asesores_vista_estudiante> todosLosAsesores;
+  final CatalogosModel? catalogos;
   final ValueChanged<String> onChanged;
   final bool mostrarTitulo;
+
   const PantallaGrande({
     super.key,
     required this.query,
     required this.filtros,
     required this.onTapFiltro,
     required this.todosLosAsesores,
+    required this.catalogos,
     required this.onChanged,
     this.mostrarTitulo = false,
   });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,57 +231,51 @@ class PantallaGrande extends StatelessWidget {
                   children: [
                     if (mostrarTitulo)
                       SeccionArribaPantallaGrande(onChanged: onChanged),
-                    if (!mostrarTitulo)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        child: TextField(
-                          onChanged: onChanged,
-                          decoration: _buscadorDecoration(),
-                        ),
-                      ),
+                    
                     const SizedBox(height: 20),
 
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 60),
                       child: Row(
                         children: [
-                          //FILTRO
-                          GestureDetector(
+                          InkWell(
                             onTap: onTapFiltro,
-                            child: const Row(
-                              children: [
-                                Text(
-                                  "Filtro",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(width: 5),
-                                Icon(Icons.filter_alt),
-                              ],
+                            borderRadius: BorderRadius.circular(8),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Filtro",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  SizedBox(width: 5),
+                                  Icon(Icons.filter_alt, size: 20),
+                                ],
+                              ),
                             ),
                           ),
-
                           const SizedBox(width: 20),
 
                           SizedBox(
-                            width: 220,
+                            width: 250,
                             child: TextField(
                               onChanged: onChanged,
                               decoration: _buscadorDecoration(),
                             ),
                           ),
+                          const Spacer(),
 
-                          const SizedBox(width: 20),
-
-                          //boton
                           ElevatedButton(
                             onPressed: () {
                               showDialog(
                                 context: context,
                                 builder: (context) => CrearSolicitud(
                                   todosLosAsesores: todosLosAsesores,
+                                  catalogos: catalogos,
                                 ),
                               );
                             },
@@ -255,11 +309,11 @@ class PantallaGrande extends StatelessWidget {
                         child: TarjetaSolicitarAsesoria(
                           query: query,
                           filtros: filtros,
+                          todosLosAsesores: todosLosAsesores,
+                          catalogos: catalogos,
                         ),
                       ),
                     ),
-
-                    //Footer(todosLosAsesores: todosLosAsesores),
                   ],
                 ),
               ),
@@ -274,24 +328,18 @@ class PantallaGrande extends StatelessWidget {
 class SeccionArribaPantallaGrande extends StatelessWidget {
   final ValueChanged<String> onChanged;
   const SeccionArribaPantallaGrande({super.key, required this.onChanged});
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 60.0, top: 20, right: 60.0),
+    return const Padding(
+      padding: EdgeInsets.only(left: 60.0, top: 20, right: 60.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            "Solicitar Asesorias",
+          Text(
+            "Solicitar Asesorías",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
           ),
-          /*  SizedBox(
-            width: 220,
-            child: TextField(
-              onChanged: onChanged,
-              decoration: _buscadorDecoration(),
-            ),
-          ), */
         ],
       ),
     );
@@ -300,7 +348,7 @@ class SeccionArribaPantallaGrande extends StatelessWidget {
 
 InputDecoration _buscadorDecoration() {
   return InputDecoration(
-    hintText: 'Buscar Asesoría',
+    hintText: 'Buscar Asesor',
     hintStyle: const TextStyle(fontSize: 15, color: Color(0xFFb4b4b4)),
     prefixIcon: const Icon(Icons.search, color: Color(0xFFb4b4b4), size: 18),
     filled: true,
@@ -315,42 +363,3 @@ InputDecoration _buscadorDecoration() {
     ),
   );
 }
-
-/* class Footer extends StatelessWidget {
-  final List<dynamic> todosLosAsesores;
-  const Footer({super.key, required this.todosLosAsesores});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-       // children: [
-          /* ElevatedButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) =>
-                    CrearSolicitud(todosLosAsesores: todosLosAsesores),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Appcolores.verdeClaro,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: const Text(
-              "Crear Solicitud",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-            ),
-          ), */
-       // ],
-      ),
-    );
-  }
-}
- */

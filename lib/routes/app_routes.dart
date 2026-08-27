@@ -1,7 +1,6 @@
 import 'package:asesorias_fic/presentation/conocenos/conocenos.dart';
 import 'package:asesorias_fic/presentation/loginScreens/inicio_sesion.dart';
 import 'package:asesorias_fic/presentation/loginScreens/login_nuevo.dart';
-import 'package:asesorias_fic/presentation/loginScreens/login_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesores_diciplinares_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesores_par_screen.dart';
 import 'package:asesorias_fic/presentation/pageDirection/asesorias_en_curso_screen.dart';
@@ -21,7 +20,7 @@ import 'package:asesorias_fic/presentation/sistemaTutorias/rol_estudiante/solici
 import 'package:flutter/widgets.dart';
 
 class AppRoutes {
-  static const initialRoute = '/selectorSistema';
+  static const initialRoute = '/inicioSesion';
 
   static Map<String, WidgetBuilder> routes = {
     //Login actual - actualizado
